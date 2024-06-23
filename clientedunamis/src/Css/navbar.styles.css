@@ -1,0 +1,51 @@
+
+.p-button-icon  {
+    background-color: #3a3f3f; 
+    color: #459a95; 
+}
+
+
+.p-sidebar {
+    background-color: #459a95; 
+    color: #fff; 
+    width: 300px; 
+    display: flex;
+    flex-direction: column;
+    padding-top: 1px; 
+}
+
+.p-menubar.p-component {
+    background-color: #459a95 !important;
+    padding: 0.5rem 1rem !important;
+}
+.p-button-text.p-button-plain:focus,
+.p-button-text.p-button-plain:focus-visible {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #33baab, 0 1px 2px 0 black;
+}
+
+.p-button-text.p-button-plain:hover {
+    background: rgba(119, 120, 121, 0.04);
+    color: var(--primary-color);
+}
+
+.p-button-text.p-button-plain:active {
+    background: rgba(0, 188, 212, 0.16);
+}
+
+.logo-image {
+    width: 100px; 
+    height: auto;
+
+}
+.logo-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.sidebar-menu {
+    margin-top: 0; 
+}
+
+.sidebar-menu li {
+    padding: 10px 20px;
+    margin: 5px 0;
+}
