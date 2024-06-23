@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'primereact/resources/primereact.min.css';         
+import 'primeicons/primeicons.css';                      
+import 'primeflex/primeflex.css';      
+import 'primereact/resources/themes/tailwind-light/theme.css'; //theme
+import 'primereact/resources/primereact.min.css'; //core css
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
