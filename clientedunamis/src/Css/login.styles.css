@@ -1,0 +1,149 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .registro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom,  #c1f1ec, #ffffff);
+    padding: 20px;
+    box-sizing: border-box;
+  
+  }
+  
+  .registro-card {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid #ccc; 
+  
+  }
+
+  
+  .registro-header {
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 1%;
+  }
+  
+  .registro-logo {
+    width: 100px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1%;
+  }
+  
+  .registro-title {
+    color: #484550;
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+  
+  .form-field {
+    margin-bottom: 15px;
+  }
+  
+  .p-inputtext,
+  .p-dropdown,
+  .p-password input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #476067;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .p-inputtext:focus,
+  .p-dropdown:focus,
+  .p-password input:focus {
+    outline: none;
+    border-color: #33baab;
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+  }
+  
+
+.p-dropdown {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #476067;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+
+.p-dropdown:focus,
+.p-dropdown.p-focus {
+    outline: none;
+    border-color: #33baab;
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+
+.p-dropdown-panel {
+    background-color: #fff;
+    border: 1px solid #33baab;
+}
+
+
+.p-dropdown-item {
+    color: #484550;
+    padding: 0.75rem;
+}
+
+
+.p-dropdown-item.p-highlight,
+.p-dropdown-item:hover {
+    background-color: #33baab;
+    color: #ffffff;
+}
+
+
+.p-dropdown-trigger {
+    background-color: transparent;
+    color: #33baab;
+}
+
+.p-dropdown:focus .p-dropdown-trigger,
+.p-dropdown.p-focus .p-dropdown-trigger {
+    color: #33baab;
+}
+  .p-button {
+    background-color: #33baab;
+    border-color: #33baab;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  }
+  
+  .p-button:hover {
+    background-color: #459a95;
+    border-color: #459a95;
+  }
+  
+  .p-button:focus {
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+  }
+  
+  @media screen and (max-width: 480px) {
+    .registro-card {
+      padding: 1rem;
+    }
+    
+    .registro-title {
+      font-size: 20px;
+    }
+    
+    .p-inputtext,
+    .p-dropdown,
+    .p-password input {
+      padding: 0.5rem;
+    }
+  }
