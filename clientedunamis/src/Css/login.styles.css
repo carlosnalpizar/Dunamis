@@ -11,16 +11,18 @@ body {
     background: linear-gradient(to bottom,  #c1f1ec, #ffffff);
     padding: 20px;
     box-sizing: border-box;
+  
   }
   
   .registro-card {
     width: 100%;
     max-width: 600px;
-    background-color: rgba(217, 223, 219, 0.952);
     border-radius: 15px;
     padding: 2rem;
-  }
+    border: 1px solid #ccc; 
   
+  }
+
   
   .registro-header {
     text-align: center;
