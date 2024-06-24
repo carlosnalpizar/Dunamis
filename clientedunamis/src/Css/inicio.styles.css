@@ -1,6 +1,7 @@
 .inicio-container {
     text-align: center;
     padding: 2em;
+   
 }
 
 .hero-card {
@@ -32,11 +33,13 @@
 .welcome-message {
     font-size: 3em;
     color: #333;
+   
 }
 
 .description {
     font-size: 1.2em;
     color: #666;
+    
 }
 
 .cards-container {
