@@ -16,9 +16,14 @@ const Navbar = () => {
             command: () => { navigate('/inicio'); setVisible(false); }
         },
         {
-            label: 'Inicio sesion',
+            label: 'Inicio sesion Usuarios',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('/'); setVisible(false); }
+            command: () => { navigate('usuarios'); setVisible(false); }
+        },
+        {
+            label: 'Inicio sesion Clientes',
+            icon: 'pi pi-fw pi-user',
+            command: () => { navigate('/clientes'); setVisible(false); }
         },
         
     ];

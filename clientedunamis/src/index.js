@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'primereact/resources/primereact.min.css';         
 import 'primeicons/primeicons.css';                      
 import 'primeflex/primeflex.css';      
-import 'primereact/resources/themes/tailwind-light/theme.css'; //theme
+import 'primereact/resources/themes/tailwind-light/theme.css'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
