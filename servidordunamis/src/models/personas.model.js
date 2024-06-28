@@ -1,7 +1,7 @@
 import { getConexion } from '../bd/conexion.js' //importe de base de datos
 
 export const getPersonas = (req, res) => {
-    res.send('obteniendo personas');
+    res.send('obteniendo dskjfhesihj');
 }
 
 export const getPersona = (req, res) => {
