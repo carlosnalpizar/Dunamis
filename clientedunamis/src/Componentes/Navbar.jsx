@@ -25,6 +25,11 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-user',
             command: () => { navigate('/clientes'); setVisible(false); }
         },
+        {
+            label: 'Pago Salarios',
+            icon: 'pi pi-fw pi-dollar',
+            command: () => { navigate('/pago'); setVisible(false); }
+        },
         
     ];
 

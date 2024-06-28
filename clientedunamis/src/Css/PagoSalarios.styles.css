@@ -1,0 +1,129 @@
+.pago-salarios-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #c1f1ec, #ffffff);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.pago-salarios-card {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 15px;
+    padding: 2rem;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.pago-salarios-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pago-salarios-title {
+    color: #484550;
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #476067;
+    border-radius: 5px 0 0 5px; /* Redondeo de los bordes izquierdos */
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #33baab;
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+.search-button {
+    border-radius: 0 5px 5px 0; /* Redondeo de los bordes derechos */
+    background-color: #33baab;
+    border-color: #33baab;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-left: -1px; /* Ajuste para eliminar el espacio entre la barra de búsqueda y el botón */
+}
+
+.search-button:hover {
+    background-color: #459a95;
+    border-color: #459a95;
+}
+
+.search-button:focus {
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.employee-table th, .employee-table td {
+    padding: 15px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.employee-table th {
+    background-color: #476067;
+    color: #fff;
+    font-weight: bold;
+}
+
+.employee-table td {
+    background-color: #e0f7fa;
+}
+
+.pay-button {
+    background-color: #33baab;
+    border-color: #33baab;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.pay-button:hover {
+    background-color: #459a95;
+    border-color: #459a95;
+}
+
+.pay-button:focus {
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+@media screen and (max-width: 480px) {
+    .pago-salarios-card {
+        padding: 1rem;
+    }
+
+    .pago-salarios-title {
+        font-size: 20px;
+    }
+
+    .search-bar {
+        padding: 0.5rem;
+    }
+
+    .employee-table th, .employee-table td {
+        padding: 10px;
+    }
+}
