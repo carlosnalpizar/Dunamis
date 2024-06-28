@@ -5,7 +5,7 @@ export const getPersonas = (req, res) => {
 }
 
 export const getPersona = (req, res) => {
-    res.send('obteniendo persona');
+    res.send('CAMBIO PRUEBA');
 }
 
 export const crearPersona = (req, res) => {
