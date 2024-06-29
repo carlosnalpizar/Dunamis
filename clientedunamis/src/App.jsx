@@ -6,6 +6,7 @@ import Navbar from './Componentes/Navbar';
 import Footer from './Componentes/Footer';
 import RegistroClientes from './Paginas/RegistroClientes';
 import PagoSalarios from './Paginas/PagoSalarios';
+import AgregarTrabajosExtras from './Paginas/AgregarTrabajosExtras';
 
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
         <Route path="/inicio" element={<Inicio />} />
         <Route path="/clientes" element={<RegistroClientes />} />
         <Route path="/pago" element={<PagoSalarios />} />
+        <Route path="/extras" element={<AgregarTrabajosExtras />} />
+        
+
       </Routes>
       <Footer/>
     </BrowserRouter>

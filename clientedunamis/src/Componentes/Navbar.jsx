@@ -30,6 +30,12 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-dollar',
             command: () => { navigate('/pago'); setVisible(false); }
         },
+        {
+            label: 'Trabajos Extras',
+            icon: 'pi pi-fw pi-dollar',
+            command: () => { navigate('/extras'); setVisible(false); }
+        },
+        
         
     ];
 
