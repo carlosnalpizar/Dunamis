@@ -1,7 +1,10 @@
 import { getConexion } from '../bd/conexion.js' //importe de base de datos
 
-export const getPersonas = (req, res) => {
-    res.send('obteniendo dskjfhesihj');
+export const getPersonas = async (req, res) => {
+    const bd = await getConexion()
+    const resultado = await bd.request().query('SELECT * FROM HistoriaOdyssey')
+    console.log(resultado);
+    res.json(resultado.recordset);
 }
 
 export const getPersona = (req, res) => {
