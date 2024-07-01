@@ -3,6 +3,7 @@ import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
+import ModalEditar from '../modals/ModalEditar';
 import '../Css/gestionEmpleados.styles.css';
 
 const GestionEmpleados = () => {
@@ -17,17 +18,31 @@ const GestionEmpleados = () => {
         { id: 7, name: 'Nombre Apellido 7', cedula: '789012345' },
         { id: 8, name: 'Nombre Apellido 8', cedula: '890123456' }
     ]);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [displayModal, setDisplayModal] = useState(false);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
     const handleEdit = (employeeId) => {
-        console.log(`Editar empleado con ID: ${employeeId}`);
+        const employee = employees.find(emp => emp.id === employeeId);
+        setSelectedEmployee(employee);
+        setDisplayModal(true);
     };
 
     const handleDelete = (employeeId) => {
         setEmployees(employees.filter(employee => employee.id !== employeeId));
+    };
+
+    const handleModalClose = () => {
+        setDisplayModal(false);
+        setSelectedEmployee(null);
+    };
+
+    const handleSave = (updatedEmployee) => {
+        setEmployees(employees.map(emp => (emp.id === updatedEmployee.id ? updatedEmployee : emp)));
+        handleModalClose();
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -62,12 +77,12 @@ const GestionEmpleados = () => {
                                 <td>{employee.name}</td>
                                 <td>
                                     <Button
-                                         label="Editar"
+                                        label="Editar"
                                         className="p-button-rounded p-button-warning btnEditar"
                                         onClick={() => handleEdit(employee.id)}
                                     />
                                     <Button
-                                         label="Eliminar"
+                                        label="Eliminar"
                                         className="p-button-rounded p-button-danger btnEliminar"
                                         onClick={() => handleDelete(employee.id)}
                                     />
@@ -77,6 +92,14 @@ const GestionEmpleados = () => {
                     </tbody>
                 </table>
             </Card>
+            {selectedEmployee && (
+                <ModalEditar
+                    employee={selectedEmployee}
+                    visible={displayModal}
+                    onClose={handleModalClose}
+                    onSave={handleSave}
+                />
+            )}
         </div>
     );
 };

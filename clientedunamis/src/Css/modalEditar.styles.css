@@ -1,0 +1,55 @@
+.modal-editar .p-dialog-content {
+    padding: 0;
+}
+
+.modal-editar .modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.modal-editar .input-group {
+    margin-bottom: 15px;
+}
+
+.modal-editar label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-editar .p-inputtext,
+.modal-editar .p-calendar {
+    width: 100%;
+}
+
+.modal-editar .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #ffffff;
+}
+
+.modal-editar .p-button {
+    margin: 0 5px;
+}
+.modal-editar .p-dialog-header {
+    text-align: center;
+}
+
+.modal-editar .p-dialog-title {
+    flex: 1;
+}
+.btnCancelar {
+    background-color: #ffcccb; 
+    border-color: #ff6347; 
+    color: #ff6347; 
+    font-weight: bold;
+}
+
+.btnCancelar:hover {
+    background-color: #ffb6c1; 
+    border-color: #ff6347;
+    color: #fff; 
+}
