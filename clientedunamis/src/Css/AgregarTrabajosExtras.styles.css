@@ -5,16 +5,20 @@
     height: 100vh;
     background-color: #f5f5f5;
     padding: 2em;
+    background: linear-gradient(to bottom,  #c1f1ec, #ffffff);
+}
+h2.custom-h2 {
+    color: #484550 !important;
 }
 
 .agregar-trabajos-extras-card {
     background-color: #fff;
-    border: none;
+    border: 1px solid #f5f5f5;
     box-shadow: none;
     border-radius: 20px;
     padding: 2em;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
 }
 
 .agregar-trabajos-extras-card h2 {
@@ -40,46 +44,48 @@
     width: 100%;
 }
 
-.p-field .p-inputnumber, .p-field .p-dropdown {
+ .p-inputnumber,  .p-dropdown {
     width: 100%;
-    border: none;
-}
-
-.p-button-success, .p-button-secondary {
-    width: 100%;
-    margin-top: 1em;
-    border: none;
-    background-color: #459a95;
-    color: white;
-    border-radius: 8px;
-}
-
-.p-button-secondary {
-    background-color: #3a3f3f;
-}
-
-.p-button-text.p-button-plain:focus,
-.p-button-text.p-button-plain:focus-visible {
-    box-shadow: none;
-}
-
-.p-field.p-grid .p-col {
-    padding: 0.5em;
-}
-
-.p-field.p-grid .p-col .p-inputnumber {
-    width: 100%;
-    text-align: center;
+ 
 }
 
 .p-inputnumber .p-inputtext {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid  #459a95;
     border-radius: 4px;
 }
 
 .p-dropdown {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid  #459a95;
     border-radius: 4px;
+}
+
+.p-field.p-grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.btn-Agregar{
+    margin-top: 4%;
+    flex: 0 1 auto;
+    width: 20%; 
+
+}
+.btn-cancelar{
+    margin-top: 4%;
+    flex: 0 1 auto;
+    width: 20%;
+}
+.btn-cancelar .p-button {
+    background-color: #6d7272; 
+    color: white;
+    border: none; 
+}
+
+.btn-cancelar .p-button:hover {
+    background-color: #434646; 
 }
