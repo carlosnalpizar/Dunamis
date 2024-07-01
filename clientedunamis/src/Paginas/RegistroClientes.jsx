@@ -44,7 +44,7 @@ const RegistroClientes = () => {
             <Card className="registro-card">
                 <div className="registro-header">
                     <img src="../../logo2.png" alt="Logo" className="registro-logo" />
-                    <h2 className="registro-title">Registro Clientes</h2>
+                    <h2 className="registro-title">Registro Empleados</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="p-fluid">

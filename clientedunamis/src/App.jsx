@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/usuarios" element={<RegistroUsuario />} />
         <Route path="/" element={<Inicio />} />
-        <Route path="/clientes" element={<RegistroClientes />} />
+        <Route path="/empleados" element={<RegistroClientes />} />
         <Route path="/pago" element={<PagoSalarios />} />
         <Route path="/extras" element={<AgregarTrabajosExtras />} />
         <Route path="/login" element={<Login />} />

@@ -23,12 +23,12 @@ const Navbar = () => {
         {
             label: 'Registro Usuarios',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('usuarios'); setVisible(false); }
+            command: () => { navigate('/usuarios'); setVisible(false); }
         },
         {
-            label: 'Registro Clientes',
+            label: 'Registro Empleados',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('/clientes'); setVisible(false); }
+            command: () => { navigate('/empleados'); setVisible(false); }
         },
         {
             label: 'Pago Salarios',
