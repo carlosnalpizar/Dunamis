@@ -35,8 +35,7 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-dollar',
             command: () => { navigate('/extras'); setVisible(false); }
         },
-        
-        
+      
     ];
 
     const start = (

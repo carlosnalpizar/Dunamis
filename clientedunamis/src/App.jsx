@@ -7,6 +7,7 @@ import Footer from './Componentes/Footer';
 import RegistroClientes from './Paginas/RegistroClientes';
 import PagoSalarios from './Paginas/PagoSalarios';
 import AgregarTrabajosExtras from './Paginas/AgregarTrabajosExtras';
+import Login from './Paginas/Login';
 
 
 function App() {
@@ -19,8 +20,7 @@ function App() {
         <Route path="/clientes" element={<RegistroClientes />} />
         <Route path="/pago" element={<PagoSalarios />} />
         <Route path="/extras" element={<AgregarTrabajosExtras />} />
-        
-
+        <Route path="/login" element={<Login />} />
       </Routes>
       <Footer/>
     </BrowserRouter>
