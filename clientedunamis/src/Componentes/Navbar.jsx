@@ -21,12 +21,12 @@ const Navbar = () => {
             command: () => { navigate('/login'); setVisible(false); }
         },
         {
-            label: 'Inicio sesion Usuarios',
+            label: 'Registro Usuarios',
             icon: 'pi pi-fw pi-user',
             command: () => { navigate('usuarios'); setVisible(false); }
         },
         {
-            label: 'Inicio sesion Clientes',
+            label: 'Registro Clientes',
             icon: 'pi pi-fw pi-user',
             command: () => { navigate('/clientes'); setVisible(false); }
         },
