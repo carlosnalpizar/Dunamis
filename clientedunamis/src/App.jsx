@@ -8,6 +8,7 @@ import RegistroClientes from './Paginas/RegistroClientes';
 import PagoSalarios from './Paginas/PagoSalarios';
 import AgregarTrabajosExtras from './Paginas/AgregarTrabajosExtras';
 import Login from './Paginas/Login';
+import EstadoEmpleados from './Paginas/EstadoEmpleados';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/pago" element={<PagoSalarios />} />
         <Route path="/extras" element={<AgregarTrabajosExtras />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/estado" element={<EstadoEmpleados/>} />
       </Routes>
       <Footer/>
     </BrowserRouter>

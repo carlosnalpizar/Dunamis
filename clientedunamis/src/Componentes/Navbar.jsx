@@ -16,6 +16,11 @@ const Navbar = () => {
             command: () => { navigate('/'); setVisible(false); }
         },
         {
+            label: 'Inicio Sesion',
+            icon: 'pi pi-fw pi-user',
+            command: () => { navigate('/login'); setVisible(false); }
+        },
+        {
             label: 'Inicio sesion Usuarios',
             icon: 'pi pi-fw pi-user',
             command: () => { navigate('usuarios'); setVisible(false); }
@@ -31,9 +36,9 @@ const Navbar = () => {
             command: () => { navigate('/pago'); setVisible(false); }
         },
         {
-            label: 'Trabajos Extras',
-            icon: 'pi pi-fw pi-dollar',
-            command: () => { navigate('/extras'); setVisible(false); }
+            label: 'Estado empleados',
+            icon: 'pi pi-fw pi-check',
+            command: () => { navigate('/estado'); setVisible(false); }
         },
       
     ];
