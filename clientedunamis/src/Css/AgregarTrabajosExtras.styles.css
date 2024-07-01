@@ -39,7 +39,7 @@ h2.custom-h2 {
     display: block;
     margin-bottom: 0.5em;
     font-weight: bold;
-    color: #666;
+    color: #635e5e;
     text-align: left;
     width: 100%;
 }
@@ -51,10 +51,17 @@ h2.custom-h2 {
 
 .p-inputnumber .p-inputtext {
     width: 100%;
-    border: 1px solid  #459a95;
+    border: 1px solid  #636d6c;
     border-radius: 4px;
 }
+.p-inputnumber:hover .p-inputtext,
+.p-inputnumber.p-inputwrapper-focus .p-inputtext {
+    border-color: #459a95;
+}
 
+.p-inputnumber.p-inputwrapper-focus .p-inputtext {
+    outline: none;
+}
 .p-dropdown {
     width: 100%;
     border: 1px solid  #459a95;
