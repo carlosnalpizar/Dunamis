@@ -13,7 +13,7 @@ const Navbar = () => {
         {
             label: 'Inicio',
             icon: 'pi pi-fw pi-home',
-            command: () => { navigate('/inicio'); setVisible(false); }
+            command: () => { navigate('/'); setVisible(false); }
         },
         {
             label: 'Inicio sesion Usuarios',
