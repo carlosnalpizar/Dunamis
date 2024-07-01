@@ -9,6 +9,7 @@ import PagoSalarios from './Paginas/PagoSalarios';
 import AgregarTrabajosExtras from './Paginas/AgregarTrabajosExtras';
 import Login from './Paginas/Login';
 import EstadoEmpleados from './Paginas/EstadoEmpleados';
+import GestionEmpleados from './Paginas/GestionEmpleados';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/extras" element={<AgregarTrabajosExtras />} />
         <Route path="/login" element={<Login />} />
         <Route path="/estado" element={<EstadoEmpleados/>} />
+        <Route path="/gestion" element={<GestionEmpleados/>} />
       </Routes>
       <Footer/>
     </BrowserRouter>

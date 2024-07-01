@@ -37,8 +37,13 @@ const Navbar = () => {
         },
         {
             label: 'Estado empleados',
-            icon: 'pi pi-fw pi-check',
+            icon: 'pi pi-fw pi-check-circle',
             command: () => { navigate('/estado'); setVisible(false); }
+        },
+        {
+            label: 'Gestion empleados',
+            icon: 'pi pi-fw pi-address-book',
+            command: () => { navigate('/gestion'); setVisible(false); }
         },
       
     ];

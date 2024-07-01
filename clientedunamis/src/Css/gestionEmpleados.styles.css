@@ -1,0 +1,176 @@
+.gestion-empleados-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #c1f1ec, #ffffff);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.gestion-empleados-card {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 15px;
+    padding: 2rem;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.gestion-empleados-header{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.gestion-empleados-title {
+    color: #494747;
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.search-bar {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid #484550;
+    border-radius: 5px 0 0 5px; 
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: #33baab;
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+.search-button {
+    border-radius: 0 5px 5px 0;
+    background-color: #33baab;
+    border-color: #33baab;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-left: -1px; 
+    width: 50px;
+    height: 47px;
+}
+
+.search-button:hover {
+    background-color: #459a95;
+    border-color: #459a95;
+}
+
+.search-button:focus {
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+}
+
+.employee-table th, .employee-table td {
+    padding: 15px;
+    border: 1px solid #ccc;
+    text-align: left;
+    background-color: white;
+    vertical-align: middle;
+}
+
+.employee-table th {
+    background-color: #4f6970;
+    color: #fff;
+    font-weight: bold;
+}
+.employee-table td {
+    text-align: center; 
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+ 
+}
+.employee-table .btnEditar{
+    margin-right: 7px;
+}
+.employee-table .btnEliminar {
+    background-color: #ffcccb; 
+    border-color: #ff6347; 
+    color: #ff6347; 
+    font-weight: bold;
+}
+
+.employee-table .btnEliminar:hover {
+    background-color: #ffb6c1; 
+    border-color: #ff6347;
+    color: #fff; 
+}
+
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.status-text {
+    font-weight: bold;
+}
+
+
+.status-button {
+    background-color: #33baab;
+    border-color: #33baab;
+    color: #ffffff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.status-button:hover {
+    background-color: #459a95;
+    border-color: #459a95;
+}
+
+.status-button:focus {
+    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
+}
+
+@media screen and (max-width: 480px) {
+    .estado-empleados-card {
+        padding: 1rem;
+    }
+
+    .estado-empleados-title {
+        font-size: 20px;
+    }
+
+    .search-bar {
+        padding: 0.5rem;
+    }
+
+    .employee-table th, .employee-table td {
+        padding: 10px;
+    }
+
+    .status-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .status-button {
+        margin-top: 10px;
+    }
+}
