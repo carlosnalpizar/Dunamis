@@ -60,6 +60,11 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-search-plus',
             command: () => { navigate('/consultas'); setVisible(false); }
         },
+        {
+            label: 'Realizar reportes',
+            icon: 'pi pi-fw pi-search-plus',
+            command: () => { navigate('/reportes'); setVisible(false); }
+        },
     ];
 
     const start = (

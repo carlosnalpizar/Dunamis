@@ -12,6 +12,7 @@ import EstadoEmpleados from './Paginas/EstadoEmpleados';
 import GestionEmpleados from './Paginas/GestionEmpleados';
 import Bitacora from './Paginas/Bitacora';
 import Consultas from './Paginas/Consultas';
+import Reportes from './Paginas/Reportes';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/gestion" element={<GestionEmpleados/>} />
         <Route path="/bitacora" element={<Bitacora/>} />
         <Route path="/consultas" element={<Consultas/>} />
+        <Route path="/reportes" element={<Reportes/>} />
       </Routes>
       <Footer/>
     </BrowserRouter>
