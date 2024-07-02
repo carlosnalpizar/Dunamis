@@ -11,6 +11,7 @@ import Login from './Paginas/Login';
 import EstadoEmpleados from './Paginas/EstadoEmpleados';
 import GestionEmpleados from './Paginas/GestionEmpleados';
 import Bitacora from './Paginas/Bitacora';
+import Consultas from './Paginas/Consultas';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/estado" element={<EstadoEmpleados/>} />
         <Route path="/gestion" element={<GestionEmpleados/>} />
         <Route path="/bitacora" element={<Bitacora/>} />
+        <Route path="/consultas" element={<Consultas/>} />
       </Routes>
       <Footer/>
     </BrowserRouter>
