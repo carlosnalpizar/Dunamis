@@ -17,7 +17,7 @@ const Navbar = () => {
         },
         {
             label: 'Inicio Sesion',
-            icon: 'pi pi-fw pi-user',
+            icon: 'pi pi-fw pi-users',
             command: () => { navigate('/login'); setVisible(false); }
         },
         {
