@@ -8,7 +8,7 @@ import sql from 'mssql';
 
 const baseDatos = {
     server: 'LAPTOPLENIN',
-    database: 'MarioOdyssey',
+    database: 'Dunamis',
     user: 'Desarrollos', // Reemplazar usuario
     password: 'desarrollos', // Reemplazar contrasena
     options: {

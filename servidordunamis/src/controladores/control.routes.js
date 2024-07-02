@@ -1,17 +1,20 @@
 import { Router } from 'express';
-import { borrarPersona, crearPersona, getPersona, getPersonas, modificarPersona } from '../models/personas.model.js';
+import { borrarPersona, crearEmpleado, getEmpleados, getPersona, modificarPersona } from '../models/personas.model.js';
+import { crearUsuario } from '../models/usuarios.model.js';
 
 
 const router = Router();
 
-//personas
-router.get('/persona', getPersonas);
+//empleados
+router.get('/persona', getEmpleados);
 router.get('/persona/:id', getPersona)
 router.delete('/persona/:id', borrarPersona)
 router.put('/persona/:id', modificarPersona)
-router.post('/persona', crearPersona)
-//personas
+router.post('/persona', crearEmpleado)
 
+
+//usuarios
+router.post('/usuario', crearUsuario)
 
 
 
