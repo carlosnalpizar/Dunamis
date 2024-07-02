@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { borrarPersona, crearEmpleado, getEmpleados, getPersona, modificarPersona } from '../models/personas.model.js';
-import { crearUsuario } from '../models/usuarios.model.js';
+import { borrarPersona, crearEmpleado, getEmpleados, getPersona, modificarPersona } from '../models/empleados.model.js';
+import { crearUsuario, getUsuarios } from '../models/usuarios.model.js';
+import { getBitacoras } from '../models/bitacora.model.js';
 
 
 const router = Router();
@@ -15,7 +16,10 @@ router.post('/persona', crearEmpleado)
 
 //usuarios
 router.post('/usuario', crearUsuario)
+router.get('/usuario', getUsuarios);
 
+//bitacora
+router.get('/bitacora', getBitacoras);
 
 
 

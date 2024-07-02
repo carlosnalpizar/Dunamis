@@ -1,18 +1,18 @@
 import { getConexion } from '../bd/conexion.js' //importe de base de datos
 import sql from 'mssql'
 
-export const getUsuarios = async (req, res) => {
+export const getEmpleados = async (req, res) => {
     const bd = await getConexion()
-    const resultado = await bd.request().query('SELECT * FROM Usuarios')
+    const resultado = await bd.request().query('SELECT * FROM Empleados')
     console.log(resultado);
     res.json(resultado.recordset);
 }
 
-export const getUsuario = (req, res) => {
+export const getPersona = (req, res) => {
     res.send('CAMBIO PRUEBA');
 }
 
-export const crearUsuario = async(req, res) => {
+export const crearEmpleado = async(req, res) => {
     try {
         const bd = await getConexion();
 
@@ -27,14 +27,16 @@ export const crearUsuario = async(req, res) => {
                 VALUES (@PersonaCedula, @nombre, @apellido1, @apellido2, @correo)
             `);
 
-        const insercionUsuario = await bd.request()
-            .input('idUsuario', sql.Int, req.body.idUsuario)
+        const insercionEmpleado = await bd.request()
             .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
-            .input('contrasena', sql.VarChar, req.body.contrasena)
-            .input('idRoles', sql.Int, req.body.idRoles)
+            .input('idPosicion', sql.Int, req.body.idPosicion)
+            .input('fechaDePago', sql.Date, req.body.fechaDePago)
+            .input('fechaDeIngreso', sql.Date, req.body.fechaDeIngreso)
+            .input('cantidadTrabajosExtras', sql.Int, req.body.cantidadTrabajosExtras)
+            .input('activo', sql.Bit, req.body.activo)
             .query(`
-                INSERT INTO Usuarios (idUsuario, PersonaCedula, contrasena, idRoles)
-                VALUES (@idUsuario, @PersonaCedula, @contrasena, @idRoles)
+                INSERT INTO Empleados (PersonaCedula, idPosicion, fechaDePago, fechaDeIngreso, cantidadTrabajosExtras, activo)
+                VALUES (@PersonaCedula, @idPosicion, @fechaDePago, @fechaDeIngreso, @cantidadTrabajosExtras, @activo)
             `);
 
         const insercionBitacora = await bd.request()
@@ -50,4 +52,12 @@ export const crearUsuario = async(req, res) => {
         console.error(err);
         res.status(500).send('Error al ingresar el empleado');
     }
+}
+
+export const borrarPersona = (req, res) => {
+    res.send('Persona Borrada');
+}
+
+export const modificarPersona = (req, res) => {
+    res.send('Persona Actualizada');
 }
