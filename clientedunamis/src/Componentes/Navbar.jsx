@@ -45,7 +45,11 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-address-book',
             command: () => { navigate('/gestion'); setVisible(false); }
         },
-      
+        {
+            label: 'Reportes solicitados',
+            icon: 'pi pi-fw pi-clipboard',
+            command: () => { navigate('/reportes'); setVisible(false); }
+        },
     ];
 
     const start = (
