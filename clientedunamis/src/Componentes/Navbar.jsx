@@ -46,6 +46,11 @@ const Navbar = () => {
             command: () => { navigate('/gestion'); setVisible(false); }
         },
         {
+            label: 'Agregar trabajos extra',
+            icon: 'pi pi-fw pi-file-check',
+            command: () => { navigate('/extras'); setVisible(false); }
+        },
+        {
             label: 'Bitacora',
             icon: 'pi pi-fw pi-clipboard',
             command: () => { navigate('/bitacora'); setVisible(false); }
