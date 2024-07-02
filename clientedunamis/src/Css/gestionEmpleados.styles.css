@@ -1,4 +1,4 @@
-.pago-salarios-container {
+.gestion-empleados-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-.pago-salarios-card {
+.gestion-empleados-card {
     width: 100%;
     max-width: 1000px;
     border-radius: 15px;
@@ -18,12 +18,12 @@
     box-shadow: none;
 }
 
-.pago-salarios-header {
+.gestion-empleados-header{
     text-align: center;
     margin-bottom: 20px;
 }
 
-.pago-salarios-title {
+.gestion-empleados-title {
     color: #494747;
     font-size: 24px;
     margin-bottom: 20px;
@@ -36,6 +36,7 @@
     align-items: center;
     margin-bottom: 20px;
 }
+
 
 .search-bar {
     flex: 1;
@@ -61,7 +62,7 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
     margin-left: -1px; 
     width: 50px;
-    height: 40px;
+    height: 47px;
 }
 
 .search-button:hover {
@@ -83,8 +84,9 @@
 .employee-table th, .employee-table td {
     padding: 15px;
     border: 1px solid #ccc;
-    text-align: center;
+    text-align: left;
     background-color: white;
+    vertical-align: middle;
 }
 
 .employee-table th {
@@ -92,8 +94,44 @@
     color: #fff;
     font-weight: bold;
 }
+.employee-table td {
+    text-align: center; 
+}
 
-.pay-button {
+.action-buttons {
+    display: flex;
+    justify-content: center;
+ 
+}
+.employee-table .btnEditar{
+    margin-right: 7px;
+}
+.employee-table .btnEliminar {
+    background-color: #ffcccb; 
+    border-color: #ff6347; 
+    color: #ff6347; 
+    font-weight: bold;
+}
+
+.employee-table .btnEliminar:hover {
+    background-color: #ffb6c1; 
+    border-color: #ff6347;
+    color: #fff; 
+}
+
+.status-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.status-text {
+    font-weight: bold;
+}
+
+
+.status-button {
     background-color: #33baab;
     border-color: #33baab;
     color: #ffffff;
@@ -101,21 +139,21 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.pay-button:hover {
+.status-button:hover {
     background-color: #459a95;
     border-color: #459a95;
 }
 
-.pay-button:focus {
+.status-button:focus {
     box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
 }
 
 @media screen and (max-width: 480px) {
-    .pago-salarios-card {
+    .estado-empleados-card {
         padding: 1rem;
     }
 
-    .pago-salarios-title {
+    .estado-empleados-title {
         font-size: 20px;
     }
 
@@ -125,5 +163,14 @@
 
     .employee-table th, .employee-table td {
         padding: 10px;
+    }
+
+    .status-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .status-button {
+        margin-top: 10px;
     }
 }

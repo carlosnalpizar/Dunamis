@@ -29,7 +29,7 @@ const AgregarTrabajosExtras = () => {
     return (
         <div className="agregar-trabajos-extras-container">
             <div className="card agregar-trabajos-extras-card">
-                <h2>Agregar Trabajos Extras</h2>
+            <h2 className="custom-h2">Agregar Trabajos Extras</h2>
                 <div className="p-field">
                     <label htmlFor="empleado">Empleado</label>
                     <Dropdown 
@@ -51,13 +51,13 @@ const AgregarTrabajosExtras = () => {
                         inputClassName="p-inputnumber"
                     />
                 </div>
-                <div className="p-field p-grid">
-                    <div className="p-col">
-                        <Button label="Agregar" className="p-button-success" onClick={handleAgregar} />
+                <div class="p-field p-grid">
+                    <div class="btn-Agregar">
+                      <Button label="Agregar"  />
                     </div>
-                    <div className="p-col">
-                        <Button label="Cancelar" className="p-button-secondary" onClick={handleCancelar} />
-                    </div>
+                    <div class="btn-cancelar">
+                    <Button label="Cancelar" />
+                   </div>
                 </div>
             </div>
         </div>

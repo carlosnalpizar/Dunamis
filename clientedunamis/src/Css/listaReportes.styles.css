@@ -1,4 +1,4 @@
-.pago-salarios-container {
+.reportes-solicitados-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-.pago-salarios-card {
+.reportes-solicitados-card {
     width: 100%;
     max-width: 1000px;
     border-radius: 15px;
@@ -18,12 +18,12 @@
     box-shadow: none;
 }
 
-.pago-salarios-header {
+.reportes-solicitados-header {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.pago-salarios-title {
+.reportes-solicitados-title {
     color: #494747;
     font-size: 24px;
     margin-bottom: 20px;
@@ -61,7 +61,7 @@
     transition: background-color 0.3s ease, border-color 0.3s ease;
     margin-left: -1px; 
     width: 50px;
-    height: 40px;
+    height: 47px;
 }
 
 .search-button:hover {
@@ -83,7 +83,7 @@
 .employee-table th, .employee-table td {
     padding: 15px;
     border: 1px solid #ccc;
-    text-align: center;
+    text-align: left;
     background-color: white;
 }
 
@@ -93,29 +93,12 @@
     font-weight: bold;
 }
 
-.pay-button {
-    background-color: #33baab;
-    border-color: #33baab;
-    color: #ffffff;
-    font-weight: bold;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.pay-button:hover {
-    background-color: #459a95;
-    border-color: #459a95;
-}
-
-.pay-button:focus {
-    box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
-}
-
 @media screen and (max-width: 480px) {
-    .pago-salarios-card {
+    .reportes-solicitados-card {
         padding: 1rem;
     }
 
-    .pago-salarios-title {
+    .reportes-solicitados-title {
         font-size: 20px;
     }
 

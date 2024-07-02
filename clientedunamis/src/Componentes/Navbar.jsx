@@ -13,17 +13,22 @@ const Navbar = () => {
         {
             label: 'Inicio',
             icon: 'pi pi-fw pi-home',
-            command: () => { navigate('/inicio'); setVisible(false); }
+            command: () => { navigate('/'); setVisible(false); }
         },
         {
-            label: 'Inicio sesion Usuarios',
-            icon: 'pi pi-fw pi-user',
-            command: () => { navigate('usuarios'); setVisible(false); }
+            label: 'Inicio Sesion',
+            icon: 'pi pi-fw pi-users',
+            command: () => { navigate('/login'); setVisible(false); }
         },
         {
-            label: 'Inicio sesion Clientes',
+            label: 'Registro Usuarios',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('/clientes'); setVisible(false); }
+            command: () => { navigate('/usuarios'); setVisible(false); }
+        },
+        {
+            label: 'Registro Empleados',
+            icon: 'pi pi-fw pi-user',
+            command: () => { navigate('/empleados'); setVisible(false); }
         },
         {
             label: 'Pago Salarios',
@@ -31,12 +36,20 @@ const Navbar = () => {
             command: () => { navigate('/pago'); setVisible(false); }
         },
         {
-            label: 'Trabajos Extras',
-            icon: 'pi pi-fw pi-dollar',
-            command: () => { navigate('/extras'); setVisible(false); }
+            label: 'Estado empleados',
+            icon: 'pi pi-fw pi-check-circle',
+            command: () => { navigate('/estado'); setVisible(false); }
         },
-        
-        
+        {
+            label: 'Gestion empleados',
+            icon: 'pi pi-fw pi-address-book',
+            command: () => { navigate('/gestion'); setVisible(false); }
+        },
+        {
+            label: 'Bitacora',
+            icon: 'pi pi-fw pi-clipboard',
+            command: () => { navigate('/bitacora'); setVisible(false); }
+        },
     ];
 
     const start = (
