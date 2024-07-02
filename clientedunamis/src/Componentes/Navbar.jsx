@@ -55,6 +55,11 @@ const Navbar = () => {
             icon: 'pi pi-fw pi-clipboard',
             command: () => { navigate('/bitacora'); setVisible(false); }
         },
+        {
+            label: 'Realizar consultas',
+            icon: 'pi pi-fw pi-search-plus',
+            command: () => { navigate('/consultas'); setVisible(false); }
+        },
     ];
 
     const start = (
