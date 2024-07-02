@@ -46,9 +46,9 @@ const Navbar = () => {
             command: () => { navigate('/gestion'); setVisible(false); }
         },
         {
-            label: 'Reportes solicitados',
+            label: 'Bitacora',
             icon: 'pi pi-fw pi-clipboard',
-            command: () => { navigate('/reportes'); setVisible(false); }
+            command: () => { navigate('/bitacora'); setVisible(false); }
         },
     ];
 
