@@ -1,27 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import '../Css/bitacora.styles.css';
+import { getBitacoras } from '../api/bitacora.api';
 
 const Bitacora = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [reportes, setReportes] = useState([
-        { accionRealizada: 'Consulta de salario', fecha: '2024-06-15', nombreApellido: 'Nombre Apellido 1' },
-        { accionRealizada: 'Se registro un usuario', fecha: '2024-06-16', nombreApellido: 'Nombre Apellido 2' },
-        { accionRealizada: 'accion', fecha: '2024-06-17', nombreApellido: 'Nombre Apellido 3' },
-        { accionRealizada: 'accion', fecha: '2024-06-18', nombreApellido: 'Nombre Apellido 4' },
-        { accionRealizada: 'accion', fecha: '2024-06-19', nombreApellido: 'Nombre Apellido 5' },
-    ]);
+    const [reportes, setReportes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getBitacoras();
+                setReportes(response.data);
+            } catch (error) {
+                setError('Error al cargar los datos');
+                console.error('Error al obtener bitácoras:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
+    // Filtrado dinámico
     const filteredReportes = reportes.filter(reporte =>
-        reporte.nombreApellido.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        reporte.PersonaCedula && reporte.PersonaCedula.toString().includes(searchTerm.toLowerCase())
+    );    
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <div className="Bitacora-container">
@@ -47,13 +69,19 @@ const Bitacora = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredReportes.map((reporte, index) => (
-                            <tr key={index}>
-                                <td>{reporte.accionRealizada}</td>
-                                <td>{reporte.fecha}</td>
-                                <td>{reporte.nombreApellido}</td>
+                        {filteredReportes.length > 0 ? (
+                            filteredReportes.map((reporte, index) => (
+                                <tr key={index}>
+                                    <td>{reporte.AccionRealizada}</td>
+                                    <td>{reporte.fecha}</td>
+                                    <td>{reporte.PersonaCedula}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3">No hay resultados</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </Card>
