@@ -13,6 +13,7 @@ import GestionEmpleados from './Paginas/GestionEmpleados';
 import Bitacora from './Paginas/Bitacora';
 import Consultas from './Paginas/Consultas';
 import Reportes from './Paginas/Reportes';
+import ErrorPage from './Paginas/404';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/bitacora" element={<Bitacora/>} />
         <Route path="/consultas" element={<Consultas/>} />
         <Route path="/reportes" element={<Reportes/>} />
+        <Route path="/error" element={<ErrorPage/>} />
       </Routes>
       <Footer/>
     </BrowserRouter>
