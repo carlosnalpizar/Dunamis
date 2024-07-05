@@ -16,37 +16,44 @@ export const crearEmpleado = async(req, res) => {
     try {
         const bd = await getConexion();
 
+        const fechaActual = new Date();
+        const accionRealizada = "se registro un usuario";
+
         const insercionPersona = await bd.request()
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
+            .input('cedula', sql.Int, req.body.cedula)
             .input('nombre', sql.VarChar, req.body.nombre)
             .input('apellido1', sql.VarChar, req.body.apellido1)
             .input('apellido2', sql.VarChar, req.body.apellido2)
             .input('correo', sql.VarChar, req.body.correo)
             .query(`
                 INSERT INTO Persona (PersonaCedula, nombre, apellido1, apellido2, correo)
-                VALUES (@PersonaCedula, @nombre, @apellido1, @apellido2, @correo)
+                VALUES (@cedula, @nombre, @apellido1, @apellido2, @correo)
             `);
+
+        const cantidadTrabExtras = 0;
+        const activo = 1;
 
         const insercionEmpleado = await bd.request()
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
-            .input('idPosicion', sql.Int, req.body.idPosicion)
-            .input('fechaDePago', sql.Date, req.body.fechaDePago)
-            .input('fechaDeIngreso', sql.Date, req.body.fechaDeIngreso)
-            .input('cantidadTrabajosExtras', sql.Int, req.body.cantidadTrabajosExtras)
-            .input('activo', sql.Bit, req.body.activo)
+            .input('cedula', sql.Int, req.body.cedula)
+            .input('idPosicion', sql.Int, req.body.posicion)
+            .input('fechaDePago', sql.Date, fechaActual)
+            .input('fechaDeIngreso', sql.Date, req.body.ingreso)
+            .input('cantidadTrabajosExtras', sql.Int, cantidadTrabExtras)
+            .input('activo', sql.Bit, activo)
             .query(`
                 INSERT INTO Empleados (PersonaCedula, idPosicion, fechaDePago, fechaDeIngreso, cantidadTrabajosExtras, activo)
-                VALUES (@PersonaCedula, @idPosicion, @fechaDePago, @fechaDeIngreso, @cantidadTrabajosExtras, @activo)
+                VALUES (@cedula, @idPosicion, @fechaDePago, @fechaDeIngreso, @cantidadTrabajosExtras, @activo)
             `);
+    
+            const insercionBitacora = await bd.request()
+                .input('cedula', sql.Int, req.body.cedula)
+                .input('fecha', sql.DateTime, fechaActual)
+                .input('AccionRealizada', sql.VarChar, accionRealizada)
+                .query(`
+                    INSERT INTO Bitacoras (PersonaCedula, fecha, AccionRealizada)
+                    VALUES (@cedula, @fecha, @AccionRealizada)
+                `);
 
-        const insercionBitacora = await bd.request()
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
-            .input('fecha', sql.Date, req.body.fecha)
-            .input('AccionRealizada', sql.VarChar, req.body.AccionRealizada)
-            .query(`
-                INSERT INTO Bitacoras (PersonaCedula, fecha, AccionRealizada)
-                VALUES (@PersonaCedula, @fecha, @AccionRealizada)
-            `);
         res.status(200).send('Inserción exitosa');
     } catch (err) {
         console.error(err);

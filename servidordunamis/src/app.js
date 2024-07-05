@@ -3,6 +3,7 @@ import cors from 'cors';
 import routerEmpleados from '../src/controladores/empleados.routes.js'; // Asegúrate de usar `default` en la importación
 import routerUsuarios from '../src/controladores/usuarios.routes.js'
 import routerBitacoras from '../src/controladores/bitacoras.routes.js'
+import routerPosiciones from './controladores/posiciones.routes.js';
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use(express.json());
 app.use(routerEmpleados);
 app.use(routerUsuarios);
 app.use(routerBitacoras);
+app.use(routerPosiciones)
 
 export default app;

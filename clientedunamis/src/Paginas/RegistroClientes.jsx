@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -8,6 +8,8 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../Css/registroClientes.styles.css';
+import { getPosiciones } from '../api/posicion.api';
+import { ingresarEmpleado } from '../api/empleados.api';
 
 const RegistroClientes = () => {
     const [formData, setFormData] = useState({
@@ -16,27 +18,53 @@ const RegistroClientes = () => {
         apellido2: '',
         cedula: '',
         correo: '',
-        poscicion: '',
+        posicion: null,
         ingreso: null
     });
 
-    const    poscicion = [
-        { label: 'ejem1', value: 'ejem1' },
-        { label: 'ejem2', value: 'ejem2' },
-       
-    ];
+    const [posiciones, setPosiciones] = useState([]);
+
+    useEffect(() => {
+        const fetchPosiciones = async () => {
+            try {
+                const response = await getPosiciones();
+                const posicionesOptions = response.data.map(pos => ({
+                    label: pos.descripcionPosicion,
+                    value: pos.idPosicion
+                }));
+                setPosiciones(posicionesOptions);
+            } catch (error) {
+                console.error('Error al obtener posiciones:', error);
+            }
+        };
+        fetchPosiciones();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: name === 'cedula' ? parseInt(value, 10) : value
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleDropdownChange = (e) => {
+        setFormData(prevState => ({
+            ...prevState,
+            posicion: e.value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+        try {
+            await ingresarEmpleado(formData);
+            alert('Registro exitoso');
+        } catch (error) {
+            console.error('Error al registrar empleado:', error);
+            console.log(formData);
+            alert('Error al registrar empleado');
+        }
     };
 
     return (
@@ -64,7 +92,13 @@ const RegistroClientes = () => {
                             <InputText placeholder="Correo Electrónico" name="correo" value={formData.correo} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <Dropdown placeholder="Seleccione una poscicion" name="poscicion" value={formData.poscicion} options={poscicion} onChange={handleChange} />
+                            <Dropdown 
+                                placeholder="Seleccione una posición" 
+                                name="posicion" 
+                                value={formData.posicion} 
+                                options={posiciones} 
+                                onChange={handleDropdownChange} 
+                            />
                         </div>
                         <div className="form-field">
                             <Calendar
