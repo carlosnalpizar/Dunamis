@@ -4,19 +4,31 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import '../Css/PagoSalarios.styles.css';
+import { useEffect } from 'react';
+import { obtenerEmpleados } from '../api/empleados.api';
 
 const PagoSalarios = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [employees, setEmployees] = useState([
-        { id: 1, name: 'Nombre Apellido 1' },
-        { id: 2, name: 'Nombre Apellido 2' },
-        { id: 3, name: 'Nombre Apellido 3' },
-        { id: 4, name: 'Nombre Apellido 4' },
-        { id: 5, name: 'Nombre Apellido 5' },
-        { id: 6, name: 'Nombre Apellido 6' },
-        { id: 7, name: 'Nombre Apellido 7' },
-        { id: 8, name: 'Nombre Apellido 8' }
-    ]);
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await obtenerEmpleados();
+                setEmployees(response.data);
+            } catch (error) {
+                setError('Error al cargar los datos');
+                console.error('Error al obtener bitácoras:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -27,8 +39,16 @@ const PagoSalarios = () => {
     };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <div className="pago-salarios-container">
@@ -48,19 +68,19 @@ const PagoSalarios = () => {
                 <table className="employee-table">
                     <thead>
                         <tr>
-                            <th>Nombre Apellido</th>
+                            <th>Cedula</th>
                             <th>Pagar Salario</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredEmployees.map(employee => (
-                            <tr key={employee.id}>
-                                <td>{employee.name}</td>
+                            <tr key={employee.PersonaCedula}>
+                                <td>{employee.PersonaCedula}</td>
                                 <td>
                                     <Button
                                         label="Pagar Salario"
                                         className="p-button-raised p-button-rounded pay-button"
-                                        onClick={() => handlePay(employee.id)}
+                                        onClick={() => handlePay(employee.PersonaCedula)}
                                     />
                                 </td>
                             </tr>
