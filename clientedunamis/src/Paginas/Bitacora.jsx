@@ -53,7 +53,7 @@ const Bitacora = () => {
                 </div>
                 <div className="search-container">
                     <InputText
-                        placeholder="Buscar por nombre y apellido"
+                        placeholder="Buscar por número de cédula"
                         value={searchTerm}
                         onChange={handleSearchChange}
                         className="search-bar"
@@ -92,10 +92,3 @@ const Bitacora = () => {
 };
 
 export default Bitacora;
-/*SELECT 
-    b.*, 
-    p.Nombre + ' ' + p.Apellido1 + ' ' + p.Apellido2 AS Nombre  
-FROM 
-    Bitacoras b
-    INNER JOIN Persona p ON b.PersonaCedula = p.PersonaCedula
- */
