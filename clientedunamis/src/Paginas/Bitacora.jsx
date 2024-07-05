@@ -65,7 +65,8 @@ const Bitacora = () => {
                         <tr>
                             <th>Acción Realizada</th>
                             <th>Fecha</th>
-                            <th>Nombre y Apellido</th>
+                            <th>Cedula</th>
+                            <th>Nombre y apellidos </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,3 +91,10 @@ const Bitacora = () => {
 };
 
 export default Bitacora;
+/*SELECT 
+    b.*, 
+    p.Nombre + ' ' + p.Apellido1 + ' ' + p.Apellido2 AS Nombre  
+FROM 
+    Bitacoras b
+    INNER JOIN Persona p ON b.PersonaCedula = p.PersonaCedula
+ */
