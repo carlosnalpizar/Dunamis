@@ -3,7 +3,12 @@ import sql from 'mssql'
 
 export const getBitacoras = async (req, res) => {
     const bd = await getConexion()
-    const resultado = await bd.request().query('SELECT * FROM Bitacoras')
+    const resultado = await bd.request().query(`SELECT 
+    b.*, 
+    p.Nombre + ' ' + p.Apellido1 + ' ' + p.Apellido2 AS Nombre  
+FROM 
+    Bitacoras b
+    INNER JOIN Persona p ON b.PersonaCedula = p.PersonaCedula`)
     console.log(resultado);
     res.json(resultado.recordset);
 }

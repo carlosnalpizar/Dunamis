@@ -45,14 +45,14 @@ export const crearEmpleado = async(req, res) => {
                 VALUES (@cedula, @idPosicion, @fechaDePago, @fechaDeIngreso, @cantidadTrabajosExtras, @activo)
             `);
     
-            const insercionBitacora = await bd.request()
-                .input('cedula', sql.Int, req.body.cedula)
-                .input('fecha', sql.DateTime, fechaActual)
-                .input('AccionRealizada', sql.VarChar, accionRealizada)
-                .query(`
-                    INSERT INTO Bitacoras (PersonaCedula, fecha, AccionRealizada)
-                    VALUES (@cedula, @fecha, @AccionRealizada)
-                `);
+        const insercionBitacora = await bd.request()
+            .input('cedula', sql.Int, req.body.cedula)
+            .input('fecha', sql.DateTime, fechaActual)
+            .input('AccionRealizada', sql.VarChar, accionRealizada)
+            .query(`
+                INSERT INTO Bitacoras (PersonaCedula, fecha, AccionRealizada)
+                VALUES (@cedula, @fecha, @AccionRealizada)
+            `);
 
         res.status(200).send('Inserción exitosa');
     } catch (err) {

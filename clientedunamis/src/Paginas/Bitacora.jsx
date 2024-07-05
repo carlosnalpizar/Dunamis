@@ -76,6 +76,7 @@ const Bitacora = () => {
                                     <td>{reporte.AccionRealizada}</td>
                                     <td>{reporte.fecha}</td>
                                     <td>{reporte.PersonaCedula}</td>
+                                    <td>{reporte.Nombre} {reporte.Apellido1} {reporte.Apellido2}</td>
                                 </tr>
                             ))
                         ) : (
