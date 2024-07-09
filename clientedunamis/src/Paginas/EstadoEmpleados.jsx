@@ -1,36 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import '../Css/estadoEmpleados.styles.css';
+import { obtenerEmpleados } from '../api/empleados.api';
 
 const EstadoEmpleados = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [employees, setEmployees] = useState([
-        { id: 1, name: 'Nombre Apellido 1', status: 'Activo' },
-        { id: 2, name: 'Nombre Apellido 2', status: 'Inactivo' },
-        { id: 3, name: 'Nombre Apellido 3', status: 'Activo' },
-        { id: 4, name: 'Nombre Apellido 4', status: 'Inactivo' },
-        { id: 5, name: 'Nombre Apellido 5', status: 'Activo' },
-        { id: 6, name: 'Nombre Apellido 6', status: 'Inactivo' },
-    ]);
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await obtenerEmpleados();
+                setEmployees(response.data);
+            } catch (error) {
+                setError('Error al cargar los datos');
+                console.error('Error al obtener bitácoras:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
     const toggleStatus = (employeeId) => {
-        setEmployees(employees.map(employee => 
-            employee.id === employeeId 
-                ? { ...employee, status: employee.status === 'Activo' ? 'Inactivo' : 'Activo' }
-                : employee
-        ));
+        console.log('se modifico el estado del empleado con id:', employeeId)
     };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <div className="estado-empleados-container">
@@ -56,17 +72,17 @@ const EstadoEmpleados = () => {
                     </thead>
                     <tbody>
                         {filteredEmployees.map(employee => (
-                            <tr key={employee.id}>
-                                <td>{employee.name}</td>
+                            <tr key={employee.idEmpleado}>
+                                <td>{employee.PersonaCedula}</td>
                                 <td>
                                     <div className="status-container">
-                                        <span className={`status-text ${employee.status.toLowerCase()}`}>
-                                            {employee.status === 'Activo' ? 'Empleado Activo' : 'Empleado Inactivo'}
+                                        <span className={`status-text ${employee.activo}`}>
+                                            {employee.activo === true ? 'Empleado Activo' : 'Empleado Inactivo'}
                                         </span>
                                         <Button
-                                            label={employee.status === 'Activo' ? 'Desactivar' : 'Activar'}
-                                            className={`p-button-raised p-button-rounded ${employee.status === 'Activo' ? 'active-button' : 'inactive-button'}`}
-                                            onClick={() => toggleStatus(employee.id)}
+                                            label={employee.activo === true ? 'Desactivar' : 'Activar'}
+                                            className={`p-button-raised p-button-rounded ${employee.activo === true ? 'active-button' : 'inactive-button'}`}
+                                            onClick={() => toggleStatus(employee.PersonaCedula)}
                                         />
                                     </div>
                                 </td>
