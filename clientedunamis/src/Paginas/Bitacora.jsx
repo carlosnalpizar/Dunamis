@@ -34,7 +34,7 @@ const Bitacora = () => {
 
     // Filtrado dinámico
     const filteredReportes = reportes.filter(reporte =>
-        reporte.PersonaCedula && reporte.PersonaCedula.toString().includes(searchTerm.toLowerCase())
+        reporte.PersonaCedula && reporte.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );    
 
     if (loading) {
@@ -60,32 +60,30 @@ const Bitacora = () => {
                     />
                     <Button icon={PrimeIcons.SEARCH} className="p-button-raised p-button-rounded search-button" />
                 </div>
-                <table className="bitacora-table">
-                    <thead>
-                        <tr>
-                            <th>Acción Realizada</th>
-                            <th>Fecha</th>
-                            <th>Cedula</th>
-                            <th>Nombre y apellidos </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredReportes.length > 0 ? (
-                            filteredReportes.map((reporte, index) => (
+                {filteredReportes.length > 0 ? (
+                    <table className="bitacora-table">
+                        <thead>
+                            <tr>
+                                <th>Acción Realizada</th>
+                                <th>Fecha</th>
+                                <th>Cédula</th>
+                                <th>Nombre y apellidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredReportes.map((reporte, index) => (
                                 <tr key={index}>
                                     <td>{reporte.AccionRealizada}</td>
                                     <td>{reporte.fecha}</td>
                                     <td>{reporte.PersonaCedula}</td>
                                     <td>{reporte.Nombre} {reporte.Apellido1} {reporte.Apellido2}</td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3">No hay resultados</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No se encontraron reportes.</p>
+                )}
             </Card>
         </div>
     );

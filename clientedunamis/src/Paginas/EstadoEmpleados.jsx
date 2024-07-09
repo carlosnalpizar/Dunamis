@@ -19,7 +19,7 @@ const EstadoEmpleados = () => {
                 setEmployees(response.data);
             } catch (error) {
                 setError('Error al cargar los datos');
-                console.error('Error al obtener bitácoras:', error);
+                console.error('Error al obtener empleados:', error);
             } finally {
                 setLoading(false);
             }
@@ -33,7 +33,7 @@ const EstadoEmpleados = () => {
     };
 
     const toggleStatus = (employeeId) => {
-        console.log('se modifico el estado del empleado con id:', employeeId)
+        console.log('Se modificó el estado del empleado con id:', employeeId);
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -63,33 +63,37 @@ const EstadoEmpleados = () => {
                     />
                     <Button icon={PrimeIcons.SEARCH} className="p-button-raised p-button-rounded search-button" />
                 </div>
-                <table className="employee-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre Apellido</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredEmployees.map(employee => (
-                            <tr key={employee.idEmpleado}>
-                                <td>{employee.PersonaCedula}</td>
-                                <td>
-                                    <div className="status-container">
-                                        <span className={`status-text ${employee.activo}`}>
-                                            {employee.activo === true ? 'Empleado Activo' : 'Empleado Inactivo'}
-                                        </span>
-                                        <Button
-                                            label={employee.activo === true ? 'Desactivar' : 'Activar'}
-                                            className={`p-button-raised p-button-rounded ${employee.activo === true ? 'active-button' : 'inactive-button'}`}
-                                            onClick={() => toggleStatus(employee.PersonaCedula)}
-                                        />
-                                    </div>
-                                </td>
+                {filteredEmployees.length > 0 ? (
+                    <table className="employee-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre Apellido</th>
+                                <th>Estado</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filteredEmployees.map(employee => (
+                                <tr key={employee.idEmpleado}>
+                                    <td>{employee.PersonaCedula}</td>
+                                    <td>
+                                        <div className="status-container">
+                                            <span className={`status-text ${employee.activo}`}>
+                                                {employee.activo === true ? 'Empleado Activo' : 'Empleado Inactivo'}
+                                            </span>
+                                            <Button
+                                                label={employee.activo === true ? 'Desactivar' : 'Activar'}
+                                                className={`p-button-raised p-button-rounded ${employee.activo === true ? 'active-button' : 'inactive-button'}`}
+                                                onClick={() => toggleStatus(employee.PersonaCedula)}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No se encontraron empleados.</p>
+                )}
             </Card>
         </div>
     );
