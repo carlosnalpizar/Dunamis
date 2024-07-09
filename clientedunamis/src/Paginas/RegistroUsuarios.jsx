@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -8,6 +8,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../Css/registroUsuarios.styles.css';
+import { getRoles } from '../api/roles.api';
 
 const RegistroUsuario = () => {
     const [formData, setFormData] = useState({
@@ -16,15 +17,27 @@ const RegistroUsuario = () => {
         apellido2: '',
         cedula: '',
         correo: '',
-        rol: '',
+        rol: null,
         contrasena: ''
     });
 
-    const roles = [
-        { label: 'Administrador', value: 'admin' },
-        { label: 'Usuario', value: 'user' },
-       
-    ];
+    const [roles, setRoles] = useState([]);
+
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                const response = await getRoles();
+                const rolesOptions = response.data.map(role => ({
+                    label: role.descripcionRoles,
+                    value: role.idRoles
+                }));
+                setRoles(rolesOptions);
+            } catch (error) {
+                console.error('Error al obtener roles:', error);
+            }
+        };
+        fetchRoles();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,13 +47,19 @@ const RegistroUsuario = () => {
         }));
     };
 
+    const handleDropdownChange = (e) => {
+        setFormData(prevState => ({
+            ...prevState,
+            rol: e.value
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);
         // Aquí iría la lógica para enviar los datos al servidor
     };
 
-    const [showPassword, setShowPassword] = useState(false);
     return (
         <div className="registro-container">
             <Card className="registro-card">
@@ -66,19 +85,25 @@ const RegistroUsuario = () => {
                             <InputText placeholder="Correo Electrónico" name="correo" value={formData.correo} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <Dropdown placeholder="Seleccione un Rol" name="rol" value={formData.rol} options={roles} onChange={handleChange} />
+                            <Dropdown 
+                                placeholder="Seleccione un Rol" 
+                                name="rol" 
+                                value={formData.rol} 
+                                options={roles} 
+                                onChange={handleDropdownChange} 
+                            />
                         </div>
                         <div className="form-field p-inputgroup">
                             <Password 
-                            placeholder="Contraseña" 
-                            name="contrasena" 
-                            value={formData.contrasena} 
-                            onChange={handleChange} 
-                           feedback={false} 
-                           toggleMask
-                            inputClassName="p-password-input"
-                        />
-                    </div>
+                                placeholder="Contraseña" 
+                                name="contrasena" 
+                                value={formData.contrasena} 
+                                onChange={handleChange} 
+                                feedback={false} 
+                                toggleMask
+                                inputClassName="p-password-input"
+                            />
+                        </div>
                         <Button type="submit" label="Registrarse" className="p-button-raised p-button-rounded" />
                     </div>
                 </form>
