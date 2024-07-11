@@ -16,6 +16,7 @@ const AgregarTrabajosExtras = () => {
     // Función para manejar el clic en el botón "Agregar"
     const handleAgregar = () => {
         console.log('Agregar trabajos extras:', selectedEmpleado, cantidadTrabajosExtras);
+        handleCancelar();
     };
 
     // Función para manejar el clic en el botón "Cancelar"
