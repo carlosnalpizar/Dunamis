@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { crearUsuario, getUsuarios } from '../models/usuarios.model.js';
+import { Login } from '../models/login.js';
 
 /*
 El uso de controladores funciona por rutas, cada vez que el servidor recibe una peticion HTTP
@@ -12,5 +13,8 @@ const routerUsuarios = Router();
 
 routerUsuarios.post('/usuario', crearUsuario)
 routerUsuarios.get('/usuario', getUsuarios);
+//Inicio Sesion
+routerUsuarios.post('/login', Login)
+
 
 export default routerUsuarios;

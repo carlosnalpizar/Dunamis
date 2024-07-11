@@ -22,11 +22,11 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/usuarios" element={<RegistroUsuario />} />
-        <Route path="/" element={<Inicio />} />
+        <Route path="/inicio" element={<Inicio />} />
         <Route path="/empleados" element={<RegistroClientes />} />
         <Route path="/pago" element={<PagoSalarios />} />
         <Route path="/extras" element={<AgregarTrabajosExtras />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/estado" element={<EstadoEmpleados/>} />
         <Route path="/gestion" element={<GestionEmpleados/>} />
         <Route path="/bitacora" element={<Bitacora/>} />
