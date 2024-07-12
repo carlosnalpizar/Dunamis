@@ -9,6 +9,5 @@ export const getBitacoras = async (req, res) => {
 FROM 
     Bitacoras b
     INNER JOIN Persona p ON b.PersonaCedula = p.PersonaCedula`)
-    console.log(resultado);
     res.json(resultado.recordset);
 }

@@ -22,21 +22,19 @@ const Login = () => {
             const response = await inicioSesion(username, password);
 
             if (response.status === 200) {
+                const userData = response.data.usuario[0];
                 console.log('Inicio de sesión exitoso:', response.data);
-                cookie.set('user', username, { expires: fechaExpiracionCookie, path: '/' });
-                cookie.set('pass', password, { expires: fechaExpiracionCookie, path: '/' });
-                window.location.href = `/inicio`;
+                cookie.set('user', userData.idUsuario, { expires: fechaExpiracionCookie, path: '/' });
+                cookie.set('pass', userData.contrasena, { expires: fechaExpiracionCookie, path: '/' });
                 cookie.set('loggeado', true, { expires: fechaExpiracionCookie, path: '/' });
-                /*USO DE COOKIES
-                const cookies= new Cookies();
-                const prueba = cookies.get('user')
-                console.log(prueba)*/
+                cookie.set('rol', userData.idRoles, { expires: fechaExpiracionCookie, path: '/' });
+                window.location.href = `/principal`;
             } else {
                 setError(response.data.mensaje || 'Error al iniciar sesión');
                 console.log('Error al iniciar sesión:', response.data);
             }
         } catch (error) {
-            setError('Error de red. Por favor, intenta nuevamente.');
+            setError('Por favor, intenta nuevamente.');
             console.log('Error al intentar iniciar sesión:', error);
         }
     };
@@ -80,3 +78,9 @@ const Login = () => {
 };
 
 export default Login;
+
+
+/*USO DE COOKIES
+                const cookies= new Cookies();
+                const prueba = cookies.get('user')
+                console.log(prueba)*/

@@ -4,67 +4,75 @@ import { Button } from 'primereact/button';
 import { Sidebar } from 'primereact/sidebar';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Css/navbar.styles.css';
+import Cookies from 'universal-cookie';
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate();
 
+    const cookies = new Cookies();
+    const borrarCookies = () => {
+        cookies.remove('loggeado');
+        cookies.remove('user');
+        cookies.remove('pass');
+        cookies.remove('rol');
+        };
+
     const menuItems = [
         {
             label: 'Inicio',
             icon: 'pi pi-fw pi-home',
-            command: () => { navigate('/'); setVisible(false); }
-        },
-        {
-            label: 'Inicio Sesion',
-            icon: 'pi pi-fw pi-users',
-            command: () => { navigate('/'); setVisible(false); }
+            command: () => { navigate('/principal'); setVisible(false); }
         },
         {
             label: 'Registro Usuarios',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('/usuarios'); setVisible(false); }
+            command: () => { navigate('/principal/usuarios'); setVisible(false); }
         },
         {
             label: 'Registro Empleados',
             icon: 'pi pi-fw pi-user',
-            command: () => { navigate('/empleados'); setVisible(false); }
+            command: () => { navigate('/principal/empleados'); setVisible(false); }
         },
         {
             label: 'Pago Salarios',
             icon: 'pi pi-fw pi-dollar',
-            command: () => { navigate('/pago'); setVisible(false); }
+            command: () => { navigate('/principal/pago'); setVisible(false); }
         },
         {
             label: 'Estado empleados',
             icon: 'pi pi-fw pi-check-circle',
-            command: () => { navigate('/estado'); setVisible(false); }
+            command: () => { navigate('/principal/estado'); setVisible(false); }
         },
         {
             label: 'Gestion empleados',
             icon: 'pi pi-fw pi-address-book',
-            command: () => { navigate('/gestion'); setVisible(false); }
+            command: () => { navigate('/principal/gestion'); setVisible(false); }
         },
         {
             label: 'Agregar trabajos extra',
             icon: 'pi pi-fw pi-file-check',
-            command: () => { navigate('/extras'); setVisible(false); }
+            command: () => { navigate('/principal/extras'); setVisible(false); }
         },
         {
             label: 'Bitacora',
             icon: 'pi pi-fw pi-clipboard',
-            command: () => { navigate('/bitacora'); setVisible(false); }
+            command: () => { navigate('/principal/bitacora'); setVisible(false); }
         },
         {
             label: 'Realizar consultas',
             icon: 'pi pi-fw pi-search-plus',
-            command: () => { navigate('/consultas'); setVisible(false); }
+            command: () => { navigate('/principal/consultas'); setVisible(false); }
         },
         {
             label: 'Realizar reportes',
             icon: 'pi pi-fw pi-search-plus',
-            command: () => { navigate('/reportes'); setVisible(false); }
-        },
+            command: () => { navigate('/principal/reportes'); setVisible(false); }
+        },{
+            label: 'Cerrar Sesion',
+            icon: 'pi pi-fw pi pi-times',
+            command: () => { borrarCookies(); setVisible(false); window.location.href = `/`}
+        }
     ];
 
     const start = (

@@ -4,7 +4,6 @@ import sql from 'mssql'
 export const getEmpleados = async (req, res) => {
     const bd = await getConexion()
     const resultado = await bd.request().query('SELECT * FROM Empleados')
-    console.log(resultado);
     res.json(resultado.recordset);
 }
 

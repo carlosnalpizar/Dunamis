@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'primereact/card';
 import '../Css/inicio.styles.css';
+import Cookies from 'universal-cookie';
 
 const Inicio = () => {
     return (

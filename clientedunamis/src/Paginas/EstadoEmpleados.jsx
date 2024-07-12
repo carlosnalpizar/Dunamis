@@ -67,7 +67,7 @@ const EstadoEmpleados = () => {
                     <table className="employee-table">
                         <thead>
                             <tr>
-                                <th>Nombre Apellido</th>
+                                <th>Cédula del empleado</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
