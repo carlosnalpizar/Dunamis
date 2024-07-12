@@ -27,7 +27,8 @@ const Login = () => {
                 cookie.set('pass', password, { expires: fechaExpiracionCookie, path: '/' });
                 window.location.href = `/inicio`;
                 cookie.set('loggeado', true, { expires: fechaExpiracionCookie, path: '/' });
-                /*const cookies= new Cookies();
+                /*USO DE COOKIES
+                const cookies= new Cookies();
                 const prueba = cookies.get('user')
                 console.log(prueba)*/
             } else {
