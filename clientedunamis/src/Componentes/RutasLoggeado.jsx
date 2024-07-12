@@ -23,7 +23,8 @@ const RutasLoggeado = () => {
     const cookie = cookies.get('loggeado',); //de las cookies que hay traer el valor de la cookie loggeado
     const cookiePermiso  = cookies.get('rol');
 
-if(cookie && cookiePermiso===1){
+//rutas admin (admin en base de datos es id 2)
+if(cookie && cookiePermiso===2){
 return (
     <div>
         <Navbar />
@@ -44,7 +45,8 @@ return (
         <Footer />
     </div>
 )
-}else if(cookie && cookiePermiso===2){
+//rutas empleado normal ( en base de datos es id 1)
+}else if(cookie && cookiePermiso===1){
     return (
         <div>
             <Navbar />
