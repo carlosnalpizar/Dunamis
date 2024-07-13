@@ -1,177 +1,117 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
-import { Toast } from 'primereact/toast';
+import { Calendar } from 'primereact/calendar';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import '../Css/registroUsuarios.styles.css';
-import { getRoles } from '../api/roles.api';
+import '../Css/registroClientes.styles.css';
+import { getPosiciones } from '../api/posicion.api';
+import { ingresarEmpleado } from '../api/empleados.api';
 
-const RegistroUsuario = () => {
+const RegistroClientes = () => {
     const [formData, setFormData] = useState({
         nombre: '',
         apellido1: '',
         apellido2: '',
         cedula: '',
         correo: '',
-        rol: null,
-        contrasena: ''
+        posicion: null,
+        ingreso: null
     });
 
-    const [roles, setRoles] = useState([]);
-    const toast = useRef(null);
+    const [posiciones, setPosiciones] = useState([]);
 
     useEffect(() => {
-        const fetchRoles = async () => {
+        const fetchPosiciones = async () => {
             try {
-                const response = await getRoles();
-                const rolesOptions = response.data.map(role => ({
-                    label: role.descripcionRoles,
-                    value: role.idRoles
+                const response = await getPosiciones();
+                const posicionesOptions = response.data.map(pos => ({
+                    label: pos.descripcionPosicion,
+                    value: pos.idPosicion
                 }));
-                setRoles(rolesOptions);
+                setPosiciones(posicionesOptions);
             } catch (error) {
-                console.error('Error al obtener roles:', error);
+                console.error('Error al obtener posiciones:', error);
             }
         };
-        fetchRoles();
+        fetchPosiciones();
     }, []);
-
-    const showAlert = (severity, summary, detail) => {
-        toast.current.show({ severity, summary, detail, life: 3000 });
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: name === 'cedula' ? parseInt(value, 10) : value
         }));
     };
 
     const handleDropdownChange = (e) => {
         setFormData(prevState => ({
             ...prevState,
-            rol: e.value
+            posicion: e.value
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const { nombre, apellido1, apellido2, cedula, correo, contrasena } = formData;
-
-        const nombreApellidoRegex = /^[a-zA-Z\s]+$/;
-        const cedulaRegex = /^[0-9]+$/;
-        const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const contrasenaMinLength = 8;
-
-        if (!nombreApellidoRegex.test(nombre)) {
-            showAlert('error', 'Error', 'El nombre solo puede contener letras.');
-            return;
+        try {
+            await ingresarEmpleado(formData);
+            alert('Registro exitoso');
+            window.location.href = `/principal`
+        } catch (error) {
+            console.error('Error al registrar empleado:', error);
+            console.log(formData);
+            alert('Error al registrar empleado');
+            window.location.href = `/principal`
         }
-
-        if (!nombreApellidoRegex.test(apellido1)) {
-            showAlert('error', 'Error', 'El primer apellido solo puede contener letras.');
-            return;
-        }
-
-        if (!nombreApellidoRegex.test(apellido2)) {
-            showAlert('error', 'Error', 'El segundo apellido solo puede contener letras.');
-            return;
-        }
-
-        if (!cedulaRegex.test(cedula)) {
-            showAlert('error', 'Error', 'La cédula solo puede contener números.');
-            return;
-        }
-
-        if (!correoRegex.test(correo)) {
-            showAlert('error', 'Error', 'El correo electrónico no es válido.');
-            return;
-        }
-
-        if (contrasena.length < contrasenaMinLength) {
-            showAlert('error', 'Error', 'La contraseña debe tener al menos 8 caracteres.');
-            return;
-        }
-
-        console.log(formData);
-        showAlert('success', 'Éxito', 'Usuario registrado exitosamente.');
-        // Aquí iría la lógica para enviar los datos al servidor
     };
 
     return (
         <div className="registro-container">
-            <Toast ref={toast} />
             <Card className="registro-card">
                 <div className="registro-header">
                     <img src="../../logo2.png" alt="Logo" className="registro-logo" />
-                    <h2 className="registro-title">Registro usuarios</h2>
+                    <h2 className="registro-title">Registro Empleados</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="p-fluid">
                         <div className="form-field">
-                            <InputText 
-                                placeholder="Nombre" 
-                                name="nombre" 
-                                value={formData.nombre} 
-                                onChange={handleChange} 
-                            />
+                            <InputText placeholder="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <InputText 
-                                placeholder="Primer Apellido" 
-                                name="apellido1" 
-                                value={formData.apellido1} 
-                                onChange={handleChange} 
-                            />
+                            <InputText placeholder="Primer Apellido" name="apellido1" value={formData.apellido1} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <InputText 
-                                placeholder="Segundo Apellido" 
-                                name="apellido2" 
-                                value={formData.apellido2} 
-                                onChange={handleChange} 
-                            />
+                            <InputText placeholder="Segundo Apellido" name="apellido2" value={formData.apellido2} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <InputText 
-                                placeholder="Cédula" 
-                                name="cedula" 
-                                value={formData.cedula} 
-                                onChange={handleChange} 
-                            />
+                            <InputText placeholder="Cédula" name="cedula" value={formData.cedula} onChange={handleChange} />
                         </div>
                         <div className="form-field">
-                            <InputText 
-                                placeholder="Correo Electrónico" 
-                                name="correo" 
-                                value={formData.correo} 
-                                onChange={handleChange} 
-                            />
+                            <InputText placeholder="Correo Electrónico" name="correo" value={formData.correo} onChange={handleChange} />
                         </div>
                         <div className="form-field">
                             <Dropdown 
-                                placeholder="Seleccione un Rol" 
-                                name="rol" 
-                                value={formData.rol} 
-                                options={roles} 
+                                placeholder="Seleccione una posición" 
+                                name="posicion" 
+                                value={formData.posicion} 
+                                options={posiciones} 
                                 onChange={handleDropdownChange} 
                             />
                         </div>
-                        <div className="form-field p-inputgroup">
-                            <Password 
-                                placeholder="Contraseña" 
-                                name="contrasena" 
-                                value={formData.contrasena} 
-                                onChange={handleChange} 
-                                feedback={false} 
-                                toggleMask
-                                inputClassName="p-password-input"
+                        <div className="form-field">
+                            <Calendar
+                                placeholder="Fecha ingreso"
+                                name="ingreso"
+                                value={formData.ingreso}
+                                onChange={(e) => setFormData({ ...formData, ingreso: e.value })}
+                                dateFormat="dd/mm/yy"
+                                showIcon
+                                readOnlyInput
+                                showButtonBar
                             />
                         </div>
                         <Button type="submit" label="Registrarse" className="p-button-raised p-button-rounded" />
@@ -182,4 +122,4 @@ const RegistroUsuario = () => {
     );
 };
 
-export default RegistroUsuario;
+export default RegistroClientes;

@@ -11,6 +11,9 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const cookies = new Cookies();
+
+    //cookies get todas
+
     const borrarCookies = () => {
         cookies.remove('loggeado');
         cookies.remove('user');
