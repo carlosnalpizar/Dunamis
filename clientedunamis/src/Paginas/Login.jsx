@@ -2,21 +2,32 @@ import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
+import { Toast } from 'primereact/toast';
 import '../Css/login.styles.css';
-import { inicioSesion } from '../api/login.api'; // Importa tu función de inicio de sesión
+import { inicioSesion } from '../api/login.api';
 import Cookies from 'universal-cookie';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const toast = React.useRef(null);
+
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        if (!username || !password) {
+            showAlert('Por favor, ingresa usuario y contraseña.');
+            return;
+        }
+
         const cookie = new Cookies();
         const fechaExpiracionCookie = new Date();
-        fechaExpiracionCookie.setTime(fechaExpiracionCookie.getTime() + 60000*60); //una hora
+        fechaExpiracionCookie.setTime(fechaExpiracionCookie.getTime() + 60000 * 60); // una hora
 
         try {
             const response = await inicioSesion(username, password);
@@ -30,17 +41,23 @@ const Login = () => {
                 cookie.set('rol', userData.idRoles, { expires: fechaExpiracionCookie, path: '/' });
                 window.location.href = `/principal`;
             } else {
-                setError(response.data.mensaje || 'Error al iniciar sesión');
+                if (response.data.mensaje === 'Usuario o contraseña incorrectos') {
+                    showAlert('Usuario o contraseña incorrectos.');
+                } else {
+                    showAlert(response.data.mensaje || 'Error al iniciar sesión');
+                }
                 console.log('Error al iniciar sesión:', response.data);
             }
         } catch (error) {
             setError('Por favor, intenta nuevamente.');
+            showAlert('Por favor, intenta nuevamente.');
             console.log('Error al intentar iniciar sesión:', error);
         }
     };
 
     return (
         <div className="login-container">
+            <Toast ref={toast} />
             <div className="login-card">
                 <div className="login-form-section">
                     <h1>¡Bienvenido a Innova!</h1>
@@ -78,6 +95,8 @@ const Login = () => {
 };
 
 export default Login;
+
+
 
 
 /*USO DE COOKIES

@@ -17,12 +17,12 @@ const AgregarTrabajosExtras = () => {
     const [visible, setVisible] = useState(false);
     const toast = React.useRef(null);
 
-    // Función para mostrar el mensaje de alerta
+
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
     };
 
-    // Función para manejar el clic en el botón "Agregar"
+ 
     const handleAgregar = () => {
         if (!selectedEmpleado) {
             showAlert('Por favor, selecciona un empleado.');
@@ -42,7 +42,7 @@ const AgregarTrabajosExtras = () => {
         handleCancelar();
     };
 
-    // Función para manejar el clic en el botón "Cancelar"
+    
     const handleCancelar = () => {
         setSelectedEmpleado(null);
         setCantidadTrabajosExtras(null);

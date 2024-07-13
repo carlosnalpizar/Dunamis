@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
+import { Toast } from 'primereact/toast';
 import '../Css/PagoSalarios.styles.css';
 import { obtenerEmpleados } from '../api/empleados.api';
 
@@ -11,6 +12,7 @@ const PagoSalarios = () => {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const toast = useRef(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,8 +34,18 @@ const PagoSalarios = () => {
         setSearchTerm(e.target.value);
     };
 
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
+
     const handlePay = (employeeId) => {
+        if (searchTerm.trim() === '') {
+            showAlert('Por favor, ingrese un término de búsqueda.');
+            return;
+        }
+
         console.log(`Pagar a empleado con ID: ${employeeId}`);
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: `Salario pagado al empleado con ID: ${employeeId}`, life: 3000 });
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -50,6 +62,7 @@ const PagoSalarios = () => {
 
     return (
         <div className="pago-salarios-container">
+            <Toast ref={toast} />
             <Card className="pago-salarios-card">
                 <div className="pago-salarios-header">
                     <h2 className="pago-salarios-title">Pago salarios</h2>

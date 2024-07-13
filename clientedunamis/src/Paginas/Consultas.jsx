@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import '../Css/consultas.styles.css'; 
+import { Toast } from 'primereact/toast';
+import '../Css/consultas.styles.css';
 
 const Consultas = () => {
     const [consultas] = useState([
@@ -16,14 +17,61 @@ const Consultas = () => {
         { id: 9, consulta: 'Horas trabajadas por empleado por periodos específicos' },
         { id: 10, consulta: 'Fecha de contrato de empleado' }
     ]);
+    const toast = React.useRef(null);
+
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
+
 
     const handleRealizarConsulta = (consultaId) => {
         const consulta = consultas.find(c => c.id === consultaId);
-        alert(`Realizar consulta: ${consulta.consulta}`);
+
+        if (!consulta) {
+            showAlert('Consulta no encontrada. Intente de nuevo.');
+            return;
+        }
+
+        
+        switch (consultaId) {
+            case 1:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Asegúrese de tener los periodos específicos.`);
+                break;
+            case 2:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Necesita el ID del empleado.`);
+                break;
+            case 3:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Especifique el periodo requerido.`);
+                break;
+            case 4:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Revise el historial completo.`);
+                break;
+            case 5:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Filtrando por roles.`);
+                break;
+            case 6:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Obteniendo lista de empleados activos.`);
+                break;
+            case 7:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Verificando deducciones.`);
+                break;
+            case 8:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Calculando salarios totales.`);
+                break;
+            case 9:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Contabilizando horas trabajadas.`);
+                break;
+            case 10:
+                showAlert(`Realizando consulta: ${consulta.consulta}. Consultando fechas de contrato.`);
+                break;
+            default:
+                showAlert(`Realizar consulta: ${consulta.consulta}`);
+        }
     };
 
     return (
         <div className="consultas-container">
+            <Toast ref={toast} />
             <Card className="consultas-card">
                 <div className="consultas-header">
                     <h2 className="consultas-title">Consultas</h2>
@@ -38,7 +86,7 @@ const Consultas = () => {
                     <tbody>
                         {consultas.map(consulta => (
                             <tr key={consulta.id}>
-                                <td>{consulta.consulta}</td> 
+                                <td>{consulta.consulta}</td>
                                 <td>
                                     <Button
                                         label="Realizar consulta"

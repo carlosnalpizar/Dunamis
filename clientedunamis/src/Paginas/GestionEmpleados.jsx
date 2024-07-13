@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
+import { Toast } from 'primereact/toast';
 import ModalEditar from '../modals/ModalEditar';
 import '../Css/gestionEmpleados.styles.css';
 
@@ -20,6 +21,15 @@ const GestionEmpleados = () => {
     ]);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [displayModal, setDisplayModal] = useState(false);
+    const toast = useRef(null);
+
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
+
+    const showSuccess = (message) => {
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: message, life: 3000 });
+    };
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -33,6 +43,7 @@ const GestionEmpleados = () => {
 
     const handleDelete = (employeeId) => {
         setEmployees(employees.filter(employee => employee.id !== employeeId));
+        showSuccess('Empleado eliminado exitosamente.');
     };
 
     const handleModalClose = () => {
@@ -43,6 +54,7 @@ const GestionEmpleados = () => {
     const handleSave = (updatedEmployee) => {
         setEmployees(employees.map(emp => (emp.id === updatedEmployee.id ? updatedEmployee : emp)));
         handleModalClose();
+        showSuccess('Empleado actualizado exitosamente.');
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -51,6 +63,7 @@ const GestionEmpleados = () => {
 
     return (
         <div className="gestion-empleados-container">
+            <Toast ref={toast} />
             <Card className="gestion-empleados-card">
                 <div className="gestion-empleados-header">
                     <h2 className="gestion-empleados-title">Gestión de empleados</h2>
@@ -72,23 +85,29 @@ const GestionEmpleados = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredEmployees.map(employee => (
-                            <tr key={employee.id}>
-                                <td>{employee.name}</td>
-                                <td>
-                                    <Button
-                                        label="Editar"
-                                        className="p-button-rounded p-button-warning btnEditar"
-                                        onClick={() => handleEdit(employee.id)}
-                                    />
-                                    <Button
-                                        label="Eliminar"
-                                        className="p-button-rounded p-button-danger btnEliminar"
-                                        onClick={() => handleDelete(employee.id)}
-                                    />
-                                </td>
+                        {filteredEmployees.length > 0 ? (
+                            filteredEmployees.map(employee => (
+                                <tr key={employee.id}>
+                                    <td>{employee.name}</td>
+                                    <td>
+                                        <Button
+                                            label="Editar"
+                                            className="p-button-rounded p-button-warning btnEditar"
+                                            onClick={() => handleEdit(employee.id)}
+                                        />
+                                        <Button
+                                            label="Eliminar"
+                                            className="p-button-rounded p-button-danger btnEliminar"
+                                            onClick={() => handleDelete(employee.id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="2">No se encontraron empleados.</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </Card>

@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
+import { Toast } from 'primereact/toast';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -22,6 +23,7 @@ const RegistroUsuario = () => {
     });
 
     const [roles, setRoles] = useState([]);
+    const toast = React.useRef(null);
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -54,14 +56,63 @@ const RegistroUsuario = () => {
         }));
     };
 
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const isOnlyLetters = (text) => {
+        return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(text);
+    };
+
+    const isOnlyNumbers = (text) => {
+        return /^[0-9]+$/.test(text);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        const { nombre, apellido1, apellido2, cedula, correo, rol, contrasena } = formData;
+
+        if (!nombre || !apellido1 || !apellido2 || !cedula || !correo || !rol || !contrasena) {
+            showAlert('Por favor, complete todos los campos.');
+            return;
+        }
+
+        if (!isOnlyLetters(nombre)) {
+            showAlert('El nombre solo puede contener letras.');
+            return;
+        }
+
+        if (!isOnlyLetters(apellido1)) {
+            showAlert('El primer apellido solo puede contener letras.');
+            return;
+        }
+
+        if (!isOnlyLetters(apellido2)) {
+            showAlert('El segundo apellido solo puede contener letras.');
+            return;
+        }
+
+        if (!isOnlyNumbers(cedula)) {
+            showAlert('La cédula solo puede contener números.');
+            return;
+        }
+
+        if (!isValidEmail(correo)) {
+            showAlert('Por favor, ingrese un correo electrónico válido.');
+            return;
+        }
+
         console.log(formData);
         // Aquí iría la lógica para enviar los datos al servidor
     };
 
     return (
         <div className="registro-container">
+            <Toast ref={toast} />
             <Card className="registro-card">
                 <div className="registro-header">
                     <img src="../../logo2.png" alt="Logo" className="registro-logo" />

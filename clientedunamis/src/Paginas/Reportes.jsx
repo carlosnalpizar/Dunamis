@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
-import '../Css/Reportes.styles.css'; 
+import { Toast } from 'primereact/toast';
+import '../Css/Reportes.styles.css';
 
 const Reportes = () => {
     const [reportes] = useState([
@@ -17,14 +18,26 @@ const Reportes = () => {
         { id: 10, reporte: 'Reporte de empleados activos' }
     ]);
 
+    const toast = React.useRef(null);
+
+   
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
+
     const handleGenerarReporte = (reporteId) => {
         const reporte = reportes.find(r => r.id === reporteId);
-        alert(`Generar reporte: ${reporte.reporte}`);
-       
+        if (!reporte) {
+            showAlert('Reporte no encontrado.');
+            return;
+        }
+        
+        showAlert(`Generar reporte: ${reporte.reporte}`);
     };
 
     return (
         <div className="reportes-container">
+            <Toast ref={toast} />
             <Card className="reportes-card">
                 <div className="reportes-header">
                     <h2 className="reportes-title">Reportes</h2>
