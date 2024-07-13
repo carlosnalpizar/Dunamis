@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import 'primereact/resources/themes/saga-blue/theme.css'; 
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -12,10 +14,31 @@ const AgregarTrabajosExtras = () => {
     const [selectedEmpleado, setSelectedEmpleado] = useState(null);
     const [cantidadTrabajosExtras, setCantidadTrabajosExtras] = useState(null);
     const [empleados, setEmpleados] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const toast = React.useRef(null);
+
+    // Función para mostrar el mensaje de alerta
+    const showAlert = (message) => {
+        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    };
 
     // Función para manejar el clic en el botón "Agregar"
     const handleAgregar = () => {
-        console.log('Agregar trabajos extras:', selectedEmpleado, cantidadTrabajosExtras);
+        if (!selectedEmpleado) {
+            showAlert('Por favor, selecciona un empleado.');
+            return;
+        }
+        if (cantidadTrabajosExtras === null || cantidadTrabajosExtras < 0) {
+            showAlert('Por favor, ingresa una cantidad válida de trabajos extras.');
+            return;
+        }
+
+        setVisible(true);
+    };
+
+    // Confirmación del diálogo
+    const confirmAgregar = () => {
+        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Trabajos extras agregados exitosamente.', life: 3000 });
         handleCancelar();
     };
 
@@ -44,6 +67,16 @@ const AgregarTrabajosExtras = () => {
 
     return (
         <div className="agregar-trabajos-extras-container">
+            <Toast ref={toast} />
+            <ConfirmDialog 
+                visible={visible} 
+                onHide={() => setVisible(false)} 
+                message="¿Está seguro que desea agregar estos trabajos extras?" 
+                header="Confirmación" 
+                icon="pi pi-exclamation-triangle" 
+                accept={confirmAgregar} 
+                reject={() => setVisible(false)} 
+            />
             <div className="card agregar-trabajos-extras-card">
                 <h2 className="custom-h2">Agregar Trabajos Extras</h2>
                 <div className="p-field">
