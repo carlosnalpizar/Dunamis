@@ -36,7 +36,7 @@ const AgregarTrabajosExtras = () => {
         setVisible(true);
     };
 
-    // Confirmación del diálogo
+ 
     const confirmAgregar = () => {
         toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Trabajos extras agregados exitosamente.', life: 3000 });
         handleCancelar();
