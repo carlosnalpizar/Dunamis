@@ -16,8 +16,12 @@ export const crearUsuario = async(req, res) => {
     try {
         const bd = await getConexion();
 
+        
+        const fechaActual = new Date();
+        const accionRealizada = "Se registro un usuario";
+
         const insercionPersona = await bd.request()
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
+            .input('PersonaCedula', sql.Int, req.body.cedula)
             .input('nombre', sql.VarChar, req.body.nombre)
             .input('apellido1', sql.VarChar, req.body.apellido1)
             .input('apellido2', sql.VarChar, req.body.apellido2)
@@ -29,18 +33,18 @@ export const crearUsuario = async(req, res) => {
 
         const insercionUsuario = await bd.request()
             .input('idUsuario', sql.Int, req.body.idUsuario)
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
+            .input('PersonaCedula', sql.Int, req.body.cedula)
             .input('contrasena', sql.VarChar, req.body.contrasena)
-            .input('idRoles', sql.Int, req.body.idRoles)
+            .input('idRoles', sql.Int, req.body.rol)
             .query(`
                 INSERT INTO Usuarios (idUsuario, PersonaCedula, contrasena, idRoles)
                 VALUES (@idUsuario, @PersonaCedula, @contrasena, @idRoles)
             `);
 
         const insercionBitacora = await bd.request()
-            .input('PersonaCedula', sql.Int, req.body.PersonaCedula)
-            .input('fecha', sql.Date, req.body.fecha)
-            .input('AccionRealizada', sql.VarChar, req.body.AccionRealizada)
+            .input('PersonaCedula', sql.Int, req.body.cedula)
+            .input('fecha', sql.Date, fechaActual)
+            .input('AccionRealizada', sql.VarChar, accionRealizada)
             .query(`
                 INSERT INTO Bitacoras (PersonaCedula, fecha, AccionRealizada)
                 VALUES (@PersonaCedula, @fecha, @AccionRealizada)

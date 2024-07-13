@@ -16,7 +16,7 @@ export const crearEmpleado = async(req, res) => {
         const bd = await getConexion();
 
         const fechaActual = new Date();
-        const accionRealizada = "se registro un usuario";
+        const accionRealizada = "Se registro un empleado";
 
         const insercionPersona = await bd.request()
             .input('cedula', sql.Int, req.body.cedula)

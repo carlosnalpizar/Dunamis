@@ -10,9 +10,11 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../Css/registroUsuarios.styles.css';
 import { getRoles } from '../api/roles.api';
+import { ingresarUsuario } from '../api/usuarios.api';
 
 const RegistroUsuario = () => {
     const [formData, setFormData] = useState({
+        idUsuario: '',
         nombre: '',
         apellido1: '',
         apellido2: '',
@@ -72,7 +74,7 @@ const RegistroUsuario = () => {
         return /^[0-9]+$/.test(text);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { nombre, apellido1, apellido2, cedula, correo, rol, contrasena } = formData;
 
@@ -105,9 +107,17 @@ const RegistroUsuario = () => {
             showAlert('Por favor, ingrese un correo electrónico válido.');
             return;
         }
-
         console.log(formData);
-        // Aquí iría la lógica para enviar los datos al servidor
+        try {
+            await ingresarUsuario(formData);
+            alert('Registro exitoso');
+            window.location.href = `/principal`
+        } catch (error) {
+            console.error('Error al registrar empleado:', error);
+            console.log(formData);
+            alert('Error al registrar empleado');
+            window.location.href = `/principal`
+        }
     };
 
     return (
@@ -120,6 +130,9 @@ const RegistroUsuario = () => {
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="p-fluid">
+                        <div className="form-field">
+                            <InputText placeholder="ID Usuario" name="idUsuario" value={formData.idUsuario} onChange={handleChange} />
+                        </div>
                         <div className="form-field">
                             <InputText placeholder="Nombre" name="nombre" value={formData.nombre} onChange={handleChange} />
                         </div>
