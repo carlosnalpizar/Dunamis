@@ -84,7 +84,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="cedula">Cédula</label>
-                        <InputText id="cedula" name="cedula" value={editedEmployee.cedula || ''} onChange={handleInputChange} />
+                        <InputText id="cedula" name="cedula" value={editedEmployee.PersonaCedula || ''} onChange={handleInputChange} />
                     </div>
                     <div className="input-group">
                         <label htmlFor="correo">Correo</label>

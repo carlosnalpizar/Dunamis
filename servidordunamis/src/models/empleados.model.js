@@ -3,7 +3,21 @@ import sql from 'mssql'
 
 export const getEmpleados = async (req, res) => {
     const bd = await getConexion()
-    const resultado = await bd.request().query('SELECT * FROM Empleados')
+    const resultado = await bd.request().query(`SELECT 
+    e.idEmpleado, 
+    e.idPosicion, 
+    e.fechaDePago, 
+    e.fechaDeIngreso, 
+    e.cantidadTrabajosExtras, 
+    e.activo,
+    p.PersonaCedula,
+    p.nombre,
+    p.apellido1,
+    p.apellido2,
+    p.correo
+    FROM empleados e
+    INNER JOIN Persona p ON e.PersonaCedula = p.PersonaCedula;
+`)
     res.json(resultado.recordset);
 }
 

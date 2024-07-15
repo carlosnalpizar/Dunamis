@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,22 +6,31 @@ import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 import ModalEditar from '../modals/ModalEditar';
 import '../Css/gestionEmpleados.styles.css';
+import { obtenerEmpleados } from '../api/empleados.api';
 
 const GestionEmpleados = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [employees, setEmployees] = useState([
-        { id: 1, name: 'Nombre Apellido 1', cedula: '123456789' },
-        { id: 2, name: 'Nombre Apellido 2', cedula: '234567890' },
-        { id: 3, name: 'Nombre Apellido 3', cedula: '345678901' },
-        { id: 4, name: 'Nombre Apellido 4', cedula: '456789012' },
-        { id: 5, name: 'Nombre Apellido 5', cedula: '567890123' },
-        { id: 6, name: 'Nombre Apellido 6', cedula: '678901234' },
-        { id: 7, name: 'Nombre Apellido 7', cedula: '789012345' },
-        { id: 8, name: 'Nombre Apellido 8', cedula: '890123456' }
-    ]);
+    const [employees, setEmployees] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [displayModal, setDisplayModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
     const toast = useRef(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await obtenerEmpleados();
+                setEmployees(response.data);
+            } catch (error) {
+                setError('Error al cargar los datos');
+                console.error('Error al obtener empleados:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
@@ -36,13 +45,13 @@ const GestionEmpleados = () => {
     };
 
     const handleEdit = (employeeId) => {
-        const employee = employees.find(emp => emp.id === employeeId);
+        const employee = employees.find(emp => emp.idEmpleado === employeeId);
         setSelectedEmployee(employee);
         setDisplayModal(true);
     };
 
     const handleDelete = (employeeId) => {
-        setEmployees(employees.filter(employee => employee.id !== employeeId));
+        setEmployees(employees.filter(employee => employee.idEmpleado !== employeeId));
         showSuccess('Empleado eliminado exitosamente.');
     };
 
@@ -52,14 +61,22 @@ const GestionEmpleados = () => {
     };
 
     const handleSave = (updatedEmployee) => {
-        setEmployees(employees.map(emp => (emp.id === updatedEmployee.id ? updatedEmployee : emp)));
+        setEmployees(employees.map(emp => (emp.idEmpleado === updatedEmployee.idEmpleado ? updatedEmployee : emp)));
         handleModalClose();
         showSuccess('Empleado actualizado exitosamente.');
     };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.cedula.includes(searchTerm)
+        employee.PersonaCedula.toString().includes(searchTerm)
     );
+
+    if (loading) {
+        return <p>Cargando...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <div className="gestion-empleados-container">
@@ -80,25 +97,25 @@ const GestionEmpleados = () => {
                 <table className="employee-table">
                     <thead>
                         <tr>
-                            <th>Nombre Apellido</th>
+                            <th>Cedula del Empleado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredEmployees.length > 0 ? (
                             filteredEmployees.map(employee => (
-                                <tr key={employee.id}>
-                                    <td>{employee.name}</td>
+                                <tr key={employee.idEmpleado}>
+                                    <td>{employee.PersonaCedula}</td>
                                     <td>
                                         <Button
                                             label="Editar"
                                             className="p-button-rounded p-button-warning btnEditar"
-                                            onClick={() => handleEdit(employee.id)}
+                                            onClick={() => handleEdit(employee.idEmpleado)}
                                         />
                                         <Button
                                             label="Eliminar"
                                             className="p-button-rounded p-button-danger btnEliminar"
-                                            onClick={() => handleDelete(employee.id)}
+                                            onClick={() => handleDelete(employee.idEmpleado)}
                                         />
                                     </td>
                                 </tr>
