@@ -11,6 +11,7 @@ import 'primeicons/primeicons.css';
 import '../Css/registroUsuarios.styles.css';
 import { getRoles } from '../api/roles.api';
 import { ingresarUsuario } from '../api/usuarios.api';
+import Cookies from 'universal-cookie';
 
 const RegistroUsuario = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +22,8 @@ const RegistroUsuario = () => {
         cedula: '',
         correo: '',
         rol: null,
-        contrasena: ''
+        contrasena: '',
+        usuarioAccion: ''  // Inicializar usuarioAccion aquí
     });
 
     const [roles, setRoles] = useState([]);
@@ -36,6 +38,13 @@ const RegistroUsuario = () => {
                     value: role.idRoles
                 }));
                 setRoles(rolesOptions);
+                
+                const cookies = new Cookies(); // traer las cookies existentes
+                const cookie = cookies.get('user'); // de las cookies que hay traer el valor de la cookie user
+                setFormData(prevState => ({
+                    ...prevState,
+                    usuarioAccion: cookie // Guardar el usuario en formData
+                }));
             } catch (error) {
                 console.error('Error al obtener roles:', error);
             }

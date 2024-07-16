@@ -67,16 +67,14 @@ const Bitacora = () => {
                                 <th>Acción Realizada</th>
                                 <th>Fecha</th>
                                 <th>Cédula</th>
-                                <th>Nombre y apellidos</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredReportes.map((reporte, index) => (
                                 <tr key={index}>
                                     <td>{reporte.AccionRealizada}</td>
-                                    <td>{reporte.fecha}</td>
+                                    <td>{new Date(reporte.fecha).toLocaleDateString()}</td>
                                     <td>{reporte.PersonaCedula}</td>
-                                    <td>{reporte.Nombre} {reporte.Apellido1} {reporte.Apellido2}</td>
                                 </tr>
                             ))}
                         </tbody>

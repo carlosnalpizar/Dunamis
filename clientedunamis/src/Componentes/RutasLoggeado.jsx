@@ -20,7 +20,7 @@ import NotFound from '../Paginas/404'
 const RutasLoggeado = () => {
     
     const cookies = new Cookies(); //traer las cookies existentes
-    const cookie = cookies.get('loggeado',); //de las cookies que hay traer el valor de la cookie loggeado
+    const cookie = cookies.get('loggeado'); //de las cookies que hay traer el valor de la cookie loggeado
     const cookiePermiso  = cookies.get('rol');
 
 //rutas admin (admin en base de datos es id 2)
