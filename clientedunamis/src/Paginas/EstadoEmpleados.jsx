@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import '../Css/estadoEmpleados.styles.css';
-import { obtenerEmpleados } from '../api/empleados.api';
+import { actualizarEstado, obtenerEmpleados } from '../api/empleados.api';
 
 const EstadoEmpleados = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,8 +32,14 @@ const EstadoEmpleados = () => {
         setSearchTerm(e.target.value);
     };
 
-    const toggleStatus = (employeeId) => {
-        console.log('Se modificó el estado del empleado con id:', employeeId);
+    const toggleStatus = async (employeeId) => {
+        try {
+            await actualizarEstado(employeeId);
+            window.location.reload();
+        } catch (error) {
+            console.error("Error al cambiar el estado del empleado:", error);
+            setError('Error al cambiar el estado del empleado');
+        }
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -83,7 +89,7 @@ const EstadoEmpleados = () => {
                                             <Button
                                                 label={employee.activo === true ? 'Desactivar' : 'Activar'}
                                                 className={`p-button-raised p-button-rounded ${employee.activo === true ? 'active-button' : 'inactive-button'}`}
-                                                onClick={() => toggleStatus(employee.PersonaCedula)}
+                                                onClick={() => toggleStatus(employee.idEmpleado)}
                                             />
                                         </div>
                                     </td>
