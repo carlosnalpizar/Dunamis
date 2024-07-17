@@ -3,7 +3,6 @@ import { borrarPersona,
     crearEmpleado,
     getEmpleados,
     getPersona,
-    modificarEmpleado,
     agregarTrabajos } from '../models/empleados.model.js';
 
 
@@ -20,7 +19,6 @@ const routerEmpleados = Router();
 routerEmpleados.get('/persona', getEmpleados);
 routerEmpleados.get('/persona/:id', getPersona)
 routerEmpleados.delete('/persona/:id', borrarPersona)
-routerEmpleados.put('/persona/:id', modificarEmpleado)
 routerEmpleados.put('/persona/:id/trabajos', agregarTrabajos);
 routerEmpleados.post('/persona', crearEmpleado)
 

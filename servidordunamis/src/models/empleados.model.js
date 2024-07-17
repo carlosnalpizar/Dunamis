@@ -78,16 +78,27 @@ export const borrarPersona = (req, res) => {
     res.send('Persona Borrada');
 }
 
-export const modificarEmpleado = async (req, res) => {
+export const agregarTrabajos = async (req, res) => {
     const id = req.params.id;
+    const cantidad = req.body.cantidadTrabExtras; 
     const bd = await getConexion();
+    try {
+        const agregarTrabajos = await bd.request()
+            .input('idEmpleado', sql.Int, id)
+            .input('cantidad', sql.Int, cantidad)
+            .query(`
+                UPDATE Empleados
+                SET cantidadTrabajosExtras = cantidadTrabajosExtras + @cantidad
+                WHERE PersonaCedula = @idEmpleado
+            `);
 
-    const modificacionEmpleado = await bd.request()
-        .input('idEmpleado', sql.Int, id)
-        .query(`
-            UPDATE Empleados
-            SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END
-            WHERE idEmpleado = @idEmpleado
-        `);
-    res.send({ success: true });
+        if (agregarTrabajos.rowsAffected[0] === 0) {
+            return res.status(404).send({ success: false, message: 'Empleado no encontrado' });
+        }
+
+        res.send({ success: true });
+    } catch (error) {
+        console.error("Error al agregar trabajos extras:", error);
+        res.status(500).send({ success: false, message: 'Error al agregar trabajos extras' });
+    }
 }
