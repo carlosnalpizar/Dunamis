@@ -8,7 +8,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../Css/AgregarTrabajosExtras.styles.css';
-import { obtenerEmpleados } from '../api/empleados.api';
+import { obtenerEmpleados, agregarTrabajosExtras } from '../api/empleados.api'; // Importa la función agregarTrabajosExtras
 
 const AgregarTrabajosExtras = () => {
     const [selectedEmpleado, setSelectedEmpleado] = useState(null);
@@ -17,13 +17,14 @@ const AgregarTrabajosExtras = () => {
     const [visible, setVisible] = useState(false);
     const toast = React.useRef(null);
 
-
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
     };
 
- 
     const handleAgregar = () => {
+        console.log('Selected Empleado:', selectedEmpleado);
+        console.log('Cantidad Trabajos Extras:', cantidadTrabajosExtras);
+
         if (!selectedEmpleado) {
             showAlert('Por favor, selecciona un empleado.');
             return;
@@ -36,19 +37,24 @@ const AgregarTrabajosExtras = () => {
         setVisible(true);
     };
 
- 
-    const confirmAgregar = () => {
-        toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Trabajos extras agregados exitosamente.', life: 3000 });
-        handleCancelar();
+    const confirmAgregar = async () => {
+        try {
+            await agregarTrabajosExtras(selectedEmpleado, cantidadTrabajosExtras);
+            toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Trabajos extras agregados exitosamente.', life: 3000 });
+            handleCancelar();
+        } catch (error) {
+            console.error('Error al agregar trabajos extras:', error);
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error al agregar trabajos extras.', life: 3000 });
+        } finally {
+            setVisible(false);
+        }
     };
 
-    
     const handleCancelar = () => {
         setSelectedEmpleado(null);
         setCantidadTrabajosExtras(null);
     };
 
-    // useEffect para obtener los empleados cuando el componente se monta
     useEffect(() => {
         const fetchData = async () => {
             try {

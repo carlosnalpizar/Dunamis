@@ -8,3 +8,7 @@ export const obtenerEmpleados = async () =>
 
 export const actualizarEstado = async (empleadoId) =>
     await axios.put(`http://localhost:4000/persona/${empleadoId}`);
+
+export const agregarTrabajosExtras = async (empleadoId, cantidadTrabExtras) => {
+    await axios.put(`http://localhost:4000/persona/${empleadoId}/trabajos`, { cantidadTrabExtras });
+};
