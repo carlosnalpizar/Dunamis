@@ -22,9 +22,6 @@ const AgregarTrabajosExtras = () => {
     };
 
     const handleAgregar = () => {
-        console.log('Selected Empleado:', selectedEmpleado);
-        console.log('Cantidad Trabajos Extras:', cantidadTrabajosExtras);
-
         if (!selectedEmpleado) {
             showAlert('Por favor, selecciona un empleado.');
             return;
