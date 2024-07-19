@@ -102,3 +102,18 @@ export const agregarTrabajos = async (req, res) => {
         res.status(500).send({ success: false, message: 'Error al agregar trabajos extras' });
     }
 }
+
+
+export const modificarEmpleado = async (req, res) => {
+    const id = req.params.id;
+    const bd = await getConexion();
+
+    const modificacionEmpleado = await bd.request()
+        .input('idEmpleado', sql.Int, id)
+        .query(`
+            UPDATE Empleados
+            SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END
+            WHERE idEmpleado = @idEmpleado
+        `);
+    res.send({ success: true });
+}

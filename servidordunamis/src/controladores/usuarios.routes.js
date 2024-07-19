@@ -13,6 +13,7 @@ const routerUsuarios = Router();
 
 routerUsuarios.post('/usuario', crearUsuario)
 routerUsuarios.get('/usuario', getUsuarios);
+
 //Inicio Sesion
 routerUsuarios.post('/login', Login)
 
