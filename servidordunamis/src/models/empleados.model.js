@@ -21,6 +21,26 @@ export const getEmpleados = async (req, res) => {
     res.json(resultado.recordset);
 }
 
+export const getEmpleadosActivos = async (req, res) => {
+    const bd = await getConexion()
+    const resultado = await bd.request().query(`SELECT 
+    e.idEmpleado, 
+    e.idPosicion, 
+    e.fechaDePago, 
+    e.fechaDeIngreso, 
+    e.cantidadTrabajosExtras, 
+    e.activo,
+    p.PersonaCedula,
+    p.nombre,
+    p.apellido1,
+    p.apellido2,
+    p.correo
+    FROM empleados e
+    INNER JOIN Persona p ON e.PersonaCedula = p.PersonaCedula WHERE e.activo = 1;
+`)
+    res.json(resultado.recordset);
+}
+
 export const getPersona = (req, res) => {
     res.send('CAMBIO PRUEBA');
 }
@@ -80,19 +100,35 @@ export const borrarPersona = (req, res) => {
 
 export const agregarTrabajos = async (req, res) => {
     const id = req.params.id;
-    const cantidad = req.body.cantidadTrabExtras; 
+    const descripcionTrabajoExtra = req.body.descripcionTrabajo;
     const bd = await getConexion();
+
+    if (!descripcionTrabajoExtra || descripcionTrabajoExtra.trim() === '') {
+        return res.status(400).send({ success: false, message: 'La descripción del trabajo extra no puede estar vacía' });
+    }
+
     try {
-        const agregarTrabajos = await bd.request()
+        const agregarTrabajo = await bd.request()
             .input('idEmpleado', sql.Int, id)
-            .input('cantidad', sql.Int, cantidad)
+            .input('descripcion', sql.VarChar, descripcionTrabajoExtra)
+            .query(`
+                INSERT INTO TrabajosExtra (DescripcionTrabajoExtra, idEmpleado)
+                VALUES (@descripcion, @idEmpleado)
+            `);
+
+        if (agregarTrabajo.rowsAffected[0] === 0) {
+            return res.status(404).send({ success: false, message: 'Error al insertar trabajo extra' });
+        }
+
+        const actualizarCantidad = await bd.request()
+            .input('idEmpleado', sql.Int, id)
             .query(`
                 UPDATE Empleados
-                SET cantidadTrabajosExtras = cantidadTrabajosExtras + @cantidad
+                SET cantidadTrabajosExtras = cantidadTrabajosExtras + 1
                 WHERE PersonaCedula = @idEmpleado
             `);
 
-        if (agregarTrabajos.rowsAffected[0] === 0) {
+        if (actualizarCantidad.rowsAffected[0] === 0) {
             return res.status(404).send({ success: false, message: 'Empleado no encontrado' });
         }
 
@@ -101,7 +137,7 @@ export const agregarTrabajos = async (req, res) => {
         console.error("Error al agregar trabajos extras:", error);
         res.status(500).send({ success: false, message: 'Error al agregar trabajos extras' });
     }
-}
+};
 
 
 export const modificarEmpleado = async (req, res) => {

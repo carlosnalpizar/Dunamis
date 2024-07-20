@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
-import { InputNumber } from 'primereact/inputnumber';
+import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import 'primereact/resources/themes/saga-blue/theme.css'; 
+import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import '../Css/AgregarTrabajosExtras.styles.css';
-import { obtenerEmpleados, agregarTrabajosExtras } from '../api/empleados.api'; // Importa la función agregarTrabajosExtras
+import { agregarTrabajosExtras, obtenerEmpleadosActivos } from '../api/empleados.api';
 
 const AgregarTrabajosExtras = () => {
     const [selectedEmpleado, setSelectedEmpleado] = useState(null);
-    const [cantidadTrabajosExtras, setCantidadTrabajosExtras] = useState(null);
+    const [descripcionTrabajoExtra, setDescripcionTrabajoExtra] = useState('');
     const [empleados, setEmpleados] = useState([]);
     const [visible, setVisible] = useState(false);
     const toast = React.useRef(null);
@@ -26,8 +26,8 @@ const AgregarTrabajosExtras = () => {
             showAlert('Por favor, selecciona un empleado.');
             return;
         }
-        if (cantidadTrabajosExtras === null || cantidadTrabajosExtras < 0) {
-            showAlert('Por favor, ingresa una cantidad válida de trabajos extras.');
+        if (!descripcionTrabajoExtra.trim()) {
+            showAlert('Por favor, ingresa una descripción válida para el trabajo extra.');
             return;
         }
 
@@ -35,12 +35,15 @@ const AgregarTrabajosExtras = () => {
     };
 
     const confirmAgregar = async () => {
+        console.log('Empleado seleccionado:', selectedEmpleado);
+        console.log('Descripción del trabajo extra:', descripcionTrabajoExtra);
+        
         try {
-            await agregarTrabajosExtras(selectedEmpleado, cantidadTrabajosExtras);
+            await agregarTrabajosExtras(selectedEmpleado, descripcionTrabajoExtra);
             toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Trabajos extras agregados exitosamente.', life: 3000 });
             handleCancelar();
         } catch (error) {
-            console.error('Error al agregar trabajos extras:', error);
+            console.error('Error al agregar trabajos extras:', error.response ? error.response.data : error.message);
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error al agregar trabajos extras.', life: 3000 });
         } finally {
             setVisible(false);
@@ -49,21 +52,21 @@ const AgregarTrabajosExtras = () => {
 
     const handleCancelar = () => {
         setSelectedEmpleado(null);
-        setCantidadTrabajosExtras(null);
+        setDescripcionTrabajoExtra('');
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await obtenerEmpleados();
+                const response = await obtenerEmpleadosActivos();
                 const empleadosData = response.data.map(emp => ({
-                    label: emp.PersonaCedula, 
+                    label: emp.PersonaCedula,
                     value: emp.PersonaCedula
                 }));
                 setEmpleados(empleadosData);
             } catch (error) {
                 console.error('Error al obtener empleados:', error);
-            } 
+            }
         };
         fetchData();
     }, []);
@@ -71,36 +74,33 @@ const AgregarTrabajosExtras = () => {
     return (
         <div className="agregar-trabajos-extras-container">
             <Toast ref={toast} />
-            <ConfirmDialog 
-                visible={visible} 
-                onHide={() => setVisible(false)} 
-                message="¿Está seguro que desea agregar estos trabajos extras?" 
-                header="Confirmación" 
-                icon="pi pi-exclamation-triangle" 
-                accept={confirmAgregar} 
-                reject={() => setVisible(false)} 
+            <ConfirmDialog
+                visible={visible}
+                onHide={() => setVisible(false)}
+                message="¿Está seguro que desea agregar estos trabajos extras?"
+                header="Confirmación"
+                icon="pi pi-exclamation-triangle"
+                accept={confirmAgregar}
+                reject={() => setVisible(false)}
             />
             <div className="card agregar-trabajos-extras-card">
                 <h2 className="custom-h2">Agregar Trabajos Extras</h2>
                 <div className="p-field">
                     <label htmlFor="empleado">Empleado</label>
-                    <Dropdown 
-                        id="empleado" 
-                        value={selectedEmpleado} 
-                        options={empleados} 
-                        onChange={(e) => setSelectedEmpleado(e.value)} 
-                        placeholder="Selecciona un empleado" 
+                    <Dropdown
+                        id="empleado"
+                        value={selectedEmpleado}
+                        options={empleados}
+                        onChange={(e) => setSelectedEmpleado(e.value)}
+                        placeholder="Selecciona un empleado"
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="cantidad">Cantidad de Trabajos Extras</label>
-                    <InputNumber 
-                        id="cantidad" 
-                        value={cantidadTrabajosExtras} 
-                        onValueChange={(e) => setCantidadTrabajosExtras(e.value)} 
-                        mode="decimal" 
-                        min={0}
-                        inputClassName="p-inputnumber"
+                    <label htmlFor="descripcion">Descripción del Trabajo Extra</label>
+                    <InputText
+                        id="descripcion"
+                        value={descripcionTrabajoExtra}
+                        onChange={(e) => setDescripcionTrabajoExtra(e.target.value)}
                     />
                 </div>
                 <div className="p-field p-grid">
