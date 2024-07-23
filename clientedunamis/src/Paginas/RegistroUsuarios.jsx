@@ -107,8 +107,8 @@ const RegistroUsuario = () => {
             return;
         }
 
-        if (!isOnlyNumbers(cedula)) {
-            showAlert('La cédula solo puede contener números.');
+        if (!isOnlyNumbers(cedula) || cedula.length < 9) {
+            showAlert('La cédula debe contener al menos 9 dígitos y solo números.');
             return;
         }
 
@@ -116,6 +116,7 @@ const RegistroUsuario = () => {
             showAlert('Por favor, ingrese un correo electrónico válido.');
             return;
         }
+
         console.log(formData);
         try {
             await ingresarUsuario(formData);
@@ -186,4 +187,3 @@ const RegistroUsuario = () => {
 };
 
 export default RegistroUsuario;
-
