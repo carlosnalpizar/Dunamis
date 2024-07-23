@@ -49,7 +49,8 @@ const PagoSalarios = () => {
     };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {
@@ -69,7 +70,7 @@ const PagoSalarios = () => {
                 </div>
                 <div className="search-container">
                     <InputText
-                        placeholder="Buscar empleado"
+                        placeholder="Buscar empleado por cédula o nombre"
                         value={searchTerm}
                         onChange={handleSearchChange}
                         className="search-bar"
@@ -81,6 +82,7 @@ const PagoSalarios = () => {
                         <thead>
                             <tr>
                                 <th>Cédula</th>
+                                <th>Nombre</th>
                                 <th>Pagar Salario</th>
                             </tr>
                         </thead>
@@ -88,6 +90,7 @@ const PagoSalarios = () => {
                             {filteredEmployees.map(employee => (
                                 <tr key={employee.PersonaCedula}>
                                     <td>{employee.PersonaCedula}</td>
+                                    <td>{employee.Nombre}</td>
                                     <td>
                                         <Button
                                             label="Pagar Salario"
