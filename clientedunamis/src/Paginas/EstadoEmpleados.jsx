@@ -73,14 +73,14 @@ const EstadoEmpleados = () => {
                     <table className="employee-table">
                         <thead>
                             <tr>
-                                <th>Cédula del empleado</th>
+                                <th>Cédula, Nombre y Apellidos</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredEmployees.map(employee => (
                                 <tr key={employee.idEmpleado}>
-                                    <td>{employee.PersonaCedula}</td>
+                                    <td>{employee.PersonaCedula} - {employee.nombre} {employee.apellido1} {employee.apellido2}</td>
                                     <td>
                                         <div className="status-container">
                                             <span className={`status-text ${employee.activo}`}>

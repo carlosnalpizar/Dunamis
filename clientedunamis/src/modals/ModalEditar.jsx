@@ -2,17 +2,38 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import '../Css/modalEditar.styles.css';
+import { getPosiciones } from '../api/posicion.api';
 
 const ModalEditar = ({ employee, visible, onClose, onSave }) => {
     const [editedEmployee, setEditedEmployee] = useState({ ...employee });
+    const [positions, setPositions] = useState([]);
     const toast = useRef(null);
 
     useEffect(() => {
-        setEditedEmployee({ ...employee });
+        if (employee) {
+            setEditedEmployee({
+                ...employee,
+                fechaDeIngreso: employee.fechaDeIngreso ? new Date(employee.fechaDeIngreso) : null,
+                fechaDePago: employee.fechaDePago ? new Date(employee.fechaDePago) : null,
+            });
+        }
     }, [employee]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getPosiciones();
+                setPositions(response.data.map(pos => ({ label: pos.descripcionPosicion, value: pos.idPosicion })));
+            } catch (error) {
+                console.error('Error al obtener posiciones:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
@@ -23,12 +44,16 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
         setEditedEmployee(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleDropdownChange = (e) => {
+        setEditedEmployee(prev => ({ ...prev, idPosicion: e.value }));
+    };
+
     const handleSave = () => {
         const nameRegex = /^[a-zA-Z\s]+$/;
         const cedulaRegex = /^[0-9]+$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!editedEmployee.nombre || !editedEmployee.apellido1 || !editedEmployee.apellido2 || !editedEmployee.cedula || !editedEmployee.correo || !editedEmployee.posicion) {
+        if (!editedEmployee.nombre || !editedEmployee.apellido1 || !editedEmployee.apellido2 || !editedEmployee.PersonaCedula || !editedEmployee.correo || !editedEmployee.idPosicion) {
             showAlert('Todos los campos son obligatorios.');
             return;
         }
@@ -44,7 +69,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
             showAlert('El segundo apellido solo puede contener letras.');
             return;
         }
-        if (!cedulaRegex.test(editedEmployee.cedula)) {
+        if (!cedulaRegex.test(editedEmployee.PersonaCedula)) {
             showAlert('La cédula solo puede contener números.');
             return;
         }
@@ -52,7 +77,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
             showAlert('El correo debe tener un formato válido e incluir "@".');
             return;
         }
-        if (!editedEmployee.fechaInicio || !editedEmployee.fechaFin) {
+        if (!editedEmployee.fechaDeIngreso || !editedEmployee.fechaDePago) {
             showAlert('Debe seleccionar las fechas.');
             return;
         }
@@ -84,7 +109,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="cedula">Cédula</label>
-                        <InputText id="cedula" name="cedula" value={editedEmployee.PersonaCedula || ''} onChange={handleInputChange} />
+                        <InputText id="cedula" name="PersonaCedula" value={editedEmployee.PersonaCedula || ''} onChange={handleInputChange} disabled />
                     </div>
                     <div className="input-group">
                         <label htmlFor="correo">Correo</label>
@@ -92,15 +117,15 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="posicion">Posición</label>
-                        <InputText id="posicion" name="posicion" value={editedEmployee.posicion || ''} onChange={handleInputChange} />
+                        <Dropdown id="posicion" name="idPosicion" value={editedEmployee.idPosicion} options={positions} onChange={handleDropdownChange} placeholder="Seleccione una posición" />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="fechaInicio">Fecha de inicio</label>
-                        <Calendar id="fechaInicio" name="fechaInicio" value={editedEmployee.fechaInicio} onChange={(e) => handleInputChange({ target: { name: 'fechaInicio', value: e.value } })} dateFormat="dd/mm/yy"  />
+                        <label htmlFor="fechaInicio">Fecha de ingreso</label>
+                        <Calendar id="fechaInicio" name="fechaDeIngreso" value={editedEmployee.fechaDeIngreso} onChange={(e) => handleInputChange({ target: { name: 'fechaDeIngreso', value: e.value } })} dateFormat="dd/mm/yy" disabled />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="fechaFin">Fecha de fin</label>
-                        <Calendar id="fechaFin" name="fechaFin" value={editedEmployee.fechaFin} onChange={(e) => handleInputChange({ target: { name: 'fechaFin', value: e.value } })} dateFormat="dd/mm/yy" />
+                        <label htmlFor="fechaFin">Fecha de pago</label>
+                        <Calendar id="fechaFin" name="fechaDePago" value={editedEmployee.fechaDePago} onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} dateFormat="dd/mm/yy" />
                     </div>
                 </div>
                 <div className="modal-footer">

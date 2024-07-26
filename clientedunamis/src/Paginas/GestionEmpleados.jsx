@@ -6,7 +6,7 @@ import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 import ModalEditar from '../modals/ModalEditar';
 import '../Css/gestionEmpleados.styles.css';
-import { obtenerEmpleados } from '../api/empleados.api';
+import { obtenerEmpleadosActivos } from '../api/empleados.api';
 
 const GestionEmpleados = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +20,7 @@ const GestionEmpleados = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await obtenerEmpleados();
+                const response = await obtenerEmpleadosActivos();
                 setEmployees(response.data);
             } catch (error) {
                 setError('Error al cargar los datos');
@@ -48,11 +48,6 @@ const GestionEmpleados = () => {
         const employee = employees.find(emp => emp.idEmpleado === employeeId);
         setSelectedEmployee(employee);
         setDisplayModal(true);
-    };
-
-    const handleDelete = (employeeId) => {
-        setEmployees(employees.filter(employee => employee.idEmpleado !== employeeId));
-        showSuccess('Empleado eliminado exitosamente.');
     };
 
     const handleModalClose = () => {
@@ -97,7 +92,7 @@ const GestionEmpleados = () => {
                 <table className="employee-table">
                     <thead>
                         <tr>
-                            <th>Cedula del Empleado</th>
+                            <th>Cedula, Nombre y Apellidos</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -105,17 +100,12 @@ const GestionEmpleados = () => {
                         {filteredEmployees.length > 0 ? (
                             filteredEmployees.map(employee => (
                                 <tr key={employee.idEmpleado}>
-                                    <td>{employee.PersonaCedula}</td>
+                                    <td>{employee.PersonaCedula} - {employee.nombre} {employee.apellido1} {employee.apellido2}</td>
                                     <td>
                                         <Button
                                             label="Editar"
                                             className="p-button-rounded p-button-warning btnEditar"
                                             onClick={() => handleEdit(employee.idEmpleado)}
-                                        />
-                                        <Button
-                                            label="Eliminar"
-                                            className="p-button-rounded p-button-danger btnEliminar"
-                                            onClick={() => handleDelete(employee.idEmpleado)}
                                         />
                                     </td>
                                 </tr>
