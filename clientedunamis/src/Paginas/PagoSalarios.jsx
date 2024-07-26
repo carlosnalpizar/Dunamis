@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 import '../Css/PagoSalarios.styles.css';
-import { obtenerEmpleados } from '../api/empleados.api';
+import { obtenerEmpleadosActivos } from '../api/empleados.api';
 
 const PagoSalarios = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +17,7 @@ const PagoSalarios = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await obtenerEmpleados();
+                const response = await obtenerEmpleadosActivos();
                 setEmployees(response.data);
             } catch (error) {
                 setError('Error al cargar los datos');
@@ -82,7 +82,7 @@ const PagoSalarios = () => {
                         <thead>
                             <tr>
                                 <th>Cédula</th>
-                                <th>Nombre</th>
+                                <th>Nombre y Apellidos</th>
                                 <th>Pagar Salario</th>
                             </tr>
                         </thead>
@@ -90,7 +90,7 @@ const PagoSalarios = () => {
                             {filteredEmployees.map(employee => (
                                 <tr key={employee.PersonaCedula}>
                                     <td>{employee.PersonaCedula}</td>
-                                    <td>{employee.Nombre}</td>
+                                    <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
                                     <td>
                                         <Button
                                             label="Pagar Salario"

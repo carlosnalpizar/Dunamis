@@ -92,7 +92,8 @@ const GestionEmpleados = () => {
                 <table className="employee-table">
                     <thead>
                         <tr>
-                            <th>Cedula, Nombre y Apellidos</th>
+                            <th>Cedula</th>
+                            <th>Nombre y Apellidos</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -100,7 +101,8 @@ const GestionEmpleados = () => {
                         {filteredEmployees.length > 0 ? (
                             filteredEmployees.map(employee => (
                                 <tr key={employee.idEmpleado}>
-                                    <td>{employee.PersonaCedula} - {employee.nombre} {employee.apellido1} {employee.apellido2}</td>
+                                    <td>{employee.PersonaCedula}</td>
+                                    <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
                                     <td>
                                         <Button
                                             label="Editar"
