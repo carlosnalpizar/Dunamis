@@ -9,9 +9,9 @@ const Inicio = () => {
             <Card className="hero-card">
                 <div className="hero-section">
                     <div className="text-section">
-                        <h1 className="welcome-message">Bienvenido a Innova</h1>
+                        <h1 className="welcome-message">Bienvenido a Dunamis</h1>
                         <p className="description">
-                            Innova es una plataforma innovadora diseñada para ofrecer soluciones tecnológicas avanzadas, nuestro objetivo es mejorar la eficiencia y productividad a través de herramientas fáciles de usar.
+                            Una plataforma innovadora diseñada para ofrecer soluciones tecnológicas avanzadas, nuestro objetivo es mejorar la eficiencia y productividad a través de herramientas fáciles de usar.
                         </p>
                     </div>
                     <img src="/home.png" alt="Beautiful scenery" className="hero-image" />

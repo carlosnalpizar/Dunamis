@@ -8,17 +8,16 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-innova">
-          <h1 className='titulo' >Innova</h1>
+          <h1 className='titulo' >DUNAMIS</h1>
         </div>
         <div className="footer-contact">
-       
-          <p><i className="pi pi-envelope" />info@tuempresa.com</p>
+          <p><i className="pi pi-envelope" />info@dunamis.com</p>
           <p><i className="pi pi-phone" />  +1 234 567 890</p>
-          <p><i className="pi pi-map-marker" /> Calle Principal 123, Ciudad</p>
+          <p><i className="pi pi-map-marker" /> Calle Principal, San José, Costa Rica</p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 INNOVA. Todos los derechos reservados.</p>
+        <p>&copy; 2024 DUNAMIS. Todos los derechos reservados.</p>
       </div>
     </footer>
   );

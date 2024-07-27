@@ -65,7 +65,7 @@ const Navbar = () => {
             <Menubar model={[]} start={start} className="border-none bg-transparent p-menubar" />
             <Sidebar visible={visible} onHide={() => setVisible(false)}>
                 <div className="logo-container">
-                    <img alt="logo" src="../../logo2.png" className="logo-image" />
+                    <img alt="logo" src="../../logoNoBackgroundWhite.png" className="logo-image" />
                 </div>
                 <ul className="sidebar-menu p-0 m-0 list-none">
                     {(cookiePermiso === 2 ? adminMenuItems : employeeMenuItems).map((item, index) => (

@@ -60,7 +60,7 @@ const Login = () => {
             <Toast ref={toast} />
             <div className="login-card">
                 <div className="login-form-section">
-                    <h1>¡Bienvenido a Innova!</h1>
+                    <h1>¡Bienvenido a Dunamis!</h1>
                     <form onSubmit={handleLogin}>
                         <div className="p-field usuario">
                             <InputText 
@@ -87,7 +87,7 @@ const Login = () => {
                     </form>
                 </div>
                 <div className="logo-section">
-                    <img src="../../logo2.png" alt="Innova Logo" className="logo" />
+                    <img src="../../logo.png" alt="Innova Logo" className="logo" />
                 </div>
             </div>
         </div>
