@@ -49,8 +49,7 @@ const PagoSalarios = () => {
     };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.Nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {

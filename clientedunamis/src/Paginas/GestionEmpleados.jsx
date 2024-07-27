@@ -6,7 +6,7 @@ import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 import ModalEditar from '../modals/ModalEditar';
 import '../Css/gestionEmpleados.styles.css';
-import { obtenerEmpleadosActivos } from '../api/empleados.api';
+import { obtenerEmpleadosActivos, modificarEmpleadoInfo } from '../api/empleados.api';
 
 const GestionEmpleados = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -55,10 +55,16 @@ const GestionEmpleados = () => {
         setSelectedEmployee(null);
     };
 
-    const handleSave = (updatedEmployee) => {
-        setEmployees(employees.map(emp => (emp.idEmpleado === updatedEmployee.idEmpleado ? updatedEmployee : emp)));
-        handleModalClose();
-        showSuccess('Empleado actualizado exitosamente.');
+    const handleSave = async (updatedEmployee) => {
+        try {
+            await modificarEmpleadoInfo(updatedEmployee.idEmpleado, updatedEmployee);
+            setEmployees(employees.map(emp => (emp.idEmpleado === updatedEmployee.idEmpleado ? updatedEmployee : emp)));
+            handleModalClose();
+            showSuccess('Empleado actualizado exitosamente.');
+        } catch (error) {
+            showAlert('Error al actualizar el empleado.');
+            console.error('Error al actualizar empleado:', error);
+        }
     };
 
     const filteredEmployees = employees.filter(employee =>

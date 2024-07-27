@@ -7,10 +7,10 @@ NO MODIFICAR. Solo "user" y "password" deben ser modificables en este archivo
 import sql from 'mssql';
 
 const baseDatos = {
-    server: 'YORIANPM',
+    server: 'LAPTOPLENIN',
     database: 'Dunamis',
-    user: 'Desarrollos1', // Reemplazar usuario
-    password: '1234', // Reemplazar contrasena
+    user: 'Desarrollos', // Reemplazar usuario
+    password: 'desarrollos', // Reemplazar contrasena
     options: {
         encrypt: true,
         trustServerCertificate: true

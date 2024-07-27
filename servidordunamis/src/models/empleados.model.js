@@ -153,3 +153,46 @@ export const modificarEmpleado = async (req, res) => {
         `);
     res.send({ success: true });
 }
+
+export const modificarEmpleadoInfo = async (req, res) => {
+    const id = req.params.id;
+    const { nombre, apellido1, apellido2, correo, idPosicion, fechaDeIngreso, fechaDePago, PersonaCedula } = req.body;
+    const bd = await getConexion();
+
+    try {
+        await bd.request()
+            .input('PersonaCedula', sql.Int, PersonaCedula)
+            .input('nombre', sql.VarChar, nombre)
+            .input('apellido1', sql.VarChar, apellido1)
+            .input('apellido2', sql.VarChar, apellido2)
+            .input('correo', sql.VarChar, correo)
+            .query(`
+                UPDATE Persona
+                SET 
+                    nombre = @nombre,
+                    apellido1 = @apellido1,
+                    apellido2 = @apellido2,
+                    correo = @correo
+                WHERE PersonaCedula = @PersonaCedula
+            `);
+
+        await bd.request()
+            .input('idEmpleado', sql.Int, id)
+            .input('idPosicion', sql.Int, idPosicion)
+            .input('fechaDeIngreso', sql.Date, fechaDeIngreso)
+            .input('fechaDePago', sql.Date, fechaDePago)
+            .query(`
+                UPDATE Empleados
+                SET 
+                    idPosicion = @idPosicion,
+                    fechaDeIngreso = @fechaDeIngreso,
+                    fechaDePago = @fechaDePago
+                WHERE idEmpleado = @idEmpleado
+            `);
+
+        res.send({ success: true, message: 'Empleado actualizado exitosamente' });
+    } catch (error) {
+        console.error('Error al modificar empleado:', error);
+        res.status(500).send({ success: false, message: 'Error al modificar el empleado' });
+    }
+};

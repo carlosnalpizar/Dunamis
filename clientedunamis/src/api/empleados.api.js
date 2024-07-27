@@ -15,3 +15,8 @@ export const actualizarEstado = async (empleadoId) =>
 export const agregarTrabajosExtras = async (empleadoId, descripcionTrabajo) => {
     await axios.post(`http://localhost:4000/persona/${empleadoId}/trabajos`, { descripcionTrabajo });
 };
+
+export const modificarEmpleadoInfo = async (empleadoId, empleadoActualizado) => {
+    const response = await axios.put(`http://localhost:4000/persona/modificarEmpleado/${empleadoId}`, empleadoActualizado);
+    return response.data; 
+};

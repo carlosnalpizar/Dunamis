@@ -43,8 +43,7 @@
     border-color: none;
 }
 .active-button:hover {
-    background-color: #434646 !important; 
-    border-color: #434646 !important;
+    background-color: #c11f1f !important; 
 }
 .search-bar {
     flex: 1;

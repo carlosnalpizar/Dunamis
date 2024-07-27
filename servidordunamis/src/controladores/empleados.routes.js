@@ -5,7 +5,8 @@ import { borrarPersona,
     getPersona,
     agregarTrabajos, 
     modificarEmpleado,
-    getEmpleadosActivos} from '../models/empleados.model.js';
+    getEmpleadosActivos,
+    modificarEmpleadoInfo} from '../models/empleados.model.js';
 
 /*
 El uso de controladores funciona por rutas, cada vez que el servidor recibe una peticion HTTP
@@ -21,7 +22,8 @@ routerEmpleados.get('/persona/activos', getEmpleadosActivos);
 routerEmpleados.get('/persona/:id', getPersona);
 routerEmpleados.delete('/persona/:id', borrarPersona);
 routerEmpleados.post('/persona/:id/trabajos', agregarTrabajos);
-routerEmpleados.put('/persona/:id', modificarEmpleado);  // Agregar esta línea
+routerEmpleados.put('/persona/:id', modificarEmpleado); 
+routerEmpleados.put('/persona/modificarEmpleado/:id', modificarEmpleadoInfo); 
 routerEmpleados.post('/persona', crearEmpleado);
 
 export default routerEmpleados;
