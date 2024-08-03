@@ -36,7 +36,14 @@ const Consultas = () => {
             return;
         }
 
+        if ([1, 2, 3, 4].includes(consultaId)) { 
+            setSelectedConsulta(consultaId);
+            setModalVisible(true);
+        } else {
         
+            showAlert(`Realizando consulta: ${consulta.consulta}`);
+        }
+
         switch (consultaId) {
             case 1:
                 showAlert(`Realizando consulta: ${consulta.consulta}. Asegúrese de tener los periodos específicos.`);
@@ -73,12 +80,12 @@ const Consultas = () => {
 
         }
         
-        setSelectedConsulta(consultaId);
-        setModalVisible(true); 
+
     };
     const handleAceptar = (empleado) => {
         console.log('Empleado seleccionado:', empleado);
-        //logica para manejar empleados 
+        // Lógica para manejar empleados
+        setModalVisible(false);
     };
     return (
         <div className="consultas-container">
