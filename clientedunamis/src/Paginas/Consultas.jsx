@@ -36,7 +36,7 @@ const Consultas = () => {
             return;
         }
 
-        if ([1, 2, 3, 4].includes(consultaId)) { 
+        if ([ 2, 4, 10].includes(consultaId)) { 
             setSelectedConsulta(consultaId);
             setModalVisible(true);
         } else {
