@@ -4,8 +4,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import ModalConsultas from '../modals/ModalConsultas';
 import ModalPeriodos from '../modals/ModalPeriodos';
-import '../Css/modalPeriodos.styles.css';
-import '../Css/modalConsultas.styles.css';
+import ModalDeducciones from '../modals/ModalDeducciones';
 import '../Css/consultas.styles.css';
 
 const Consultas = () => {
@@ -24,12 +23,23 @@ const Consultas = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [periodModalVisible, setPeriodModalVisible] = useState(false);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
+    const [deduccionesModalVisible, setDeduccionesModalVisible] = useState(false);
     const toast = React.useRef(null);
 
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
     };
 
+    const modalMapping = {
+        1: () => setPeriodModalVisible(true),
+        2: () => setModalVisible(true),
+        3: () => setPeriodModalVisible(true),
+        4: () => setModalVisible(true),
+        7: () => setDeduccionesModalVisible(true),
+        8: () => setPeriodModalVisible(true),
+        9: () => setPeriodModalVisible(true),
+        10: () => setModalVisible(true)
+    };
 
     const handleRealizarConsulta = (consultaId) => {
         const consulta = consultas.find(c => c.id === consultaId);
@@ -39,16 +49,14 @@ const Consultas = () => {
             return;
         }
 
-        if ([1,3,7,8,9].includes(consultaId)) {
-            setSelectedConsulta(consultaId);
-            setPeriodModalVisible(true);
-        } else if ([2, 4, 10].includes(consultaId)) {
-            setSelectedConsulta(consultaId);
-            setModalVisible(true);
+        setSelectedConsulta(consultaId);
+
+        const showModal = modalMapping[consultaId];
+        if (showModal) {
+            showModal();
         } else {
             showAlert(`Realizando consulta: ${consulta.consulta}`);
         }
-
         switch (consultaId) {
             case 1:
                 showAlert(`Realizando consulta: ${consulta.consulta}. Asegúrese de tener los periodos específicos.`);
@@ -88,8 +96,10 @@ const Consultas = () => {
 
     };
     const handleAceptar = (data) => {
+        console.log('Datos de consulta:', data);
         setModalVisible(false);
         setPeriodModalVisible(false);
+        setDeduccionesModalVisible(false);
     };
     return (
         <div className="consultas-container">
@@ -134,6 +144,11 @@ const Consultas = () => {
                 onClose={() => setPeriodModalVisible(false)}
                 onAceptar={handleAceptar}
                 selectedConsulta={selectedConsulta}
+            />
+             <ModalDeducciones
+                visible={deduccionesModalVisible}
+                onClose={() => setDeduccionesModalVisible(false)}
+                onAceptar={handleAceptar}
             />
         </div>
     );
