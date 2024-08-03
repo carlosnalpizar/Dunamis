@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import ModalConsultas from '../modals/ModalConsultas';
+import '../Css/modalConsultas.styles.css';
 import '../Css/consultas.styles.css';
 
 const Consultas = () => {
@@ -17,6 +19,8 @@ const Consultas = () => {
         { id: 9, consulta: 'Horas trabajadas por empleado por periodos específicos' },
         { id: 10, consulta: 'Fecha de contrato de empleado' }
     ]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedConsulta, setSelectedConsulta] = useState(null);
     const toast = React.useRef(null);
 
     const showAlert = (message) => {
@@ -66,9 +70,16 @@ const Consultas = () => {
                 break;
             default:
                 showAlert(`Realizar consulta: ${consulta.consulta}`);
-        }
-    };
 
+        }
+        
+        setSelectedConsulta(consultaId);
+        setModalVisible(true); 
+    };
+    const handleAceptar = (empleado) => {
+        console.log('Empleado seleccionado:', empleado);
+        //logica para manejar empleados 
+    };
     return (
         <div className="consultas-container">
             <Toast ref={toast} />
@@ -99,6 +110,12 @@ const Consultas = () => {
                     </tbody>
                 </table>
             </Card>
+
+            <ModalConsultas
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                onAceptar={handleAceptar}
+            />
         </div>
     );
 };
