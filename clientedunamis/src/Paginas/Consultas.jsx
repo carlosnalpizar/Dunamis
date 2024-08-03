@@ -3,6 +3,8 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import ModalConsultas from '../modals/ModalConsultas';
+import ModalPeriodos from '../modals/ModalPeriodos';
+import '../Css/modalPeriodos.styles.css';
 import '../Css/modalConsultas.styles.css';
 import '../Css/consultas.styles.css';
 
@@ -20,6 +22,7 @@ const Consultas = () => {
         { id: 10, consulta: 'Fecha de contrato de empleado' }
     ]);
     const [modalVisible, setModalVisible] = useState(false);
+    const [periodModalVisible, setPeriodModalVisible] = useState(false);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
     const toast = React.useRef(null);
 
@@ -36,11 +39,13 @@ const Consultas = () => {
             return;
         }
 
-        if ([ 2, 4, 10].includes(consultaId)) { 
+        if ([1,3,7,8,9].includes(consultaId)) {
+            setSelectedConsulta(consultaId);
+            setPeriodModalVisible(true);
+        } else if ([2, 4, 10].includes(consultaId)) {
             setSelectedConsulta(consultaId);
             setModalVisible(true);
         } else {
-        
             showAlert(`Realizando consulta: ${consulta.consulta}`);
         }
 
@@ -82,10 +87,9 @@ const Consultas = () => {
         
 
     };
-    const handleAceptar = (empleado) => {
-        console.log('Empleado seleccionado:', empleado);
-        // Lógica para manejar empleados
+    const handleAceptar = (data) => {
         setModalVisible(false);
+        setPeriodModalVisible(false);
     };
     return (
         <div className="consultas-container">
@@ -122,6 +126,14 @@ const Consultas = () => {
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 onAceptar={handleAceptar}
+                selectedConsulta={selectedConsulta}
+            />
+
+            <ModalPeriodos
+                visible={periodModalVisible}
+                onClose={() => setPeriodModalVisible(false)}
+                onAceptar={handleAceptar}
+                selectedConsulta={selectedConsulta}
             />
         </div>
     );
