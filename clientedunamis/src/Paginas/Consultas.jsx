@@ -5,6 +5,7 @@ import { Toast } from 'primereact/toast';
 import ModalConsultas from '../modals/ModalConsultas';
 import ModalPeriodos from '../modals/ModalPeriodos';
 import ModalDeducciones from '../modals/ModalDeducciones';
+import ModalRoles from '../modals/ModalRoles';
 import '../Css/consultas.styles.css';
 
 const Consultas = () => {
@@ -24,6 +25,7 @@ const Consultas = () => {
     const [periodModalVisible, setPeriodModalVisible] = useState(false);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
     const [deduccionesModalVisible, setDeduccionesModalVisible] = useState(false);
+    const [rolesModalVisible, setRolesModalVisible] = useState(false);
     const toast = React.useRef(null);
 
     const showAlert = (message) => {
@@ -35,6 +37,7 @@ const Consultas = () => {
         2: () => setModalVisible(true),
         3: () => setPeriodModalVisible(true),
         4: () => setModalVisible(true),
+        5: () => setRolesModalVisible(true),
         7: () => setDeduccionesModalVisible(true),
         8: () => setPeriodModalVisible(true),
         9: () => setPeriodModalVisible(true),
@@ -100,6 +103,7 @@ const Consultas = () => {
         setModalVisible(false);
         setPeriodModalVisible(false);
         setDeduccionesModalVisible(false);
+        setRolesModalVisible(false);
     };
     return (
         <div className="consultas-container">
@@ -150,6 +154,11 @@ const Consultas = () => {
                 onClose={() => setDeduccionesModalVisible(false)}
                 onAceptar={handleAceptar}
             />
+              <ModalRoles
+            visible={rolesModalVisible}
+            onClose={() => setRolesModalVisible(false)}
+            onAceptar={handleAceptar}
+        />
         </div>
     );
 };

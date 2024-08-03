@@ -1,0 +1,33 @@
+.btnCancelarModalRo {
+    background-color: #ffcccb; 
+    border-color: #ff6347; 
+    color: #ff6347; 
+    font-weight: bold;
+    margin: 0 20px;
+}
+
+.btnCancelarModalRo:hover {
+    background-color: #ffb6c1; 
+    border-color: #ff6347; 
+    color: #fff; 
+    margin: 0 30px;
+}
+.modal-header-title {
+    display: flex;
+    justify-content: center; 
+ 
+}
+
+
+.p-listbox-item {
+    width: 100%; 
+    box-sizing: border-box; 
+    padding: 0.5em; 
+}
+
+
+.p-listbox {
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
