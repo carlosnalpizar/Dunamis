@@ -124,7 +124,7 @@ const RegistroClientes = () => {
             <Toast ref={toast} />
             <Card className="registro-card">
                 <div className="registro-header">
-                    <img src="../../logo2.png" alt="Logo" className="registro-logo" />
+                    <img src="../../logo.png" alt="Logo" className="registro-logo" />
                     <h2 className="registro-title">Registro Empleados</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
