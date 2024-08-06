@@ -3,7 +3,9 @@
     background-color: #3a3f3f; 
     color: #459a95; 
 }
-
+.sidebar-menu li:hover {
+    background-color:#427a77!important; 
+}
 
 .p-sidebar {
     background-color: #459a95; 
