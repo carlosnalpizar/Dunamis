@@ -5,6 +5,8 @@ import routerUsuarios from '../src/controladores/usuarios.routes.js'
 import routerBitacoras from '../src/controladores/bitacoras.routes.js'
 import routerPosiciones from './controladores/posiciones.routes.js';
 import routerRoles from './controladores/roles.routes.js';
+//import routerConsultas from './controladores/consultas.routes.js';
+import routerReportes from './controladores/reportes.routes.js';
 
 const app = express();
 
@@ -19,5 +21,5 @@ app.use(routerUsuarios);
 app.use(routerBitacoras);
 app.use(routerPosiciones)
 app.use(routerRoles)
-
+app.use(routerReportes)
 export default app;

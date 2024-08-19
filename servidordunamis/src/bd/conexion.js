@@ -10,7 +10,7 @@ const baseDatos = {
     server: 'LAPTOPLENIN',
     database: 'Dunamis',
     user: 'Desarrollos', // Reemplazar usuario
-    password: 'desarrollos', // Reemplazar contrasena
+    password: 'desarrollos1', // Reemplazar contrasena
     options: {
         encrypt: true,
         trustServerCertificate: true
