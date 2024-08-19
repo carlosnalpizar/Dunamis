@@ -3,9 +3,17 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import '../Css/Reportes.styles.css';
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
+import { obtenerEmpleadosActivos, obtenerEmpleadosInactivos} from '../api/reportes.api'; // Importar las funciones del API
 
 const Reportes = () => {
     const [reportes] = useState([
+        { id: 1, reporte: 'Reporte de empleados activos' },
+        { id: 2, reporte: 'Reporte de empleados inactivos' },
+    ]);
+
+    /*const [reportes] = useState([
         { id: 1, reporte: 'Reporte de salarios actuales' },
         { id: 2, reporte: 'Reporte salarios pagados' },
         { id: 3, reporte: 'Reporte deducciones por ley' },
@@ -16,23 +24,68 @@ const Reportes = () => {
         { id: 8, reporte: 'Reporte de lista de empleados' },
         { id: 9, reporte: 'Reporte del pago realizado' },
         { id: 10, reporte: 'Reporte de empleados activos' }
-    ]);
+    ]);*/
+
 
     const toast = React.useRef(null);
 
-   
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
     };
 
-    const handleGenerarReporte = (reporteId) => {
-        const reporte = reportes.find(r => r.id === reporteId);
-        if (!reporte) {
-            showAlert('Reporte no encontrado.');
-            return;
+    const handleGenerarReporte = async (reporteId) => {
+        const doc = new jsPDF();
+
+        switch (reporteId) {
+            case 1:
+                doc.text("Reporte de empleados activos", 10, 10);
+                try {
+                    const response = await obtenerEmpleadosActivos();
+                    const empleados = response.data;
+                    doc.autoTable({
+                        head: [['ID', 'Posición', 'Fecha de Pago', 'Fecha de Ingreso', 'Extras', 'Nombre', 'Correo']],
+                        body: empleados.map(e => [
+                            e.idEmpleado,
+                            e.idPosicion,
+                            e.fechaDePago.substring(0, 10),  // Extrae solo la fecha
+                            e.fechaDeIngreso.substring(0, 10),
+                            e.cantidadTrabajosExtras,
+                            `${e.nombre} ${e.apellido1} ${e.apellido2}`,
+                            e.correo
+                        ]),
+                    });
+                } catch (error) {
+                    showAlert("Error al generar el reporte de empleados activos");
+                }
+                break;
+            case 2:
+                doc.text("Reporte de empleados inactivos", 10, 10);
+                try {
+                    const response = await obtenerEmpleadosInactivos();
+                    const empleados = response.data;
+                    doc.autoTable({
+                        head: [['ID', 'Posición', 'Fecha de Pago', 'Fecha de Ingreso', 'Extras', 'Nombre', 'Correo']],
+                        body: empleados.map(e => [
+                            e.idEmpleado,
+                            e.idPosicion,
+                            e.fechaDePago.substring(0, 10),  // Extrae solo la fecha
+                            e.fechaDeIngreso.substring(0, 10),
+                            e.cantidadTrabajosExtras,
+                            `${e.nombre} ${e.apellido1} ${e.apellido2}`,
+                            e.correo
+                        ]),
+                    });
+                } catch (error) {
+                    showAlert("Error al generar el reporte de empleados inactivos");
+                }
+                break;
+            default:
+                showAlert("Reporte no disponible.");
+                return;
         }
-        
-        showAlert(`Generar reporte: ${reporte.reporte}`);
+
+        // Guardar el PDF generado
+        doc.save(`reporte_${reporteId}.pdf`);
     };
 
     return (
@@ -52,7 +105,7 @@ const Reportes = () => {
                     <tbody>
                         {reportes.map(reporte => (
                             <tr key={reporte.id}>
-                                <td>{reporte.reporte}</td> 
+                                <td>{reporte.reporte}</td>
                                 <td>
                                     <Button
                                         label="Generar reporte"
