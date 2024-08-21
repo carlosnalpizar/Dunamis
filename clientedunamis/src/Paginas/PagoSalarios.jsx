@@ -98,7 +98,7 @@ const PagoSalarios = () => {
             body: infodeducciones.map(deduccion => [
                 deduccion.tipoDeduccion,
                 deduccion.descripcionDeduccion,
-                `%${deduccion.montoDeduccion.toFixed(2)}`
+                `${(deduccion.montoDeduccion * 100).toFixed(2)}%`
             ]),
             theme: 'grid',
             headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255], fontSize: 14 },
@@ -139,7 +139,7 @@ const PagoSalarios = () => {
     );
 
     const today = new Date();
-    const todayDateString = today.toISOString().split('T')[0]; 
+    const todayDateString = today.toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -177,22 +177,20 @@ const PagoSalarios = () => {
                         </thead>
                         <tbody>
                             {filteredEmployees.map(employee => {
-                                const fechaDePago = new Date(new Date(employee.fechaDePago).toLocaleString('en-US', { timeZone: 'UTC' })).toISOString().split('T')[0];
-                                const esHoy = fechaDePago === todayDateString;
+                                const fechaDePago = new Date(employee.fechaDePago).toISOString().split('T')[0];
+                                const yaPagado = employee.salarioPagado; // Asume que este campo indica si ya se pagó
 
                                 return (
                                     <tr key={employee.PersonaCedula}>
                                         <td>{employee.PersonaCedula}</td>
                                         <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
-                                        <td className={esHoy ? 'fecha-pago-destacada' : ''}>
-                                            {new Date(employee.fechaDePago).toLocaleDateString()} {/* Convertimos la fecha a un formato legible */}
-                                        </td>
+                                        <td>{fechaDePago}</td> {/* Convertimos la fecha a un formato legible */}
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
-                                                className={`p-button-raised p-button-rounded pay-button ${esHoy ? '' : 'disabled'}`}
+                                                className={`p-button-raised p-button-rounded pay-button ${fechaDePago !== todayDateString ? 'disabled' : ''}`}
                                                 onClick={() => handlePay(employee.PersonaCedula)}
-                                                disabled={!esHoy} 
+                                                disabled={fechaDePago !== todayDateString || yaPagado}
                                             />
                                         </td>
                                     </tr>

@@ -6,6 +6,9 @@ export const obtenerEmpleadosInactivos = async () =>
 export const obtenerLongevidad = async () =>
     await axios.get('http://localhost:4000/longevidad');
 
+export const obtenerDeducciones = async () =>
+    await axios.get('http://localhost:4000/deduccionesley');
+
 export const obtenerEmpleadosActivos = async () =>
     await axios.get('http://localhost:4000/empleadosactivos');
 
@@ -14,3 +17,9 @@ export const obtenerSalariosActuales = async () =>
 
 export const obtenerEmpleadosAll = async () =>
     await axios.get('http://localhost:4000/empleadosall');
+
+export const obtenerTrabajosExtras = async () =>
+    await axios.get('http://localhost:4000/trabajosextras');
+
+export const consultarMasExtras = async () =>
+    await axios.get('http://localhost:4000/masExtras');

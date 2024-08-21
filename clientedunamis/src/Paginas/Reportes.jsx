@@ -9,7 +9,10 @@ import { obtenerEmpleadosActivos,
     obtenerEmpleadosAll, 
     obtenerEmpleadosInactivos, 
     obtenerSalariosActuales, 
-    obtenerLongevidad} from '../api/reportes.api'; // Importar las funciones del API
+    obtenerLongevidad, 
+    obtenerDeducciones,
+    obtenerTrabajosExtras, 
+    consultarMasExtras} from '../api/reportes.api'; // Importar las funciones del API
 
 const Reportes = () => {
     const [reportes] = useState([
@@ -18,15 +21,14 @@ const Reportes = () => {
         { id: 3, reporte: 'Reporte de salarios actuales' },
         { id: 4, reporte: 'Reporte de lista de empleados' },
         { id: 5, reporte: 'Reporte de longevidad de empleados en la empresa' },
+        { id: 6, reporte: 'Reporte deducciones por ley' },
+        { id: 7, reporte: 'Reporte trabajos extras realizados' },
+        { id: 8, reporte: 'Reporte de empleado con más trabajos extra sin cobrar' },
     ]);
 
     /*
-        { id: 2, reporte: 'Reporte salarios pagados' },
-        { id: 3, reporte: 'Reporte deducciones por ley' },
+        { id: 2, reporte: 'Reporte salarios pagados este mes' },
         { id: 4, reporte: 'Reporte historial salarial' },
-        { id: 5, reporte: 'Reporte de desglose salarial' },
-        { id: 6, reporte: 'Reporte trabajos extras realizados y pagados' },
-        { id: 9, reporte: 'Reporte del pago realizado' },
     */
 
 
@@ -148,8 +150,65 @@ const Reportes = () => {
                         showAlert("Error al generar el reporte de longevidad de empleados");
                     }
                     break;
-                
-            default:
+            case 6:  
+                    doc.text(`Reporte de deducciones por ley - ${fechaHoy}`, 10, 10);
+                    try {
+                        const response = await obtenerDeducciones();
+                        const deducciones = response.data;
+                        console.log(deducciones); // Verifica los datos en la consola
+                        doc.autoTable({
+                            head: [['Tipo de Deducción', 'Descripción', 'Porcentaje']],
+                            body: deducciones.map(d => [
+                                d.idDeducciones || 'N/A', // Manejo de datos nulos
+                                d.descripcionDeduccion || 'N/A',
+                                `${d.montoDeduccion ? Math.round(d.montoDeduccion * 100) : '0'}%`
+
+                            ]),
+                        });
+                    } catch (error) {
+                        showAlert("Error al generar el reporte de deducciones por ley");
+                    }
+                    break;
+                    case 7:
+                        doc.text(`Reporte de trabajos extras realizados - ${fechaHoy}`, 10, 10);
+                        try {
+                            const response = await obtenerTrabajosExtras();
+                            const trabajosExtras = response.data;
+                            doc.autoTable({
+                                head: [['ID Trabajo Extra', 'Descripción', 'Cédula', 'Realizado por']],
+                                body: trabajosExtras.map(te => [
+                                    te.idTrabajosExtra,
+                                    te.DescripcionTrabajoExtra,
+                                    te.PersonaCedula,
+                                    `${te.nombre} ${te.apellido1} ${te.apellido2}`,
+                                ]),
+                            });
+                        } catch (error) {
+                            showAlert("Error al generar el reporte de trabajos extras realizados");
+                        }
+                        break;
+                    case 8:
+                            doc.text(`Reporte de empleado con más trabajos extra sin cobrar- ${fechaHoy}`, 10, 10);
+                            try {
+                                const response = await consultarMasExtras(); // Asegúrate de que esta función esté definida en `reportes.api`
+                                const empleados = response.data;
+                                doc.autoTable({
+                                    head: [['ID Empleado', 'Cédula', 'Nombre Completo', 'Cantidad de Trabajos Extras']],
+                                    body: empleados.map(e => [
+                                        e.idEmpleado,
+                                        e.PersonaCedula,
+                                        `${e.nombre} ${e.apellido1} ${e.apellido2}`,
+                                        e.cantidadTrabajosExtras
+                                    ]),
+                                });
+                            } catch (error) {
+                                showAlert("Error al generar el reporte de empleado con más trabajos extra sin cobrar");
+                            }
+                            break;
+
+
+
+                default:
                 showAlert("Reporte no disponible.");
                 return;
         }

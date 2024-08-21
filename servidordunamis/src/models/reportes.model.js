@@ -121,3 +121,52 @@ export const consultarLongevidadEmpleados = async (req, res) => {
         res.status(500).send("Error al consultar la longevidad de empleados: " + error.message);
     }
 };
+
+export const consultarDeduccionesPorLey = async (req, res) => {
+    try {
+        const bd = await getConexion();
+        const resultado = await bd.request().query(`
+            SELECT
+                * from deducciones
+        `);
+        res.json(resultado.recordset);
+    } catch (error) {
+        res.status(500).send("Error al consultar las deducciones por ley: " + error.message);
+    }
+};
+
+export const consultarTrabajosExtrasRealizados = async (req, res) => {
+    const bd = await getConexion();
+    const resultado = await bd.request().query(`
+        SELECT * 
+        FROM TrabajosExtra te 
+        JOIN Persona p ON te.idEmpleado = p.PersonaCedula;
+    `);
+    res.json(resultado.recordset);
+};
+
+export const consultarEmpleadosConMasTrabajosExtra = async (req, res) => {
+    try {
+        const bd = await getConexion();
+        const resultado = await bd.request().query(`
+            
+SELECT 
+    e.idEmpleado, 
+    p.PersonaCedula,
+    p.nombre,
+    p.apellido1,
+    p.apellido2,
+    e.cantidadTrabajosExtras
+FROM empleados e
+INNER JOIN Persona p ON e.PersonaCedula = p.PersonaCedula
+WHERE e.cantidadTrabajosExtras = (
+    SELECT MAX(cantidadTrabajosExtras)
+    FROM empleados
+)
+
+        `);
+        res.json(resultado.recordset);
+    } catch (error) {
+        res.status(500).send("Error al consultar los empleados con más trabajos extra: " + error.message);
+    }
+};

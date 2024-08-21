@@ -100,11 +100,11 @@ export const pagarSalario = async (req, res) => {
             return res.status(400).send('El pago ya ha sido realizado para hoy.');
         }
 
-        // Verificar si es el día correcto para pagar
+        /* Verificar si es el día correcto para pagar
         const diaDePago = new Date(fechaDePago).getDate();
         if (diaDePago !== fechaActual.getDate()) {
             return res.status(400).send('No es el día correcto para realizar el pago.');
-        }
+        }*/
 
         // Calcular el salario final basado en los trabajos extras
         let porcentajeExtra = 0;

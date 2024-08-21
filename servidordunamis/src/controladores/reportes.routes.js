@@ -1,5 +1,12 @@
 import { Router } from 'express';
-import { consultarEmpleados, consultarEmpleadosActivos, consultarEmpleadosInactivos, consultarLongevidadEmpleados, consultarSalariosActuales } from '../models/reportes.model.js';
+import { consultarDeduccionesPorLey, 
+    consultarEmpleados, 
+    consultarEmpleadosActivos, 
+    consultarEmpleadosConMasTrabajosExtra, 
+    consultarEmpleadosInactivos, 
+    consultarLongevidadEmpleados, 
+    consultarSalariosActuales, 
+    consultarTrabajosExtrasRealizados } from '../models/reportes.model.js';
 
 /*
 El uso de controladores funciona por rutas, cada vez que el servidor recibe una peticion HTTP
@@ -15,5 +22,8 @@ routerReportes.get('/empleadosinactivos', consultarEmpleadosInactivos);
 routerReportes.get('/salariosactuales', consultarSalariosActuales);
 routerReportes.get('/empleadosall', consultarEmpleados);
 routerReportes.get('/longevidad', consultarLongevidadEmpleados);
+routerReportes.get('/deduccionesley', consultarDeduccionesPorLey);
+routerReportes.get('/trabajosextras', consultarTrabajosExtrasRealizados);
+routerReportes.get('/masExtras', consultarEmpleadosConMasTrabajosExtra);
 
 export default routerReportes;
