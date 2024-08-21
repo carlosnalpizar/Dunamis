@@ -110,6 +110,16 @@
     box-shadow: 0 0 0 2px rgba(51, 186, 171, 0.25);
 }
 
+@keyframes parpadeo {
+    0% { background-color: #ffff99; }
+    50% { background-color: #ffcc99; }
+    100% { background-color: #ffff99; }
+}
+
+.fecha-pago-destacada {
+    animation: parpadeo 1s infinite;
+}
+
 @media screen and (max-width: 480px) {
     .pago-salarios-card {
         padding: 1rem;

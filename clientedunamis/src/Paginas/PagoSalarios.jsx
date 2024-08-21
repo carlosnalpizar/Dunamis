@@ -6,6 +6,9 @@ import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 import '../Css/PagoSalarios.styles.css';
 import { obtenerEmpleadosActivos } from '../api/empleados.api';
+import { getComprobantePago, pagarSalario } from '../api/salarios.api'; 
+import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
 
 const PagoSalarios = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -34,23 +37,109 @@ const PagoSalarios = () => {
         setSearchTerm(e.target.value);
     };
 
-    const showAlert = (message) => {
-        toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
+    const showAlert = (message, severity) => {
+        toast.current.show({ severity, summary: 'Alerta', detail: message, life: 3000 });
     };
 
-    const handlePay = (employeeId) => {
-        if (searchTerm.trim() === '') {
-            showAlert('Por favor, ingrese un término de búsqueda.');
-            return;
-        }
+    const generateReportPDF = async (comprobante, infodeducciones) => {
+        const doc = new jsPDF('p', 'mm', 'a4');
+        const fechaHoy = new Date().toISOString().substring(0, 10);
+    
+        // Encabezado
+        doc.setFontSize(20);
+        doc.text(`Reporte de Pago Realizado`, 105, 20, null, null, 'center');
+        doc.setFontSize(12);
+        doc.text(`Fecha: ${fechaHoy}`, 105, 30, null, null, 'center');
+    
+        // Espaciado antes de la tabla
+        doc.setFontSize(16);
+        doc.text('Detalles del Pago', 14, 50);
+    
+        // Formatear la fecha sin la zona horaria
+        const fechaPagoFormateada = comprobante.fechaComprobante.split('T')[0];
+    
+        // Crear la tabla con ajustes en los estilos
+        doc.autoTable({
+            startY: 60,
+            head: [['Cédula', 'Nombre Completo', 'Fecha de Pago', 'Monto Final', 'Descripción']],
+            body: [
+                [
+                    comprobante.cedulaEmpleado,
+                    `${comprobante.nombreEmpleado} ${comprobante.apellido1Empleado} ${comprobante.apellido2Empleado}`,
+                    fechaPagoFormateada, // Fecha formateada
+                    `$${comprobante.montoFinal.toFixed(2)}`,
+                    comprobante.descripcion
+                ]
+            ],
+            theme: 'grid',
+            headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255], fontSize: 14 },
+            bodyStyles: { fontSize: 14, cellPadding: 6 }, // Ajuste de padding
+            columnStyles: {
+                0: { cellWidth: 25 }, // Cédula
+                1: { cellWidth: 55 }, // Nombre Completo
+                2: { cellWidth: 30 }, // Fecha de Pago
+                3: { cellWidth: 30 }, // Monto
+                4: { cellWidth: 60 }, // Descripción ajustable y más ancha
+            },
+            styles: { font: 'helvetica', halign: 'center', valign: 'middle', overflow: 'linebreak' }, // Ajuste de desbordamiento
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+        });
 
-        console.log(`Pagar a empleado con ID: ${employeeId}`);
-        toast.current.show({ severity: 'success', summary: 'Éxito', detail: `Salario pagado al empleado con ID: ${employeeId}`, life: 3000 });
+        const finalY = doc.lastAutoTable.finalY;
+
+        // Espaciado antes de la tabla de deducciones
+        doc.setFontSize(16);
+        doc.text('Deducciones Aplicadas', 14, finalY + 20);
+
+        // Crear la tabla con deducciones
+        doc.autoTable({
+            startY: finalY + 30,
+            head: [['Tipo de Deducción', 'Descripción', 'Monto']],
+            body: infodeducciones.map(deduccion => [
+                deduccion.tipoDeduccion,
+                deduccion.descripcionDeduccion,
+                `%${deduccion.montoDeduccion.toFixed(2)}`
+            ]),
+            theme: 'grid',
+            headStyles: { fillColor: [22, 160, 133], textColor: [255, 255, 255], fontSize: 14 },
+            bodyStyles: { fontSize: 14, cellPadding: 6 }, // Ajuste de padding
+            columnStyles: {
+                0: { cellWidth: 30 }, // Tipo de Deducción
+                1: { cellWidth: 80 }, // Descripción
+                2: { cellWidth: 30 }, // Monto
+            },
+            styles: { font: 'helvetica', halign: 'center', valign: 'middle', overflow: 'linebreak' }, // Ajuste de desbordamiento
+            tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
+        });
+
+        doc.setFontSize(10);
+        doc.text(`Generado por el sistema de pago`, 14, doc.lastAutoTable.finalY + 10);
+        doc.text(`Firma del Responsable`, 14, doc.lastAutoTable.finalY + 30);
+
+        // Esperar 2 segundos antes de guardar el PDF
+        setTimeout(() => {
+            doc.save(`Comprobante_Pago_${comprobante.cedulaEmpleado}_${fechaHoy}.pdf`);
+        }, 2000); // 2000 milisegundos = 2 segundos
+    };
+
+    const handlePay = async (employeeId) => {
+        try {
+            await pagarSalario({ cedula: employeeId });
+            const response = await getComprobantePago(); // Asegúrate de que esta función obtenga los datos correctos
+            const { comprobante, infodeducciones } = response.data; // Desestructurar la respuesta
+            await generateReportPDF(comprobante, infodeducciones);
+            showAlert('Salario pagado con éxito y reporte generado', 'success');
+        } catch (error) {
+            showAlert(`Error al pagar el salario: ${error.response?.data || error.message}`, 'error');
+        }
     };
 
     const filteredEmployees = employees.filter(employee =>
         employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const today = new Date();
+    const todayDateString = today.toISOString().split('T')[0]; 
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -82,23 +171,33 @@ const PagoSalarios = () => {
                             <tr>
                                 <th>Cédula</th>
                                 <th>Nombre y Apellidos</th>
+                                <th>Fecha de Pago</th>
                                 <th>Pagar Salario</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredEmployees.map(employee => (
-                                <tr key={employee.PersonaCedula}>
-                                    <td>{employee.PersonaCedula}</td>
-                                    <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
-                                    <td>
-                                        <Button
-                                            label="Pagar Salario"
-                                            className="p-button-raised p-button-rounded pay-button"
-                                            onClick={() => handlePay(employee.PersonaCedula)}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
+                            {filteredEmployees.map(employee => {
+                                const fechaDePago = new Date(new Date(employee.fechaDePago).toLocaleString('en-US', { timeZone: 'UTC' })).toISOString().split('T')[0];
+                                const esHoy = fechaDePago === todayDateString;
+
+                                return (
+                                    <tr key={employee.PersonaCedula}>
+                                        <td>{employee.PersonaCedula}</td>
+                                        <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
+                                        <td className={esHoy ? 'fecha-pago-destacada' : ''}>
+                                            {new Date(employee.fechaDePago).toLocaleDateString()} {/* Convertimos la fecha a un formato legible */}
+                                        </td>
+                                        <td>
+                                            <Button
+                                                label="Pagar Salario"
+                                                className={`p-button-raised p-button-rounded pay-button ${esHoy ? '' : 'disabled'}`}
+                                                onClick={() => handlePay(employee.PersonaCedula)}
+                                                disabled={!esHoy} 
+                                            />
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 ) : (
