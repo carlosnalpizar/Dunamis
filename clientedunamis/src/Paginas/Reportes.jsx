@@ -12,7 +12,9 @@ import { obtenerEmpleadosActivos,
     obtenerLongevidad, 
     obtenerDeducciones,
     obtenerTrabajosExtras, 
-    consultarMasExtras} from '../api/reportes.api'; // Importar las funciones del API
+    consultarMasExtras,
+    obtenerPagosHoy,
+    montosTotales} from '../api/reportes.api'; // Importar las funciones del API
 
 const Reportes = () => {
     const [reportes] = useState([
@@ -24,6 +26,8 @@ const Reportes = () => {
         { id: 6, reporte: 'Reporte deducciones por ley' },
         { id: 7, reporte: 'Reporte trabajos extras realizados' },
         { id: 8, reporte: 'Reporte de empleado con más trabajos extra sin cobrar' },
+        { id: 9, reporte: 'Reporte de pagos realizados el dia de hoy' },
+        { id: 10, reporte: 'Reporte de suma total de salarios' },
     ]);
 
     /*
@@ -206,6 +210,52 @@ const Reportes = () => {
                             }
                             break;
 
+                            case 9:
+                                doc.text(`Reporte de pagos realizados hoy - ${fechaHoy}`, 10, 10);
+                                try {
+                                    const response = await obtenerPagosHoy();
+                                    const pagos = response.data;
+                                    doc.autoTable({
+                                        head: [['ID Pago', 'Cédula', 'Nombre Completo', 'Monto Final', 'Descripción', 'Fecha']],
+                                        body: pagos.map(pago => [
+                                            pago.idPago,
+                                            pago.cedulaEmpleado,
+                                            `${pago.nombreEmpleado} ${pago.apellido1Empleado} ${pago.apellido2Empleado}`,
+                                            `$${pago.montoFinal.toFixed(2)}`,
+                                            pago.descripcion,
+                                            new Date(pago.fechaComprobante).toISOString().substring(0, 10) // Formatear la fecha
+                                        ]),
+                                    });
+                                } catch (error) {
+                                    showAlert("Error al generar el reporte de pagos realizados hoy");
+                                }
+                                break;
+                            
+                                case 10: // Reporte de suma total de salarios
+    doc.text(`Reporte de suma total de salarios - ${fechaHoy}`, 10, 10);
+    try {
+        const response = await montosTotales(); // Asegúrate de que esta función devuelva los datos adecuados
+        const salarios = response.data;
+
+        // Calcular el total de salarios
+        const totalSalarios = salarios.reduce((acc, s) => acc + s.salario, 0);
+
+        // Crear el reporte con los datos
+        doc.autoTable({
+            head: [['Cédula', 'Nombre Completo', 'Salario']],
+            body: salarios.map(s => [
+                s.PersonaCedula,
+                `${s.nombre} ${s.apellido1} ${s.apellido2}`,
+                `$${s.salario.toFixed(2)}`
+            ]),
+        });
+
+        // Añadir el total al final del reporte
+        doc.text(`Total de salarios: $${totalSalarios.toFixed(2)}`, 10, doc.autoTable.previous.finalY + 10);
+    } catch (error) {
+        showAlert("Error al generar el reporte de suma total de salarios");
+    }
+    break;
 
 
                 default:

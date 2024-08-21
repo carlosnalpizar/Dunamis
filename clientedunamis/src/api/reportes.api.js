@@ -9,6 +9,12 @@ export const obtenerLongevidad = async () =>
 export const obtenerDeducciones = async () =>
     await axios.get('http://localhost:4000/deduccionesley');
 
+export const obtenerPagosHoy = async () =>
+    await axios.get('http://localhost:4000/pagoshoy');
+
+export const montosTotales = async () =>
+    await axios.get('http://localhost:4000/montos');
+
 export const obtenerEmpleadosActivos = async () =>
     await axios.get('http://localhost:4000/empleadosactivos');
 

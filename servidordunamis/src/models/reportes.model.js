@@ -170,3 +170,45 @@ WHERE e.cantidadTrabajosExtras = (
         res.status(500).send("Error al consultar los empleados con más trabajos extra: " + error.message);
     }
 };
+
+
+export const consultarPagosDeHoy = async (req, res) => {
+    try {
+        const bd = await getConexion();
+        const resultado = await bd.request().query(`
+ SELECT *
+FROM comprobantePago
+WHERE CONVERT(date, fechaComprobante) = CONVERT(date, GETDATE());
+        `);
+        res.json(resultado.recordset);
+    } catch (error) {
+        res.status(500).send("Error al consultar los empleados con más trabajos extra: " + error.message);
+    }
+};
+
+
+export const montosSalarioTotal = async (req, res) => {
+    try {
+        const bd = await getConexion();
+        const resultado = await bd.request().query(`
+SELECT 
+    e.PersonaCedula,
+    p.nombre,
+    p.apellido1,
+    p.apellido2,
+    dp.salario
+FROM 
+    Empleados e
+JOIN 
+    Persona p ON e.PersonaCedula = p.PersonaCedula
+JOIN 
+    diccionarioPosicion dp ON e.idPosicion = dp.idPosicion
+WHERE 
+    e.activo = 1;
+        `);
+        res.json(resultado.recordset);
+    } catch (error) {
+        res.status(500).send("Error al consultar los empleados con más trabajos extra: " + error.message);
+    }
+};
+

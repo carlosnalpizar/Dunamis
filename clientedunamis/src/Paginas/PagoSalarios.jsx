@@ -51,16 +51,20 @@ const PagoSalarios = () => {
         doc.setFontSize(12);
         doc.text(`Fecha: ${fechaHoy}`, 105, 30, null, null, 'center');
     
-        // Espaciado antes de la tabla
+        // Espaciado antes de los detalles
         doc.setFontSize(16);
         doc.text('Detalles del Pago', 14, 50);
+    
+        // Agregar ID de Pago
+        doc.setFontSize(12);
+        doc.text(`Consecutivo del Pago: ${comprobante.idPago}`, 14, 60);
     
         // Formatear la fecha sin la zona horaria
         const fechaPagoFormateada = comprobante.fechaComprobante.split('T')[0];
     
         // Crear la tabla con ajustes en los estilos
         doc.autoTable({
-            startY: 60,
+            startY: 70,
             head: [['Cédula', 'Nombre Completo', 'Fecha de Pago', 'Monto Final', 'Descripción']],
             body: [
                 [
@@ -84,13 +88,13 @@ const PagoSalarios = () => {
             styles: { font: 'helvetica', halign: 'center', valign: 'middle', overflow: 'linebreak' }, // Ajuste de desbordamiento
             tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
         });
-
+    
         const finalY = doc.lastAutoTable.finalY;
-
+    
         // Espaciado antes de la tabla de deducciones
         doc.setFontSize(16);
         doc.text('Deducciones Aplicadas', 14, finalY + 20);
-
+    
         // Crear la tabla con deducciones
         doc.autoTable({
             startY: finalY + 30,
@@ -111,17 +115,17 @@ const PagoSalarios = () => {
             styles: { font: 'helvetica', halign: 'center', valign: 'middle', overflow: 'linebreak' }, // Ajuste de desbordamiento
             tableWidth: 'wrap', // Ajustar el ancho de la tabla al contenido
         });
-
+    
         doc.setFontSize(10);
         doc.text(`Generado por el sistema de pago`, 14, doc.lastAutoTable.finalY + 10);
         doc.text(`Firma del Responsable`, 14, doc.lastAutoTable.finalY + 30);
-
+    
         // Esperar 2 segundos antes de guardar el PDF
         setTimeout(() => {
             doc.save(`Comprobante_Pago_${comprobante.cedulaEmpleado}_${fechaHoy}.pdf`);
         }, 2000); // 2000 milisegundos = 2 segundos
     };
-
+    
     const handlePay = async (employeeId) => {
         try {
             await pagarSalario({ cedula: employeeId });
@@ -184,7 +188,9 @@ const PagoSalarios = () => {
                                     <tr key={employee.PersonaCedula}>
                                         <td>{employee.PersonaCedula}</td>
                                         <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
-                                        <td>{fechaDePago}</td> {/* Convertimos la fecha a un formato legible */}
+                                        <td className={fechaDePago === todayDateString ? 'fecha-pago-destacada' : ''}>
+                                            {fechaDePago} {/* Convertimos la fecha a un formato legible */}
+                                        </td>
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
@@ -195,6 +201,7 @@ const PagoSalarios = () => {
                                         </td>
                                     </tr>
                                 );
+                                
                             })}
                         </tbody>
                     </table>
