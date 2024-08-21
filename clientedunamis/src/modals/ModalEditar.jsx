@@ -130,7 +130,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     <div className="input-group">
                         <label htmlFor="fechaFin">Fecha de pago</label>
                         <Calendar id="fechaFin" name="fechaDePago" value={editedEmployee.fechaDePago} onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} dateFormat="dd/mm/yy" minDate={today}
-                                maxDate={new Date(today.getFullYear(), today.getMonth() + 1, today.getDate())}/>
+                                maxDate={maxDate}/>
                     </div>
                 </div>
                 <div className="modal-footer">

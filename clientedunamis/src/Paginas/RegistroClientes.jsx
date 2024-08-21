@@ -167,7 +167,7 @@ const RegistroClientes = () => {
                                 readOnlyInput
                                 showButtonBar
                                 minDate={today}
-                                maxDate={new Date(today.getFullYear(), today.getMonth() + 1, today.getDate())}
+                                maxDate={new Date(maxDate)}
                             />
                         </div>
                         <Button type="submit" label="Registrarse" className="p-button-raised p-button-rounded" />

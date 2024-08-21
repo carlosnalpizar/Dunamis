@@ -49,7 +49,7 @@ const PagoSalarios = () => {
         doc.setFontSize(20);
         doc.text(`Reporte de Pago Realizado`, 105, 20, null, null, 'center');
         doc.setFontSize(12);
-        doc.text(`Fecha: ${fechaHoy}`, 105, 30, null, null, 'center');
+        doc.text(`Fecha: ${new Date()}`, 105, 30, null, null, 'center');
     
         // Espaciado antes de los detalles
         doc.setFontSize(16);
@@ -126,11 +126,19 @@ const PagoSalarios = () => {
         }, 2000); // 2000 milisegundos = 2 segundos
     };
     
-    const handlePay = async (employeeId) => {
+    const handlePay = async (employee) => {
+        const todayDateString = new Date().toISOString().split('T')[0];
+        const fechaDePago = new Date(employee.fechaDePago).toISOString().split('T')[0];
+    
+        if (fechaDePago !== todayDateString) {
+            showAlert('Hoy no es el día de pago correspondiente.', 'warn');
+            return;
+        }
+    
         try {
-            await pagarSalario({ cedula: employeeId });
-            const response = await getComprobantePago(); // Asegúrate de que esta función obtenga los datos correctos
-            const { comprobante, infodeducciones } = response.data; // Desestructurar la respuesta
+            await pagarSalario({ cedula: employee.PersonaCedula });
+            const response = await getComprobantePago();
+            const { comprobante, infodeducciones } = response.data;
             await generateReportPDF(comprobante, infodeducciones);
             showAlert('Salario pagado con éxito y reporte generado', 'success');
         } catch (error) {
@@ -182,26 +190,23 @@ const PagoSalarios = () => {
                         <tbody>
                             {filteredEmployees.map(employee => {
                                 const fechaDePago = new Date(employee.fechaDePago).toISOString().split('T')[0];
-                                const yaPagado = employee.salarioPagado; // Asume que este campo indica si ya se pagó
-
+                                
                                 return (
                                     <tr key={employee.PersonaCedula}>
                                         <td>{employee.PersonaCedula}</td>
                                         <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
                                         <td className={fechaDePago === todayDateString ? 'fecha-pago-destacada' : ''}>
-                                            {fechaDePago} {/* Convertimos la fecha a un formato legible */}
+                                            {fechaDePago}
                                         </td>
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
-                                                className={`p-button-raised p-button-rounded pay-button ${fechaDePago !== todayDateString ? 'disabled' : ''}`}
-                                                onClick={() => handlePay(employee.PersonaCedula)}
-                                                disabled={fechaDePago !== todayDateString || yaPagado}
+                                                className="p-button-raised p-button-rounded pay-button"
+                                                onClick={() => handlePay(employee)}
                                             />
                                         </td>
                                     </tr>
                                 );
-                                
                             })}
                         </tbody>
                     </table>
@@ -214,3 +219,4 @@ const PagoSalarios = () => {
 };
 
 export default PagoSalarios;
+
