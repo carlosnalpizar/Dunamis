@@ -35,6 +35,10 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
         fetchData();
     }, []);
 
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+
+
     const showAlert = (message) => {
         toast.current.show({ severity: 'warn', summary: 'Alerta', detail: message, life: 3000 });
     };
@@ -125,7 +129,8 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="fechaFin">Fecha de pago</label>
-                        <Calendar id="fechaFin" name="fechaDePago" value={editedEmployee.fechaDePago} onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} dateFormat="dd/mm/yy" />
+                        <Calendar id="fechaFin" name="fechaDePago" value={editedEmployee.fechaDePago} onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} dateFormat="dd/mm/yy" minDate={today}
+                                maxDate={new Date(today.getFullYear(), today.getMonth() + 1, today.getDate())}/>
                     </div>
                 </div>
                 <div className="modal-footer">

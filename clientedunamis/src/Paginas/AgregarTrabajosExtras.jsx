@@ -60,7 +60,7 @@ const AgregarTrabajosExtras = () => {
             try {
                 const response = await obtenerEmpleadosActivos();
                 const empleadosData = response.data.map(emp => ({
-                    label: emp.PersonaCedula,
+                    label: `${emp.PersonaCedula} - ${emp.nombre} ${emp.apellido1} ${emp.apellido2}`,
                     value: emp.PersonaCedula
                 }));
                 setEmpleados(empleadosData);

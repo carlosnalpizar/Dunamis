@@ -26,6 +26,9 @@ const RegistroClientes = () => {
     const [posiciones, setPosiciones] = useState([]);
     const toast = React.useRef(null);
 
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+
     useEffect(() => {
         const fetchPosiciones = async () => {
             try {
@@ -163,6 +166,8 @@ const RegistroClientes = () => {
                                 showIcon
                                 readOnlyInput
                                 showButtonBar
+                                minDate={today}
+                                maxDate={new Date(today.getFullYear(), today.getMonth() + 1, today.getDate())}
                             />
                         </div>
                         <Button type="submit" label="Registrarse" className="p-button-raised p-button-rounded" />
