@@ -7,7 +7,7 @@ import ModalPeriodos from '../modals/ModalPeriodos';
 import ModalDeducciones from '../modals/ModalDeducciones';
 import ModalRoles from '../modals/ModalRoles';
 import Popup from '../modals/PopUp'; // Importa el componente Popup
-import { consultarComprobantePorPago, consultarPagosXEmpleado, getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
+import { consultarComprobantePorPago, consultarPagosXEmpleado, consultarSalarioBruto, getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
 import { obtenerEmpleadosActivos } from '../api/empleados.api';
 import { obtenerDeducciones } from '../api/reportes.api'; // Asegúrate de tener la función para obtener deducciones
 
@@ -15,6 +15,7 @@ import '../Css/consultas.styles.css';
 
 const Consultas = () => {
     const [consultas] = useState([
+        { id: 1, consulta: 'Salario bruto actual por empleado' },
         { id: 2, consulta: 'Trabajos extras realizados por empleados' },
         { id: 6, consulta: 'Empleados activos' },
         { id: 7, consulta: 'Deducciones por ley' },
@@ -24,12 +25,10 @@ const Consultas = () => {
 
 
     /*const [consultas] = useState([
-        { id: 1, consulta: 'Salario bruto actual por empleado por periodos específicos' },
         { id: 3, consulta: 'Trabajos extras pagados a empleados periodos específicos' },
-        { id: 4, consulta: 'Historial de salarios por empleado' },
         { id: 5, consulta: 'Empleados según sus roles' },
         { id: 8, consulta: 'Salarios totales pagados por empleado por tiempos específicos' },
-        { id: 9, consulta: 'Horas trabajadas por empleado por periodos específicos' },
+
         { id: 10, consulta: 'Fecha de contrato de empleado' }
     ]);*/
 
@@ -132,7 +131,23 @@ const Consultas = () => {
                 console.error('Error al obtener datos:', error);
                 showAlert('Error al obtener datos de comprobante.');
             }
-        }  else {
+        } else if (consultaId === 1) {
+            const cedulaEmpleado = prompt('Ingrese la cédula del empleado:');
+            if (!cedulaEmpleado) {
+                showAlert('Cédula del empleado es necesaria.');
+                return;
+            }
+        
+            try {
+                const response = await consultarSalarioBruto(cedulaEmpleado);
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de pagos por empleado.');
+            }
+        }
+         else {
             const showModal = modalMapping[consultaId];
             if (showModal) {
                 showModal();

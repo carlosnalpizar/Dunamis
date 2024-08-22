@@ -79,6 +79,11 @@ const RegistroUsuario = () => {
         return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(text);
     };
 
+
+    const isValidPassword = (password) => {
+        return password.length >= 8;
+    };
+
     const isOnlyNumbers = (text) => {
         return /^[0-9]+$/.test(text);
     };
@@ -109,6 +114,11 @@ const RegistroUsuario = () => {
 
         if (!isOnlyNumbers(cedula) || cedula.length < 9) {
             showAlert('La cédula debe contener al menos 9 dígitos y solo números.');
+            return;
+        }
+
+        if (!isValidPassword(contrasena)) {
+            showAlert('La contraseña debe tener al menos 8 caracteres.');
             return;
         }
 

@@ -5,22 +5,27 @@ import '../Css/popup.styles.css'; // Asegúrate de tener los estilos adecuados
 const PopupContent = ({ consultaId, data, onClose }) => {
     // Renderiza diferentes estructuras de tabla según la consulta
     switch (consultaId) {
-        case 1:
+        case 1: // Nuevo caso para "Consultar posición y detalles del empleado"
             return (
                 <table className="popup-table">
                     <thead>
                         <tr>
-                            <th>Empleado</th>
+                            <th>Descripción de Posición</th>
                             <th>Salario Bruto</th>
-                            {/* Agrega más encabezados según lo que necesites */}
+                            <th>ID Empleado</th>
+                            <th>Cédula del Empleado</th>
+                            <th>Fecha de Pago</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map(row => (
-                            <tr key={row.id}>
-                                <td>{row.empleado}</td>
-                                <td>{row.salarioBruto}</td>
-                                {/* Agrega más celdas según los datos */}
+                            <tr key={row.idEmpleado}>
+                                
+                                <td>{row.descripcionPosicion}</td>
+                                <td>{row.salario}</td>
+                                <td>{row.idEmpleado}</td>
+                                <td>{row.PersonaCedula}</td>
+                                <td>{new Date(row.fechaDePago).toLocaleDateString()}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -143,6 +148,8 @@ const PopupContent = ({ consultaId, data, onClose }) => {
                     </tbody>
                 </table>
             );
+
+            
         default:
             return <div>No hay datos disponibles</div>;
     }

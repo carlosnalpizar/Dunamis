@@ -74,7 +74,7 @@ const PagoSalarios = () => {
                     comprobante.cedulaEmpleado,
                     `${comprobante.nombreEmpleado} ${comprobante.apellido1Empleado} ${comprobante.apellido2Empleado}`,
                     fechaPagoFormateada, // Fecha formateada
-                    `$${comprobante.montoFinal.toFixed(2)}`,
+                    `${comprobante.montoFinal.toFixed(2)}`,
                     comprobante.descripcion
                 ]
             ],

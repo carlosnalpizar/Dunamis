@@ -8,3 +8,6 @@ export const consultarPagosXEmpleado = async (cedulaEmpleado) =>
 
 export const consultarComprobantePorPago = async (idPago) =>
     await axios.get(`http://localhost:4000/comprobante/${idPago}`);
+
+export const consultarSalarioBruto = async (empleado) =>
+    await axios.get(`http://localhost:4000/salariobruto/${empleado}`);
