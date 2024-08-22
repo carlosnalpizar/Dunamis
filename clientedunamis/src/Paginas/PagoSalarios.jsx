@@ -185,13 +185,13 @@ const PagoSalarios = () => {
                                 fechaActual.setDate(fechaActual.getDate() -1);
                                 const fechaActualMasUno = fechaActual.toISOString().split('T')[0];
 
-                                const isPayButtonDisabled = fechaDePago !== fechaActualMasUno;
+                                const isPayButtonDisabled = fechaDePago.substring(8, 10) !== fechaActualMasUno.substring(8, 10);
 
                                 return (
                                     <tr key={employee.PersonaCedula}>
                                         <td>{employee.PersonaCedula}</td>
                                         <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
-                                        <td>{fechaDePago}</td>
+                                        <td>Dia {fechaDePago.substring(8, 10)} de cada mes</td>
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
@@ -204,6 +204,7 @@ const PagoSalarios = () => {
                                 );
                             })}
                         </tbody>
+
                     </table>
                 ) : (
                     <p>No se encontraron empleados.</p>
