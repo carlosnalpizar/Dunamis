@@ -17,8 +17,8 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
         if (employee) {
             setEditedEmployee({
                 ...employee,
-                fechaDeIngreso: employee.fechaDeIngreso ? new Date(new Date(employee.fechaDeIngreso).setDate(new Date(employee.fechaDeIngreso).getDate() + 1)) : null,
-                fechaDePago: employee.fechaDePago ? new Date(new Date(employee.fechaDePago).setDate(new Date(employee.fechaDePago).getDate() + 1)) : null,
+                fechaDeIngreso: employee.fechaDeIngreso ? new Date(new Date(employee.fechaDeIngreso).setDate(new Date(employee.fechaDeIngreso).getDate() )) : null,
+                fechaDePago: employee.fechaDePago ? new Date(new Date(employee.fechaDePago).setDate(new Date(employee.fechaDePago).getDate() )) : null,
             });
         }
     }, [employee]);
@@ -127,28 +127,16 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                         <Dropdown id="posicion" name="idPosicion" value={editedEmployee.idPosicion} options={positions} onChange={handleDropdownChange} placeholder="Seleccione una posición" />
                     </div>
                     <div className="input-group">
-                        <label htmlFor="fechaInicio">Fecha de ingreso</label>
-                        <Calendar 
-    id="fechaInicio" 
-    name="fechaDeIngreso" 
-    value={editedEmployee.fechaDeIngreso} 
-    onChange={(e) => handleInputChange({ target: { name: 'fechaDeIngreso', value: e.value } })} 
-    dateFormat="dd/mm/yy" 
-    disabled 
-/>
-                    </div>
-                    <div className="input-group">
                         <label htmlFor="fechaFin">Fecha de pago</label>
-                        <Calendar 
-    id="fechaFin" 
-    name="fechaDePago" 
-    value={editedEmployee.fechaDePago}  // Corrección: Cambiado de `fechaDeIngreso` a `fechaDePago`
-    onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} 
-    dateFormat="dd/mm/yy" 
-    minDate={yesterday}
-    maxDate={maxDate}
-/>
-
+                    <Calendar 
+                        id="fechaFin" 
+                        name="fechaDePago" 
+                        value={new Date(new Date(employee.fechaDeIngreso).setDate(new Date(employee.fechaDeIngreso).getDate() + 1))}
+                        onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} 
+                        dateFormat="dd/mm/yy" 
+                        minDate={yesterday}
+                        maxDate={maxDate}
+                    />
                     </div>
                 </div>
                 <div className="modal-footer">
