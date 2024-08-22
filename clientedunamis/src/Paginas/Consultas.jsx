@@ -6,26 +6,38 @@ import ModalConsultas from '../modals/ModalConsultas';
 import ModalPeriodos from '../modals/ModalPeriodos';
 import ModalDeducciones from '../modals/ModalDeducciones';
 import ModalRoles from '../modals/ModalRoles';
+import Popup from '../modals/PopUp'; // Importa el componente Popup
+import { getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
+import { obtenerEmpleadosActivos } from '../api/empleados.api';
+import { obtenerDeducciones } from '../api/reportes.api'; // Asegúrate de tener la función para obtener deducciones
+
 import '../Css/consultas.styles.css';
 
 const Consultas = () => {
     const [consultas] = useState([
+        { id: 2, consulta: 'Trabajos extras realizados por empleados' },
+        { id: 6, consulta: 'Empleados activos' },
+        { id: 7, consulta: 'Deducciones por ley' },
+    ]);
+
+
+    /*const [consultas] = useState([
         { id: 1, consulta: 'Salario bruto actual por empleado por periodos específicos' },
-        { id: 2, consulta: 'Trabajos extras realizados por ID de empleados' },
         { id: 3, consulta: 'Trabajos extras pagados a empleados periodos específicos' },
         { id: 4, consulta: 'Historial de salarios por empleado' },
         { id: 5, consulta: 'Empleados según sus roles' },
-        { id: 6, consulta: 'Empleados activos' },
-        { id: 7, consulta: 'Deducciones por ley por periodos específicos' },
         { id: 8, consulta: 'Salarios totales pagados por empleado por tiempos específicos' },
         { id: 9, consulta: 'Horas trabajadas por empleado por periodos específicos' },
         { id: 10, consulta: 'Fecha de contrato de empleado' }
-    ]);
+    ]);*/
+
+    const [popupVisible, setPopupVisible] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [periodModalVisible, setPeriodModalVisible] = useState(false);
     const [selectedConsulta, setSelectedConsulta] = useState(null);
     const [deduccionesModalVisible, setDeduccionesModalVisible] = useState(false);
     const [rolesModalVisible, setRolesModalVisible] = useState(false);
+    const [popupData, setPopupData] = useState([]); // Estado para los datos del popup
     const toast = React.useRef(null);
 
     const showAlert = (message) => {
@@ -34,7 +46,7 @@ const Consultas = () => {
 
     const modalMapping = {
         1: () => setPeriodModalVisible(true),
-        2: () => setModalVisible(true),
+        2: () => setPopupVisible(true),
         3: () => setPeriodModalVisible(true),
         4: () => setModalVisible(true),
         5: () => setRolesModalVisible(true),
@@ -44,7 +56,7 @@ const Consultas = () => {
         10: () => setModalVisible(true)
     };
 
-    const handleRealizarConsulta = (consultaId) => {
+    const handleRealizarConsulta = async (consultaId) => {
         const consulta = consultas.find(c => c.id === consultaId);
 
         if (!consulta) {
@@ -54,57 +66,59 @@ const Consultas = () => {
 
         setSelectedConsulta(consultaId);
 
-        const showModal = modalMapping[consultaId];
-        if (showModal) {
-            showModal();
+        if (consultaId === 2) {
+            // Ejemplo de ID de empleado; en la práctica, obtén este valor de una entrada del usuario
+            const cedulaEmpleado = prompt('Ingrese el ID del empleado:');
+            if (!cedulaEmpleado) {
+                showAlert('ID del empleado es necesario.');
+                return;
+            }
+
+            try {
+                const response = await getTexEmpleado(cedulaEmpleado);
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos.');
+            }
+        } else if (consultaId === 6) {
+            try {
+                const response = await obtenerEmpleadosActivos();
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de empleados activos.');
+            }
+        } else if (consultaId === 7) {
+            try {
+                const response = await obtenerDeducciones();
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de deducciones.');
+            }
         } else {
-            showAlert(`Realizando consulta: ${consulta.consulta}`);
+            const showModal = modalMapping[consultaId];
+            if (showModal) {
+                showModal();
+            } else {
+                showAlert(`Realizando consulta: ${consulta.consulta}`);
+            }
         }
-        switch (consultaId) {
-            case 1:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Asegúrese de tener los periodos específicos.`);
-                break;
-            case 2:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Necesita el ID del empleado.`);
-                break;
-            case 3:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Especifique el periodo requerido.`);
-                break;
-            case 4:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Revise el historial completo.`);
-                break;
-            case 5:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Filtrando por roles.`);
-                break;
-            case 6:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Obteniendo lista de empleados activos.`);
-                break;
-            case 7:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Verificando deducciones.`);
-                break;
-            case 8:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Calculando salarios totales.`);
-                break;
-            case 9:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Contabilizando horas trabajadas.`);
-                break;
-            case 10:
-                showAlert(`Realizando consulta: ${consulta.consulta}. Consultando fechas de contrato.`);
-                break;
-            default:
-                showAlert(`Realizar consulta: ${consulta.consulta}`);
-
-        }
-        
-
     };
+
     const handleAceptar = (data) => {
         console.log('Datos de consulta:', data);
         setModalVisible(false);
         setPeriodModalVisible(false);
         setDeduccionesModalVisible(false);
         setRolesModalVisible(false);
+        setPopupVisible(false); // Ocultar popup al aceptar
     };
+
     return (
         <div className="consultas-container">
             <Toast ref={toast} />
@@ -149,16 +163,22 @@ const Consultas = () => {
                 onAceptar={handleAceptar}
                 selectedConsulta={selectedConsulta}
             />
-             <ModalDeducciones
+            <ModalDeducciones
                 visible={deduccionesModalVisible}
                 onClose={() => setDeduccionesModalVisible(false)}
                 onAceptar={handleAceptar}
             />
-              <ModalRoles
-            visible={rolesModalVisible}
-            onClose={() => setRolesModalVisible(false)}
-            onAceptar={handleAceptar}
-        />
+            <ModalRoles
+                visible={rolesModalVisible}
+                onClose={() => setRolesModalVisible(false)}
+                onAceptar={handleAceptar}
+            />
+            <Popup
+                visible={popupVisible}
+                consultaId={selectedConsulta}
+                data={popupData}
+                onClose={() => setPopupVisible(false)}
+            />
         </div>
     );
 };
