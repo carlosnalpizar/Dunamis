@@ -27,6 +27,8 @@ const RegistroClientes = () => {
     const toast = React.useRef(null);
 
     const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1); // Ajustar para ayer
     const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
 
     useEffect(() => {
@@ -166,7 +168,7 @@ const RegistroClientes = () => {
                                 showIcon
                                 readOnlyInput
                                 showButtonBar
-                                minDate={today}
+                                minDate={yesterday}
                                 maxDate={new Date(maxDate)}
                             />
                         </div>

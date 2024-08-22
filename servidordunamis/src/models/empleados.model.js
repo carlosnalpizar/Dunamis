@@ -69,7 +69,7 @@ export const crearEmpleado = async(req, res) => {
         const insercionEmpleado = await bd.request()
             .input('cedula', sql.Int, req.body.cedula)
             .input('idPosicion', sql.Int, req.body.posicion)
-            .input('fechaDePago', sql.Date, fechaActual)
+            .input('fechaDePago', sql.Date, req.body.ingreso)
             .input('fechaDeIngreso', sql.Date, req.body.ingreso)
             .input('cantidadTrabajosExtras', sql.Int, cantidadTrabExtras)
             .input('activo', sql.Bit, activo)
@@ -179,7 +179,7 @@ export const modificarEmpleadoInfo = async (req, res) => {
         await bd.request()
             .input('idEmpleado', sql.Int, id)
             .input('idPosicion', sql.Int, idPosicion)
-            .input('fechaDeIngreso', sql.Date, fechaDeIngreso)
+            .input('fechaDeIngreso', sql.Date, fechaDePago)
             .input('fechaDePago', sql.Date, fechaDePago)
             .query(`
                 UPDATE Empleados

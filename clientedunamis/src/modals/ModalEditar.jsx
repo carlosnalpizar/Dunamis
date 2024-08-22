@@ -17,12 +17,13 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
         if (employee) {
             setEditedEmployee({
                 ...employee,
-                fechaDeIngreso: employee.fechaDeIngreso ? new Date(employee.fechaDeIngreso) : null,
-                fechaDePago: employee.fechaDePago ? new Date(employee.fechaDePago) : null,
+                fechaDeIngreso: employee.fechaDeIngreso ? new Date(new Date(employee.fechaDeIngreso).setDate(new Date(employee.fechaDeIngreso).getDate() + 1)) : null,
+                fechaDePago: employee.fechaDePago ? new Date(new Date(employee.fechaDePago).setDate(new Date(employee.fechaDePago).getDate() + 1)) : null,
             });
         }
     }, [employee]);
-
+    
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -36,6 +37,8 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
     }, []);
 
     const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1); // Ajustar para ayer
     const maxDate = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
 
 
@@ -125,12 +128,27 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     </div>
                     <div className="input-group">
                         <label htmlFor="fechaInicio">Fecha de ingreso</label>
-                        <Calendar id="fechaInicio" name="fechaDeIngreso" value={editedEmployee.fechaDeIngreso} onChange={(e) => handleInputChange({ target: { name: 'fechaDeIngreso', value: e.value } })} dateFormat="dd/mm/yy" disabled />
+                        <Calendar 
+    id="fechaInicio" 
+    name="fechaDeIngreso" 
+    value={editedEmployee.fechaDeIngreso} 
+    onChange={(e) => handleInputChange({ target: { name: 'fechaDeIngreso', value: e.value } })} 
+    dateFormat="dd/mm/yy" 
+    disabled 
+/>
                     </div>
                     <div className="input-group">
                         <label htmlFor="fechaFin">Fecha de pago</label>
-                        <Calendar id="fechaFin" name="fechaDePago" value={editedEmployee.fechaDePago} onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} dateFormat="dd/mm/yy" minDate={today}
-                                maxDate={maxDate}/>
+                        <Calendar 
+    id="fechaFin" 
+    name="fechaDePago" 
+    value={editedEmployee.fechaDePago}  // Corrección: Cambiado de `fechaDeIngreso` a `fechaDePago`
+    onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} 
+    dateFormat="dd/mm/yy" 
+    minDate={yesterday}
+    maxDate={maxDate}
+/>
+
                     </div>
                 </div>
                 <div className="modal-footer">

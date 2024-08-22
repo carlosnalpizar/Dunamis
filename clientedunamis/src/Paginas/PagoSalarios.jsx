@@ -127,14 +127,6 @@ const PagoSalarios = () => {
     };
     
     const handlePay = async (employee) => {
-        const todayDateString = new Date().toISOString().split('T')[0];
-        const fechaDePago = new Date(employee.fechaDePago).toISOString().split('T')[0];
-    
-        if (fechaDePago !== todayDateString) {
-            showAlert('Hoy no es el día de pago correspondiente.', 'warn');
-            return;
-        }
-    
         try {
             await pagarSalario({ cedula: employee.PersonaCedula });
             const response = await getComprobantePago();
@@ -149,9 +141,6 @@ const PagoSalarios = () => {
     const filteredEmployees = employees.filter(employee =>
         employee.PersonaCedula.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    const today = new Date();
-    const todayDateString = today.toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -189,20 +178,26 @@ const PagoSalarios = () => {
                         </thead>
                         <tbody>
                             {filteredEmployees.map(employee => {
-                                const fechaDePago = new Date(employee.fechaDePago).toISOString().split('T')[0];
+                                const fechaDePago = new Date(employee.fechaDeIngreso).toISOString().split('T')[0];
                                 
+                                // Obtener la fecha actual y agregarle un día
+                                const fechaActual = new Date();
+                                fechaActual.setDate(fechaActual.getDate() -1);
+                                const fechaActualMasUno = fechaActual.toISOString().split('T')[0];
+
+                                const isPayButtonDisabled = fechaDePago !== fechaActualMasUno;
+
                                 return (
                                     <tr key={employee.PersonaCedula}>
                                         <td>{employee.PersonaCedula}</td>
                                         <td>{employee.nombre} {employee.apellido1} {employee.apellido2}</td>
-                                        <td className={fechaDePago === todayDateString ? 'fecha-pago-destacada' : ''}>
-                                            {fechaDePago}
-                                        </td>
+                                        <td>{fechaDePago}</td>
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
                                                 className="p-button-raised p-button-rounded pay-button"
                                                 onClick={() => handlePay(employee)}
+                                                disabled={isPayButtonDisabled} // Deshabilitar botón si no coincide la fecha
                                             />
                                         </td>
                                     </tr>
@@ -219,4 +214,3 @@ const PagoSalarios = () => {
 };
 
 export default PagoSalarios;
-
