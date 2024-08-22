@@ -7,7 +7,7 @@ import ModalPeriodos from '../modals/ModalPeriodos';
 import ModalDeducciones from '../modals/ModalDeducciones';
 import ModalRoles from '../modals/ModalRoles';
 import Popup from '../modals/PopUp'; // Importa el componente Popup
-import { getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
+import { consultarComprobantePorPago, consultarPagosXEmpleado, getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
 import { obtenerEmpleadosActivos } from '../api/empleados.api';
 import { obtenerDeducciones } from '../api/reportes.api'; // Asegúrate de tener la función para obtener deducciones
 
@@ -18,6 +18,8 @@ const Consultas = () => {
         { id: 2, consulta: 'Trabajos extras realizados por empleados' },
         { id: 6, consulta: 'Empleados activos' },
         { id: 7, consulta: 'Deducciones por ley' },
+        { id: 8, consulta: 'Pagos por Empleado' },
+        { id: 9, consulta: 'Consultar pago realizado' },
     ]);
 
 
@@ -100,7 +102,37 @@ const Consultas = () => {
                 console.error('Error al obtener datos:', error);
                 showAlert('Error al obtener datos de deducciones.');
             }
-        } else {
+        }else if (consultaId === 8) { // Manejo para la consulta de pagos por empleado
+            const cedulaEmpleado = prompt('Ingrese la cédula del empleado:');
+            if (!cedulaEmpleado) {
+                showAlert('Cédula del empleado es necesaria.');
+                return;
+            }
+
+            try {
+                const response = await consultarPagosXEmpleado(cedulaEmpleado);
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de pagos por empleado.');
+            }
+        }else if (consultaId === 9) { // Manejo para la consulta de comprobante por pago
+            const idPago = prompt('Ingrese el ID del pago:');
+            if (!idPago) {
+                showAlert('ID del pago es necesario.');
+                return;
+            }
+    
+            try {
+                const response = await consultarComprobantePorPago(idPago);
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de comprobante.');
+            }
+        }  else {
             const showModal = modalMapping[consultaId];
             if (showModal) {
                 showModal();

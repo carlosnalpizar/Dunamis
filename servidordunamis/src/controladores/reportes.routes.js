@@ -9,7 +9,7 @@ import { consultarDeduccionesPorLey,
     consultarSalariosActuales, 
     consultarTrabajosExtrasRealizados, 
     montosSalarioTotal} from '../models/reportes.model.js';
-import { consultarTrabajosExtrasPorEmpleado } from '../models/consultas.model.js';
+import { consultarComprobantePorPago, consultarPagosXEmpleado, consultarTrabajosExtrasPorEmpleado } from '../models/consultas.model.js';
 
 /*
 El uso de controladores funciona por rutas, cada vez que el servidor recibe una peticion HTTP
@@ -32,5 +32,7 @@ routerReportes.get('/pagosHoy', consultarPagosDeHoy);
 routerReportes.get('/montos', montosSalarioTotal);
 
 routerReportes.get('/texempleado/:ced', consultarTrabajosExtrasPorEmpleado);
+routerReportes.get('/pagosxempleado/:ced', consultarPagosXEmpleado);
+routerReportes.get('/comprobante/:id', consultarComprobantePorPago);
 
 export default routerReportes;

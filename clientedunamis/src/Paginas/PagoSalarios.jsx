@@ -242,7 +242,7 @@ const PagoSalarios = () => {
                 }
                 onHide={() => setShowConfirmDialog(false)}
             >
-                <p>¿Está seguro de que desea pagar el salario de <b>{selectedEmployee?.nombre}</b>? Recuerde verificar que la fecha de pago corresponda</p>
+                <p>¿Está seguro de que desea pagar el salario de {selectedEmployee?.nombre}? <b>Recuerde verificar que la fecha de pago sea la que corresponda</b></p>
             </Dialog>
         </div>
     );

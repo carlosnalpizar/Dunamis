@@ -92,6 +92,57 @@ const PopupContent = ({ consultaId, data, onClose }) => {
                     </tbody>
                 </table>
             );
+            case 8:
+            return (
+                <table className="popup-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pago</th>
+                            <th>Cédula del Empleado</th>
+                            <th>Fecha de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map(row => (
+                            <tr key={row.idPagos}>
+                                <td>{row.idPagos}</td>
+                                <td>{row.Empleado_Cedula}</td>
+                                <td>{new Date(row.fecha_Pago).toLocaleDateString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            );
+
+            case 9:
+            return (
+                <table className="popup-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pago</th>
+                            <th>Monto Final</th>
+                            <th>Fecha del Comprobante</th>
+                            <th>Cédula del Empleado</th>
+                            <th>Nombre del Empleado</th>
+                            <th>Apellido</th>
+                            <th>Correo Electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map(row => (
+                            <tr key={row.idPago}>
+                                <td>{row.idPago}</td>
+                                <td>{row.montoFinal}</td>
+                                <td>{new Date(row.fechaComprobante).toLocaleDateString()}</td>
+                                <td>{row.cedulaEmpleado}</td>
+                                <td>{row.nombreEmpleado}</td>
+                                <td>{row.apellido1Empleado} {row.apellido2Empleado}</td>
+                                <td>{row.correoEmpleado}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            );
         default:
             return <div>No hay datos disponibles</div>;
     }
