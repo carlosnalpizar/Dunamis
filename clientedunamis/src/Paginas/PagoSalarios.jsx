@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { PrimeIcons } from 'primereact/api';
 import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import '../Css/PagoSalarios.styles.css';
 import { obtenerEmpleadosActivos } from '../api/empleados.api';
 import { getComprobantePago, pagarSalario } from '../api/salarios.api'; 
@@ -15,6 +16,8 @@ const PagoSalarios = () => {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
     const toast = useRef(null);
 
     useEffect(() => {
@@ -126,9 +129,10 @@ const PagoSalarios = () => {
         }, 2000); // 2000 milisegundos = 2 segundos
     };
     
-    const handlePay = async (employee) => {
+    const handleConfirmPayment = async () => {
+        setShowConfirmDialog(false);
         try {
-            await pagarSalario({ cedula: employee.PersonaCedula });
+            await pagarSalario({ cedula: selectedEmployee.PersonaCedula });
             const response = await getComprobantePago();
             const { comprobante, infodeducciones } = response.data;
             await generateReportPDF(comprobante, infodeducciones);
@@ -136,6 +140,11 @@ const PagoSalarios = () => {
         } catch (error) {
             showAlert(`Error al pagar el salario: ${error.response?.data || error.message}`, 'error');
         }
+    };
+
+    const confirmPay = (employee) => {
+        setSelectedEmployee(employee);
+        setShowConfirmDialog(true);
     };
 
     const filteredEmployees = employees.filter(employee =>
@@ -182,10 +191,10 @@ const PagoSalarios = () => {
                                 
                                 // Obtener la fecha actual y agregarle un día
                                 const fechaActual = new Date();
-                                fechaActual.setDate(fechaActual.getDate() -1);
+                                fechaActual.setDate(fechaActual.getDate() - 1);
                                 const fechaActualMasUno = fechaActual.toISOString().split('T')[0];
 
-                                const isPayButtonDisabled = fechaDePago.substring(8, 10) !== fechaActualMasUno.substring(8, 10);
+                                //const isPayButtonDisabled = fechaDePago.substring(8, 10) !== fechaActualMasUno.substring(8, 10);
 
                                 return (
                                     <tr key={employee.PersonaCedula}>
@@ -195,21 +204,46 @@ const PagoSalarios = () => {
                                         <td>
                                             <Button
                                                 label="Pagar Salario"
-                                                className="p-button-raised p-button-rounded pay-button"
-                                                onClick={() => handlePay(employee)}
-                                                disabled={isPayButtonDisabled} // Deshabilitar botón si no coincide la fecha
+                                                icon={PrimeIcons.MONEY_BILL}
+                                                onClick={() => confirmPay(employee)}
+                                                className="p-button-raised p-button-success"
                                             />
                                         </td>
                                     </tr>
                                 );
                             })}
                         </tbody>
-
                     </table>
                 ) : (
-                    <p>No se encontraron empleados.</p>
+                    <p>No se encontraron empleados</p>
                 )}
             </Card>
+
+            <Dialog
+                visible={showConfirmDialog}
+                style={{ width: '400px' }}
+                header="Confirmar Pago"
+                modal
+                footer={
+                    <>
+                        <Button
+                            label="No"
+                            icon="pi pi-times"
+                            onClick={() => setShowConfirmDialog(false)}
+                            className="p-button-text"
+                        />
+                        <Button
+                            label="Sí"
+                            icon="pi pi-check"
+                            onClick={handleConfirmPayment}
+                            className="p-button-text"
+                        />
+                    </>
+                }
+                onHide={() => setShowConfirmDialog(false)}
+            >
+                <p>¿Está seguro de que desea pagar el salario de <b>{selectedEmployee?.nombre}</b>? Recuerde verificar que la fecha de pago corresponda</p>
+            </Dialog>
         </div>
     );
 };

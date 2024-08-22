@@ -97,7 +97,7 @@ export const pagarSalario = async (req, res) => {
             `);
 
         if (pagoExistente.recordset.length) {
-            return res.status(400).send('El pago ya ha sido realizado para hoy.');
+            return res.status(400).send('El pago ya ha sido realizado.');
         }
 
         /* Verificar si es el día correcto para pagar
