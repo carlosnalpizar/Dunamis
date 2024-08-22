@@ -131,7 +131,7 @@ const ModalEditar = ({ employee, visible, onClose, onSave }) => {
                     <Calendar 
                         id="fechaFin" 
                         name="fechaDePago" 
-                        value={new Date(new Date(employee.fechaDeIngreso).setDate(new Date(employee.fechaDeIngreso).getDate() + 1))}
+                        value={editedEmployee.fechaDePago}
                         onChange={(e) => handleInputChange({ target: { name: 'fechaDePago', value: e.value } })} 
                         dateFormat="dd/mm/yy" 
                         minDate={yesterday}
