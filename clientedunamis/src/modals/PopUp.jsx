@@ -52,6 +52,60 @@ const PopupContent = ({ consultaId, data, onClose }) => {
                         </tbody>
                     </table>
                 );
+                case 3:
+                    return (
+                        <table className="popup-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Pago</th>
+                                    <th>Monto Final</th>
+                                    <th>Fecha Comprobante</th>
+                                    <th>Cédula Empleado</th>
+                                    <th>Nombre Empleado</th>
+                                    <th>Apellido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map(row => (
+                                    <tr key={row.idPago}>
+                                        <td>{row.idPago}</td>
+                                        <td>{row.montoFinal}</td>
+                                        <td>{new Date(row.fechaComprobante).toLocaleDateString()}</td>
+                                        <td>{row.cedulaEmpleado}</td>
+                                        <td>{row.nombreEmpleado}</td>
+                                        <td>{row.apellido1Empleado} {row.apellido2Empleado}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    );
+
+                case 4: // Asegúrate de usar el ID correcto según tu implementación
+                    return (
+                        <table className="popup-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Deducción</th>
+                                    <th>Descripción</th>
+                                    <th>Monto Deducción</th>
+                                    <th>ID Pago</th>
+                                    <th>Tipo Deducción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map(row => (
+                                    <tr key={row.idDeducciones}>
+                                        <td>{row.idDeducciones}</td>
+                                        <td>{row.descripcionDeduccion}</td>
+                                        <td>{row.montoDeduccion}</td>
+                                        <td>{row.idPagos}</td>
+                                        <td>{row.tipoDeduccion}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    );
+
             case 6:
                     return (
                         <table className="popup-table">

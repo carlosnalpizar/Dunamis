@@ -64,3 +64,36 @@ export const consultarComprobantePorPago = async (req, res) => {
         res.status(500).json({ error: 'Error en el servidor' }); // Manejo de errores
     }
 };
+
+export const consultarPagosHechosEsteMes = async (req, res) => {
+    const bd = await getConexion();
+    try {
+        // Consulta para obtener los trabajos extras realizados por el empleado
+        const resultado = await bd.request()
+        .query(`SELECT * 
+                FROM comprobantePago 
+                WHERE YEAR(fechaComprobante) = YEAR(GETDATE()) 
+                AND MONTH(fechaComprobante) = MONTH(GETDATE());`);
+
+        res.json(resultado.recordset); // Enviar el resultado como JSON
+    } catch (error) {
+        console.error('Error al realizar la consulta:', error);
+        res.status(500).json({ error: 'Error en el servidor' }); // Manejo de errores
+    }
+};
+
+export const consultarDeduccionesAPago = async (req, res) => {
+    const { id } = req.params;
+    const bd = await getConexion();
+    try {
+        // Consulta para obtener los trabajos extras realizados por el empleado
+        const resultado = await bd.request()
+        .input('id', sql.Int, id)
+        .query(`select * from Deducciones d join pagosDeducciones p on d.idDeducciones=p.tipoDeduccion where p.idPagos= @id`);
+
+        res.json(resultado.recordset); // Enviar el resultado como JSON
+    } catch (error) {
+        console.error('Error al realizar la consulta:', error);
+        res.status(500).json({ error: 'Error en el servidor' }); // Manejo de errores
+    }
+};

@@ -7,7 +7,7 @@ import ModalPeriodos from '../modals/ModalPeriodos';
 import ModalDeducciones from '../modals/ModalDeducciones';
 import ModalRoles from '../modals/ModalRoles';
 import Popup from '../modals/PopUp'; // Importa el componente Popup
-import { consultarComprobantePorPago, consultarPagosXEmpleado, consultarSalarioBruto, getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
+import { consultarComprobantePorPago, consultarDeduccionesAPago, consultarPagosHechosEsteMes, consultarPagosXEmpleado, consultarSalarioBruto, getTexEmpleado } from '../api/consultas.api'; // Importa la función para obtener datos
 import { obtenerEmpleadosActivos } from '../api/empleados.api';
 import { obtenerDeducciones } from '../api/reportes.api'; // Asegúrate de tener la función para obtener deducciones
 
@@ -17,6 +17,8 @@ const Consultas = () => {
     const [consultas] = useState([
         { id: 1, consulta: 'Salario bruto actual por empleado' },
         { id: 2, consulta: 'Trabajos extras realizados por empleados' },
+        { id: 3, consulta: 'Pagos hechos este mes' },
+        { id: 4, consulta: 'Consultar deducciones aplicadas a cada pago realizado' },
         { id: 6, consulta: 'Empleados activos' },
         { id: 7, consulta: 'Deducciones por ley' },
         { id: 8, consulta: 'Pagos por Empleado' },
@@ -26,9 +28,6 @@ const Consultas = () => {
 
     /*const [consultas] = useState([
         { id: 3, consulta: 'Trabajos extras pagados a empleados periodos específicos' },
-        { id: 5, consulta: 'Empleados según sus roles' },
-        { id: 8, consulta: 'Salarios totales pagados por empleado por tiempos específicos' },
-
         { id: 10, consulta: 'Fecha de contrato de empleado' }
     ]);*/
 
@@ -146,8 +145,31 @@ const Consultas = () => {
                 console.error('Error al obtener datos:', error);
                 showAlert('Error al obtener datos de pagos por empleado.');
             }
-        }
-         else {
+        }else if (consultaId === 3) {
+            try {
+                const response = await consultarPagosHechosEsteMes();
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de pagos realizados este mes.');
+            }
+        }else if (consultaId === 4) {
+            const idPago = prompt('Ingrese el ID del pago:');
+            if (!idPago) {
+                showAlert('ID del pago es necesario.');
+                return;
+            }
+    
+            try {
+                const response = await consultarDeduccionesAPago(idPago);
+                setPopupData(response.data);
+                setPopupVisible(true);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                showAlert('Error al obtener datos de deducciones para el pago.');
+            }
+        }else {
             const showModal = modalMapping[consultaId];
             if (showModal) {
                 showModal();

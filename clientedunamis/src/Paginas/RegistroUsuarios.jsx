@@ -88,9 +88,13 @@ const RegistroUsuario = () => {
         return /^[0-9]+$/.test(text);
     };
 
+    const isOnlyNumbersid = (id) => {
+        return /^[0-9]+$/.test(id);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { nombre, apellido1, apellido2, cedula, correo, rol, contrasena } = formData;
+        const { idUsuario, nombre, apellido1, apellido2, cedula, correo, rol, contrasena } = formData;
 
         if (!nombre || !apellido1 || !apellido2 || !cedula || !correo || !rol || !contrasena) {
             showAlert('Por favor, complete todos los campos.');
@@ -114,6 +118,11 @@ const RegistroUsuario = () => {
 
         if (!isOnlyNumbers(cedula) || cedula.length < 9) {
             showAlert('La cédula debe contener al menos 9 dígitos y solo números.');
+            return;
+        }
+
+        if (!isOnlyNumbersid(idUsuario) || idUsuario.length < 1) {
+            showAlert('El ID del Usuario debe contener al menos 2 dígitos y solo números.');
             return;
         }
 
